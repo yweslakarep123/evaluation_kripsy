@@ -1,0 +1,40 @@
+defaults:
+  - flowpolicy
+  - override /task: kitchen_lowdim_all
+  - _self_
+
+# Lowdim policy override (replaces point-cloud FlowPolicy from flowpolicy.yaml)
+policy:
+  _target_: flow_policy_3d.policy.flowpolicy_lowdim.FlowPolicyLowdim
+  use_point_crop: false
+  obs_dim: 60
+  action_dim: 9
+  obs_mlp_hidden: [256, 256]
+  condition_type: film
+  use_down_condition: true
+  use_mid_condition: true
+  use_up_condition: true
+  diffusion_step_embed_dim: 128
+  down_dims:
+    - 512
+    - 1024
+    - 2048
+  encoder_output_dim: 64
+  horizon: ${horizon}
+  kernel_size: 5
+  n_action_steps: ${n_action_steps}
+  n_groups: 8
+  n_obs_steps: ${n_obs_steps}
+  obs_as_global_cond: true
+  shape_meta: ${shape_meta}
+  Conditional_ConsistencyFM:
+    eps: 1e-2
+    num_segments: 2
+    boundary: 1
+    delta: 1e-2
+    alpha: 1e-5
+    num_inference_step: 1
+
+horizon: 4
+n_obs_steps: 2
+n_action_steps: 4

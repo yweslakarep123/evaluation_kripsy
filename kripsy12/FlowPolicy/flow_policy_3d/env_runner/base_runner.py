@@ -1,0 +1,14 @@
+from typing import Dict
+from flow_policy_3d.policy.base_policy import BasePolicy
+
+
+class BaseRunner:
+    def __init__(self, output_dir):
+        self.output_dir = output_dir
+
+    def close(self):
+        """Subkelas yang memegang sim / renderer harus override (mis. KitchenLowdimEvalRunner)."""
+        pass
+
+    def run(self, policy: BasePolicy) -> Dict:
+        raise NotImplementedError()

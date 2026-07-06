@@ -1,0 +1,43 @@
+name: kitchen_lowdim_all
+
+task_name: ${name}
+
+obs_dim: 60
+action_dim: 9
+abs_action: true
+robot_noise_ratio: 0.1
+
+shape_meta: &shape_meta
+  obs:
+    obs:
+      shape: [60]
+      type: low_dim
+  action:
+    shape: [9]
+
+env_runner:
+  _target_: flow_policy_3d.env_runner.kitchen_null_runner.KitchenNullRunner
+
+dataset:
+  _target_: flow_policy_3d.dataset.kitchen_mjl_lowdim_dataset.KitchenMjlLowdimDataset
+  dataset_dir: data/kitchen/kitchen_demos_multitask
+  horizon: ${horizon}
+  pad_before: ${eval:'${n_obs_steps}-1'}
+  pad_after: ${eval:'${n_action_steps}-1'}
+  abs_action: ${task.abs_action}
+  robot_noise_ratio: ${task.robot_noise_ratio}
+  seed: 42
+  val_ratio: 0.0
+  episode_split_path: null
+
+# Eval runner settings (used by infer_kitchen_lowdim / eval_kitchen)
+eval_runner:
+  max_steps: 280
+  render_hw: [240, 360]
+  fps: 12.5
+  crf: 22
+  abs_action: ${task.abs_action}
+  robot_noise_ratio: ${task.robot_noise_ratio}
+  past_action: false
+  n_obs_steps: ${n_obs_steps}
+  n_action_steps: ${n_action_steps}

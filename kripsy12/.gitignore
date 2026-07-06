@@ -1,0 +1,58 @@
+# Video & rekaman
+*.mp4
+*.avi
+*.mov
+*.mkv
+*.webm
+*.m4v
+
+# Checkpoint & bobot model
+*.ckpt
+*.pt
+*.pth
+*.safetensors
+*.bin
+*.onnx
+*.pb
+
+# Dataset & cache besar (zarr sering berupa folder)
+*.zarr/
+**/*.zarr/
+
+# Keluaran eksperimen / Hydra / W&B
+outputs/
+data/outputs/
+**/data/outputs/
+wandb/
+.pytest_cache/
+.ruff_cache/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+.eggs/
+dist/
+build/
+
+# Lingkungan & IDE
+.env
+.venv/
+venv/
+.idea/
+.vscode/
+*.swp
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+# Tambahkan ini di file .gitignore
+*.pth
+*.ckpt
+*.h5
+data/
+outputs/
