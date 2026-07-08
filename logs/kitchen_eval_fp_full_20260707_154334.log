@@ -1,0 +1,357 @@
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+Checkpoints: ['data/outputs/baseline_42/latest-001.ckpt', 'data/outputs/baseline_43/latest-001.ckpt', 'data/outputs/baseline_44/latest-001(1).ckpt']
+Output: data/kitchen_eval/flowpolicy
+Episodes per checkpoint: 1000
+
+--- Evaluating seed=baseline_42 ---
+Checkpoint: data/outputs/baseline_42/latest-001.ckpt
+[FlowPolicyLowdim] obs_dim=60 action_dim=9 encoder_output_dim=64
+----------------------------------
+Class name: FlowPolicyLowdim
+  Number of parameters: 251.9655M
+   _dummy_variable: 0.0000M (0.00%)
+   obs_encoder: 0.0122M (0.00%)
+   model: 251.9533M (100.00%)
+   mask_generator: 0.0000M (0.00%)
+----------------------------------
+Reading configurations for Franka
+Initializing Franka sim
+Ep 1/1000:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Task kettle completed!
+Task slide cabinet completed!
+                                                  Reading configurations for Franka
+Initializing Franka sim
+Ep 2/1000:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Task kettle completed!
+Task bottom burner completed!
+                                                  Reading configurations for Franka
+Initializing Franka sim
+Ep 3/1000:   0%|          | 0/280 [00:00<?, ?it/s]Task bottom burner completed!
+Task top burner completed!
+Task light switch completed!
+Task slide cabinet completed!
+                                                  Reading configurations for Franka
+Initializing Franka sim
+Ep 4/1000:   0%|          | 0/280 [00:00<?, ?it/s]Task bottom burner completed!
+Task top burner completed!
+                                                  Reading configurations for Franka
+Initializing Franka sim
+Ep 5/1000:   0%|          | 0/280 [00:00<?, ?it/s]Task bottom burner completed!
+Task top burner completed!
+Task slide cabinet completed!
+                                                  Reading configurations for Franka
+Initializing Franka sim
+Ep 6/1000:   0%|          | 0/280 [00:00<?, ?it/s]Task bottom burner completed!
+Task top burner completed!
+Task slide cabinet completed!
+                                                  Reading configurations for Franka
+Initializing Franka sim
+Ep 7/1000:   0%|          | 0/280 [00:00<?, ?it/s]Task kettle completed!
+Task bottom burner completed!
+                                                  Reading configurations for Franka
+Initializing Franka sim
+Ep 8/1000:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Task kettle completed!
+Task bottom burner completed!
+                                                  Reading configurations for Franka
+Initializing Franka sim
+Ep 9/1000:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Task kettle completed!
+Task bottom burner completed!
+Task slide cabinet completed!
+                                                  Reading configurations for Franka
+Initializing Franka sim
+Ep 10/1000:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Task kettle completed!
+Task bottom burner completed!
+Task slide cabinet completed!
+                                                   Reading configurations for Franka
+Initializing Franka sim
+Ep 11/1000:   0%|          | 0/280 [00:00<?, ?it/s]Task bottom burner completed!
+                                                   Reading configurations for Franka
+Initializing Franka sim
+Ep 12/1000:   0%|          | 0/280 [00:00<?, ?it/s]Task bottom burner completed!
+Task top burner completed!
+Task slide cabinet completed!
+Ep 12/1000:  95%|█████████▌| 267/280 [00:05<00:00, 53.19it/s]                                                             Reading configurations for Franka
+Initializing Franka sim
+Ep 13/1000:   0%|          | 0/280 [00:00<?, ?it/s]Task kettle completed!
+Task bottom burner completed!
+Task top burner completed!
+Task slide cabinet completed!
+Ep 13/1000:  87%|████████▋ | 243/280 [00:05<00:00, 48.56it/s]                                                             Reading configurations for Franka
+Initializing Franka sim
+Ep 14/1000:   0%|          | 0/280 [00:00<?, ?it/s]Task bottom burner completed!
+                                                   Reading configurations for Franka
+Initializing Franka sim
+Ep 15/1000:   0%|          | 0/280 [00:00<?, ?it/s]Task bottom burner completed!
+Task top burner completed!
+Task light switch completed!
+Task slide cabinet completed!
+                                                   Reading configurations for Franka
+Initializing Franka sim
+Ep 16/1000:   0%|          | 0/280 [00:00<?, ?it/s]Task bottom burner completed!
+Task top burner completed!
+Task light switch completed!
+Task slide cabinet completed!
+                                                   Reading configurations for Franka
+Initializing Franka sim
+Ep 17/1000:   0%|          | 0/280 [00:00<?, ?it/s]Task kettle completed!
+Task bottom burner completed!
+Task top burner completed!
+Task light switch completed!
+                                                   Reading configurations for Franka
+Initializing Franka sim
+Ep 18/1000:   0%|          | 0/280 [00:00<?, ?it/s]Task bottom burner completed!
+Task top burner completed!
+Task slide cabinet completed!
+                                                   Reading configurations for Franka
+Initializing Franka sim
+Ep 19/1000:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Task kettle completed!
+Task bottom burner completed!
+Task slide cabinet completed!
+                                                   Reading configurations for Franka
+Initializing Franka sim
+Ep 20/1000:   0%|          | 0/280 [00:00<?, ?it/s]Task bottom burner completed!
+Task top burner completed!
+Task light switch completed!
+Task slide cabinet completed!
+                                                   Reading configurations for Franka
+Initializing Franka sim
+Ep 21/1000:   0%|          | 0/280 [00:00<?, ?it/s]Task bottom burner completed!
+Task top burner completed!
+Task slide cabinet completed!
+                                                   Reading configurations for Franka
+Initializing Franka sim
+Ep 22/1000:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Task kettle completed!
+Task bottom burner completed!
+Task slide cabinet completed!
+                                                   Reading configurations for Franka
+Initializing Franka sim
+Ep 23/1000:   0%|          | 0/280 [00:00<?, ?it/s]Task kettle completed!
+Task bottom burner completed!
+Task light switch completed!
+Task slide cabinet completed!
+                                                   Reading configurations for Franka
+Initializing Franka sim
+Ep 24/1000:   0%|          | 0/280 [00:00<?, ?it/s]Task bottom burner completed!
+Task top burner completed!
+Task light switch completed!
+Task slide cabinet completed!
+                                                   Reading configurations for Franka
+Initializing Franka sim
+Ep 25/1000:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Task kettle completed!
+Task top burner completed!
+Task light switch completed!
+                                                   Reading configurations for Franka
+Initializing Franka sim
+Ep 26/1000:   0%|          | 0/280 [00:00<?, ?it/s]Task bottom burner completed!
+Task top burner completed!
+Task light switch completed!
+Task slide cabinet completed!
+Ep 26/1000:  98%|█████████▊| 273/280 [00:05<00:00, 54.21it/s]                                                             Reading configurations for Franka
+Initializing Franka sim
+Ep 27/1000:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Task kettle completed!
+Task bottom burner completed!
+Ep 27/1000:  84%|████████▎ | 234/280 [00:05<00:00, 46.70it/s]Task slide cabinet completed!
+                                                             Reading configurations for Franka
+Initializing Franka sim
+Ep 28/1000:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Task kettle completed!
+Task bottom burner completed!
+Task slide cabinet completed!
+                                                   Reading configurations for Franka
+Initializing Franka sim
+Ep 29/1000:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Task kettle completed!
+Task bottom burner completed!
+Task slide cabinet completed!
+                                                   Reading configurations for Franka
+Initializing Franka sim
+Ep 30/1000:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Task kettle completed!
+Task bottom burner completed!
+Task slide cabinet completed!
+                                                   Reading configurations for Franka
+Initializing Franka sim
+Ep 31/1000:   0%|          | 0/280 [00:00<?, ?it/s]Task kettle completed!
+Task bottom burner completed!
+Task slide cabinet completed!
+                                                   Reading configurations for Franka
+Initializing Franka sim
+Ep 32/1000:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Task kettle completed!
+Task light switch completed!
+                                                   Reading configurations for Franka
+Initializing Franka sim
+Ep 33/1000:   0%|          | 0/280 [00:00<?, ?it/s]Task kettle completed!
+Task bottom burner completed!
+Task top burner completed!
+Task slide cabinet completed!
+                                                   Reading configurations for Franka
+Initializing Franka sim
+Ep 34/1000:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Task kettle completed!
+Task bottom burner completed!
+Task slide cabinet completed!
+                                                   Reading configurations for Franka
+Initializing Franka sim
+Ep 35/1000:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Task kettle completed!
+Task bottom burner completed!
+Task hinge cabinet completed!
+                                                   Reading configurations for Franka
+Initializing Franka sim
+Ep 36/1000:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Task bottom burner completed!
+Task slide cabinet completed!
+                                                   Reading configurations for Franka
+Initializing Franka sim
+Ep 37/1000:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Task bottom burner completed!
+Task light switch completed!
+Task slide cabinet completed!
+                                                   Reading configurations for Franka
+Initializing Franka sim
+Ep 38/1000:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Task kettle completed!
+                                                   Reading configurations for Franka
+Initializing Franka sim
+Ep 39/1000:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Task kettle completed!
+Task bottom burner completed!
+Task slide cabinet completed!
+                                                   Reading configurations for Franka
+Initializing Franka sim
+Ep 40/1000:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Task kettle completed!
+Task bottom burner completed!
+                                                   Reading configurations for Franka
+Initializing Franka sim
+Ep 41/1000:   0%|          | 0/280 [00:00<?, ?it/s]Task kettle completed!
+Task bottom burner completed!
+Task light switch completed!
+Task slide cabinet completed!
+                                                   Reading configurations for Franka
+Initializing Franka sim
+Ep 42/1000:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+                                                   Reading configurations for Franka
+Initializing Franka sim
+Ep 43/1000:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Task kettle completed!
+Task bottom burner completed!
+Task slide cabinet completed!
+                                                   Reading configurations for Franka
+Initializing Franka sim
+Ep 44/1000:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Task kettle completed!
+Task bottom burner completed!
+                                                   Reading configurations for Franka
+Initializing Franka sim
+Ep 45/1000:   0%|          | 0/280 [00:00<?, ?it/s]Task kettle completed!
+Task bottom burner completed!
+Task top burner completed!
+Task light switch completed!
+                                                   Reading configurations for Franka
+Initializing Franka sim
+Ep 46/1000:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Task bottom burner completed!
+Task top burner completed!
+                                                   Reading configurations for Franka
+Initializing Franka sim
+Ep 47/1000:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Task kettle completed!
+Task bottom burner completed!
+Ep 47/1000:  86%|████████▌ | 240/280 [00:05<00:00, 47.38it/s]Task slide cabinet completed!
+                                                             Reading configurations for Franka
+Initializing Franka sim
+Ep 48/1000:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Ep 48/1000:  89%|████████▉ | 249/280 [00:05<00:00, 49.71it/s]                                                             Reading configurations for Franka
+Initializing Franka sim
+Ep 49/1000:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Task kettle completed!
+Ep 49/1000:  90%|█████████ | 252/280 [00:05<00:00, 50.06it/s]                                                             Reading configurations for Franka
+Initializing Franka sim
+Ep 50/1000:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Task kettle completed!
+Task bottom burner completed!
+Ep 50/1000:  90%|█████████ | 252/280 [00:05<00:00, 50.11it/s]Task slide cabinet completed!
+                                                             Reading configurations for Franka
+Initializing Franka sim
+Ep 51/1000:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Task kettle completed!
+Task bottom burner completed!
+Ep 51/1000:  90%|█████████ | 252/280 [00:05<00:00, 50.10it/s]                                                             Reading configurations for Franka
+Initializing Franka sim
+Ep 52/1000:   0%|          | 0/280 [00:00<?, ?it/s]Task kettle completed!
+Task bottom burner completed!
+Task light switch completed!
+Task slide cabinet completed!
+Ep 52/1000:  90%|█████████ | 252/280 [00:05<00:00, 49.99it/s]                                                             Reading configurations for Franka
+Initializing Franka sim
+Ep 53/1000:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Task kettle completed!
+Task bottom burner completed!
+Ep 53/1000:  89%|████████▉ | 249/280 [00:05<00:00, 49.80it/s]Task slide cabinet completed!
+                                                             Reading configurations for Franka
+Initializing Franka sim
+Ep 54/1000:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Task kettle completed!
+Task bottom burner completed!
+Ep 54/1000:  85%|████████▍ | 237/280 [00:05<00:00, 47.06it/s]Task slide cabinet completed!
+                                                             Reading configurations for Franka
+Initializing Franka sim
+Ep 55/1000:   0%|          | 0/280 [00:00<?, ?it/s]Task bottom burner completed!
+Task top burner completed!
+Ep 55/1000:  87%|████████▋ | 243/280 [00:05<00:00, 47.94it/s]Task slide cabinet completed!
+                                                             Reading configurations for Franka
+Initializing Franka sim
+Ep 56/1000:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Task kettle completed!
+Task bottom burner completed!
+Ep 56/1000:  86%|████████▌ | 240/280 [00:05<00:00, 47.42it/s]                                                             Reading configurations for Franka
+Initializing Franka sim
+Ep 57/1000:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Task kettle completed!
+Ep 57/1000:  86%|████████▌ | 240/280 [00:05<00:00, 47.61it/s]                                                             Reading configurations for Franka
+Initializing Franka sim
+Ep 58/1000:   0%|          | 0/280 [00:00<?, ?it/s]Task kettle completed!
+Task bottom burner completed!
+Ep 58/1000:  87%|████████▋ | 243/280 [00:05<00:00, 48.11it/s]Task slide cabinet completed!
+                                                             Reading configurations for Franka
+Initializing Franka sim
+Ep 59/1000:   0%|          | 0/280 [00:00<?, ?it/s]Task bottom burner completed!
+Task light switch completed!
+Ep 59/1000:  88%|████████▊ | 246/280 [00:05<00:00, 48.97it/s]Task slide cabinet completed!
+                                                             Reading configurations for Franka
+Initializing Franka sim
+Ep 60/1000:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Task kettle completed!
+Task bottom burner completed!
+Ep 60/1000:  86%|████████▌ | 240/280 [00:05<00:00, 47.94it/s]                                                             Reading configurations for Franka
+Initializing Franka sim
+Ep 61/1000:   0%|          | 0/280 [00:00<?, ?it/s]Task bottom burner completed!
+Task top burner completed!
+Task light switch completed!
+Ep 61/1000:  89%|████████▉ | 249/280 [00:05<00:00, 49.44it/s]Task slide cabinet completed!
+                                                             Reading configurations for Franka
+Initializing Franka sim
+Ep 62/1000:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Task kettle completed!
+Task bottom burner completed!
+Ep 62/1000:  87%|████████▋ | 243/280 [00:05<00:00, 48.56it/s]Task slide cabinet completed!
+                                                             Reading configurations for Franka
+Initializing Franka sim
+Ep 63/1000:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Task kettle completed!
+Task bottom burner completed!
+Ep 63/1000:  84%|████████▎ | 234/280 [00:05<00:00, 46.53it/s]Task slide cabinet completed!
+                                                             Reading configurations for Franka
+Initializing Franka sim

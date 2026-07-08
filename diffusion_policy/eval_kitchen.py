@@ -2,8 +2,8 @@
 Kitchen flat evaluation (100 episodes per checkpoint).
 
 Usage:
-  MUJOCO_GL=egl python eval_kitchen.py --output_root data/kitchen_eval/flowpolicy --device cuda:0
-  MUJOCO_GL=egl python eval_kitchen.py --smoke --device cuda:0 -c data/outputs/baseline_42/latest-001.ckpt
+  MUJOCO_GL=egl python eval_kitchen.py --model diffusion_policy_transformer --device cuda:0
+  MUJOCO_GL=egl python eval_kitchen.py --smoke --device cuda:0 -m diffusion_policy_transformer
 """
 
 import sys
@@ -12,27 +12,36 @@ sys.stdout = open(sys.stdout.fileno(), mode="w", buffering=1)
 sys.stderr = open(sys.stderr.fileno(), mode="w", buffering=1)
 
 import glob
+import inspect
 import json
 import os
 import pathlib
 from typing import Any, Dict, List, Optional, Tuple
 
 import click
+import dill
+import hydra
 import numpy as np
 import torch
 
-from flow_policy_3d.common.multistage_metrics import compute_multistage_metrics
-from flow_policy_3d.env_runner.kitchen_lowdim_eval_runner import (
+from diffusion_policy.common.multistage_metrics import compute_multistage_metrics
+from diffusion_policy.env_runner.kitchen_lowdim_eval_runner import (
     ALL_TASKS,
     KitchenLowdimEvalRunner,
 )
-from train import TrainFlowPolicyWorkspace
 
-DEFAULT_CHECKPOINTS = [
-    "data/outputs/baseline_42/latest-001.ckpt",
-    "data/outputs/baseline_43/latest-001.ckpt",
-    "data/outputs/baseline_44/latest-001(1).ckpt",
-]
+DEFAULT_CHECKPOINTS = {
+    "diffusion_policy_transformer": [
+        "data/diffusion_policy_transformer/train0/epoch=*.ckpt",
+        "data/diffusion_policy_transformer/train1/epoch=*.ckpt",
+        "data/diffusion_policy_transformer/train2/epoch=*.ckpt",
+    ],
+    "diffusion_policy_cnn": [
+        "data/diffusion_policy_cnn/train0/epoch=*.ckpt",
+        "data/diffusion_policy_cnn/train1/epoch=*.ckpt",
+        "data/diffusion_policy_cnn/train2/epoch=*.ckpt",
+    ],
+}
 
 
 def _compute_mean_std(values: List[float]) -> Dict[str, Any]:
@@ -68,12 +77,27 @@ def seed_name_from_checkpoint(checkpoint_path: str) -> str:
 
 
 def load_policy(checkpoint_path: str, device: torch.device):
-    workspace = TrainFlowPolicyWorkspace.create_from_checkpoint(checkpoint_path)
-    cfg = workspace.cfg
-    if cfg.training.get("use_ema", False) and workspace.ema_model is not None:
+    payload = torch.load(open(checkpoint_path, "rb"), pickle_module=dill)
+    cfg = payload["cfg"]
+    cls = hydra.utils.get_class(cfg._target_)
+    init_params = inspect.signature(cls.__init__).parameters
+    if "output_dir" in init_params:
+        workspace = cls(cfg, output_dir=None)
+    else:
+        workspace = cls(cfg)
+    workspace.load_payload(payload, exclude_keys=None, include_keys=None)
+
+    if (
+        cfg.training.get("use_ema", False)
+        and hasattr(workspace, "ema_model")
+        and workspace.ema_model is not None
+    ):
         policy = workspace.ema_model
+    elif hasattr(workspace, "policy"):
+        policy = workspace.policy
     else:
         policy = workspace.model
+
     policy.to(device)
     policy.eval()
     return policy, cfg
@@ -86,23 +110,21 @@ def build_runner(
     n_episodes: int,
     save_trajectory_logs: bool = True,
 ) -> KitchenLowdimEvalRunner:
-    task_cfg = cfg.task
-    env_runner_cfg = task_cfg.get("eval_runner") or task_cfg.env_runner
+    task_cfg = cfg.get("task", cfg)
+    env_runner_cfg = task_cfg.get("env_runner", {})
     return KitchenLowdimEvalRunner(
         output_dir=output_dir,
         n_episodes=n_episodes,
         n_episodes_vis=n_episodes,
         max_steps=env_runner_cfg.get("max_steps", 280),
-        n_obs_steps=env_runner_cfg.get("n_obs_steps", cfg.get("n_obs_steps", 2)),
-        n_action_steps=env_runner_cfg.get(
-            "n_action_steps", cfg.get("n_action_steps", 8)
+        n_obs_steps=cfg.get("n_obs_steps", env_runner_cfg.get("n_obs_steps", 4)),
+        n_action_steps=cfg.get(
+            "n_action_steps", env_runner_cfg.get("n_action_steps", 8)
         ),
         render_hw=tuple(env_runner_cfg.get("render_hw", [240, 360])),
         fps=env_runner_cfg.get("fps", 12.5),
         crf=env_runner_cfg.get("crf", 22),
-        past_action=env_runner_cfg.get(
-            "past_action", cfg.get("past_action_visible", False)
-        ),
+        past_action=cfg.get("past_action_visible", False),
         abs_action=task_cfg.get("abs_action", True),
         tqdm_interval_sec=env_runner_cfg.get("tqdm_interval_sec", 5.0),
         dataset_dir=dataset_dir,
@@ -272,12 +294,18 @@ def aggregate_checkpoint_metrics(
 
 @click.command()
 @click.option(
+    "--model",
+    "-m",
+    type=click.Choice(["diffusion_policy_transformer", "diffusion_policy_cnn"]),
+    default="diffusion_policy_transformer",
+)
+@click.option(
     "--checkpoints",
     "-c",
     multiple=True,
-    help="Checkpoint paths or globs. Default: baseline_42/43/44",
+    help="Checkpoint paths or globs",
 )
-@click.option("--output_root", "-o", default="data/kitchen_eval/flowpolicy")
+@click.option("--output_root", "-o", default="data/kitchen_eval")
 @click.option("--dataset_dir", default="data/kitchen")
 @click.option("--n_episodes", default=100, type=int)
 @click.option("--device", "-d", default="cuda:0")
@@ -293,6 +321,7 @@ def aggregate_checkpoint_metrics(
     help="Overwrite existing checkpoint output directories",
 )
 def main(
+    model: str,
     checkpoints: Tuple[str, ...],
     output_root: str,
     dataset_dir: str,
@@ -306,19 +335,20 @@ def main(
 
     if smoke:
         n_episodes = 10
-        ckpt_patterns = [DEFAULT_CHECKPOINTS[0]]
+        ckpt_patterns = [DEFAULT_CHECKPOINTS[model][0]]
     elif checkpoints:
         ckpt_patterns = list(checkpoints)
     else:
-        ckpt_patterns = DEFAULT_CHECKPOINTS
+        ckpt_patterns = DEFAULT_CHECKPOINTS[model]
 
     ckpt_paths = [resolve_checkpoint(p) for p in ckpt_patterns]
     device_t = torch.device(device)
-    output_root_path = pathlib.Path(output_root)
-    output_root_path.mkdir(parents=True, exist_ok=True)
+    output_model_dir = pathlib.Path(output_root) / model
+    output_model_dir.mkdir(parents=True, exist_ok=True)
 
+    click.echo(f"Model: {model}")
     click.echo(f"Checkpoints: {ckpt_paths}")
-    click.echo(f"Output: {output_root_path}")
+    click.echo(f"Output: {output_model_dir}")
     click.echo(f"Episodes per checkpoint: {n_episodes}")
     if smoke:
         click.echo("SMOKE TEST mode")
@@ -327,7 +357,7 @@ def main(
 
     for ckpt_path in ckpt_paths:
         seed_name = seed_name_from_checkpoint(ckpt_path)
-        seed_output_dir = output_root_path / f"seed_{seed_name}"
+        seed_output_dir = output_model_dir / f"seed_{seed_name}"
 
         if seed_output_dir.exists() and not overwrite:
             existing_metrics = seed_output_dir / "eval_metrics.json"
@@ -370,8 +400,9 @@ def main(
 
     if len(checkpoint_metrics) > 1:
         summary = aggregate_checkpoint_metrics(checkpoint_metrics)
+        summary["model"] = model
         summary["n_episodes_per_checkpoint"] = n_episodes
-        summary_path = output_root_path / "summary.json"
+        summary_path = output_model_dir / "summary.json"
         with open(summary_path, "w") as f:
             json.dump(summary, f, indent=2, sort_keys=True)
         click.echo(f"\nWrote summary: {summary_path}")

@@ -9,18 +9,18 @@ import numpy as np
 import torch
 import tqdm
 
-from flow_policy_3d.common.multistage_metrics import compute_multistage_metrics
-from flow_policy_3d.common.pytorch_util import dict_apply
-from flow_policy_3d.env.kitchen.base import KitchenBase
-from flow_policy_3d.env.kitchen.kitchen_lowdim_wrapper import KitchenLowdimWrapper
-from flow_policy_3d.env.kitchen.v0 import KitchenAllV0
-from flow_policy_3d.env_runner.base_lowdim_runner import BaseLowdimRunner
-from flow_policy_3d.gym_util.multistep_wrapper import MultiStepWrapper
-from flow_policy_3d.gym_util.video_recording_wrapper import (
+from diffusion_policy.common.multistage_metrics import compute_multistage_metrics
+from diffusion_policy.common.pytorch_util import dict_apply
+from diffusion_policy.env.kitchen.base import KitchenBase
+from diffusion_policy.env.kitchen.kitchen_lowdim_wrapper import KitchenLowdimWrapper
+from diffusion_policy.env.kitchen.v0 import KitchenAllV0
+from diffusion_policy.env_runner.base_lowdim_runner import BaseLowdimRunner
+from diffusion_policy.gym_util.multistep_wrapper import MultiStepWrapper
+from diffusion_policy.gym_util.video_recording_wrapper import (
     VideoRecorder,
     VideoRecordingWrapper,
 )
-from flow_policy_3d.policy.base_lowdim_policy import BaseLowdimPolicy
+from diffusion_policy.policy.base_lowdim_policy import BaseLowdimPolicy
 
 module_logger = logging.getLogger(__name__)
 

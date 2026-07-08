@@ -1,0 +1,14 @@
+[2026-07-07 15:51:51] Kitchen flat eval started. Log: /home/daffa/Documents/experiment/logs/kitchen_eval_1000_20260707_155151.log
+[2026-07-07 15:51:51] Skipping diffusion_policy_transformer: no checkpoints in diffusion_policy/data/diffusion_policy_transformer/train{0,1,2}/
+[2026-07-07 15:51:51] Skipping diffusion_policy_cnn: no checkpoints in diffusion_policy/data/diffusion_policy_cnn/train{0,1,2}/
+[2026-07-07 15:51:51] Starting FlowPolicy
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+Checkpoints: ['data/outputs/baseline_42/latest-001.ckpt', 'data/outputs/baseline_43/latest-001.ckpt', 'data/outputs/baseline_44/latest-001(1).ckpt']
+Output: data/kitchen_eval/flowpolicy
+Episodes per checkpoint: 1000
+
+--- Evaluating seed=baseline_42 ---
+Checkpoint: data/outputs/baseline_42/latest-001.ckpt

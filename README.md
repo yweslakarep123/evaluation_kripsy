@@ -1,27 +1,27 @@
 # Kitchen Multitask Evaluation Experiment
 
-Repositori ini berisi implementasi evaluasi **Franka Kitchen** untuk membandingkan **Diffusion Policy** dan **FlowPolicy** dengan protokol kombinatorial 4-subtask berurutan.
+Repositori ini berisi implementasi evaluasi **Franka Kitchen** untuk membandingkan **Diffusion Policy** dan **FlowPolicy** dengan protokol flat 100 episode per checkpoint.
 
 ## Struktur Proyek
 
 ```
 experiment/
 ├── diffusion_policy/          # Diffusion Policy (Chi et al., 2023)
-│   ├── eval_kitchen_combinations.py
+│   ├── eval_kitchen.py
 │   ├── data/kitchen/          # Dataset + all_init_qpos.npy (566 inits)
-│   └── data/kitchen_combo_eval/   # Hasil evaluasi
+│   └── data/kitchen_eval/     # Hasil evaluasi
 ├── kripsy12/
 │   └── FlowPolicy/            # FlowPolicy baseline
-│       ├── eval_kitchen_combinations.py
+│       ├── eval_kitchen.py
 │       └── data/kitchen/      # Dataset (mirror diffusion_policy)
 ├── scripts/
-│   └── run_all_kitchen_combo_eval.sh   # Orkestrator full run
+│   └── run_kitchen_eval_1000.sh   # Orkestrator full run
 └── logs/                      # Log evaluasi (dibuat saat run)
 ```
 
 ## Protokol Evaluasi
 
-Evaluasi dirancang untuk mengukur performa model pada **semua kombinasi 4-subtask** dari 7 task Kitchen:
+Evaluasi flat pada environment Kitchen standar (`KitchenAllV0` — 7 task, any-order):
 
 | Task | Nama |
 |------|------|
@@ -35,26 +35,38 @@ Evaluasi dirancang untuk mengukur performa model pada **semua kombinasi 4-subtas
 
 **Desain eksperimen:**
 
-- **35 kombinasi** — C(7, 4) = 35 set subtask
-- **50 episode per kombinasi** — urutan 4 task di-counterbalance (24 permutasi × 2 + 2 acak)
-- **3 checkpoint seed per model** — train0/1/2 (DP) atau baseline_42/43/44 (FlowPolicy)
-- **1.750 episode per seed**, **5.250 episode per model**
+- **100 episode per checkpoint**
+- **3 checkpoint per model** — train0/1/2 (DP) atau baseline_42/43/44 (FlowPolicy)
+- **3 model** — DP Transformer, DP CNN, FlowPolicy
+- **900 episode total**
 
 Setiap episode:
 
-- Init state dari `all_init_qpos.npy` / `all_init_qvel.npy`
-- Env `KitchenSequential4V0` — 4 subtask **harus** selesai berurutan
-- Max 280 steps, video MP4, log joint trajectory (actual vs predicted)
+- Init state deterministik dari `all_init_qpos.npy` / `all_init_qvel.npy` (`init_idx = episode_idx % 566`)
+- Env `KitchenAllV0` — 7 subtask, urutan penyelesaian bebas
+- Max 280 steps, video MP4 semua episode
+- Log numerik detail per episode di `trajectory_logs/` (NPZ + TXT vs demo GT)
 
 ### Metrik
 
 | Metrik | Deskripsi |
 |--------|-----------|
-| **p1–p4** | Cumulative sequential success: p_k = fraksi episode dengan ≥ k task pertama selesai berurutan |
-| **Per-task success** | Success rate tiap subtask di semua episode di mana task tersebut muncul |
+| **p1–p7** | Cumulative multistage success (Diffusion Policy style) |
+| **Per-task success** | Success rate tiap subtask across 100 episode |
 | **Per-task duration** | Wall-clock ms dari task sebelumnya selesai sampai task selesai |
 | **Inference latency** | Waktu `predict_action` per policy call (ms) |
-| **Joint trajectory** | CSV per episode: `seed, combination_id, episode_id, timestep, joint_idx, actual_qpos, predicted_qpos` |
+
+### Trajectory logs
+
+Setiap episode menulis ke `trajectory_logs/`:
+
+| File | Isi |
+|------|-----|
+| `ep_XXXX.npz` | Arrays numerik: prediksi policy, rollout executed, demo GT, error L2 |
+| `ep_XXXX_detail.txt` | Versi human-readable (grep/less friendly) |
+| `SCHEMA.txt` | Dokumentasi key/shape NPZ |
+
+NPZ mencakup: `action_pred`, `action_executed`, `policy_obs`, `qp`/`qv`/`obj_qp`/`obj_qv`, `demo_obs`/`demo_action`, dan error vs demo GT per env step.
 
 ## Setup
 
@@ -73,6 +85,9 @@ Pastikan data ada di kedua lokasi:
 diffusion_policy/data/kitchen/
   all_init_qpos.npy
   all_init_qvel.npy
+  observations_seq.npy
+  actions_seq.npy
+  existence_mask.npy
   kitchen_demos_multitask/
 
 kripsy12/FlowPolicy/data/kitchen/   # sama
@@ -88,38 +103,38 @@ Unduh dari [Diffusion Policy training data](https://diffusion-policy.cs.columbia
 | DP CNN | `diffusion_policy/data/diffusion_policy_cnn/train{0,1,2}/epoch=*.ckpt` |
 | FlowPolicy | `kripsy12/FlowPolicy/data/outputs/baseline_{42,43,44}/*.ckpt` |
 
+Dataset Kitchen untuk DP dapat di-symlink dari FlowPolicy:
+
+```bash
+mkdir -p diffusion_policy/data
+ln -sfn ../kripsy12/FlowPolicy/data/kitchen diffusion_policy/data/kitchen
+```
+
 ## Menjalankan Evaluasi
 
 Set `MUJOCO_GL=egl` untuk headless Linux (GPU rendering).
 
-### Smoke test (1 kombinasi, 2 episode)
+### Smoke test (10 episode, 1 checkpoint per model)
 
 ```bash
-conda activate robodiff
-cd diffusion_policy
-MUJOCO_GL=egl python eval_kitchen_combinations.py \
-  --smoke --device cuda:0 \
-  -m diffusion_policy_transformer \
-  -c data/diffusion_policy_transformer/train0/epoch=*.ckpt
+bash scripts/run_kitchen_eval_1000.sh --smoke
 ```
 
-### Diffusion Policy — full run
+### Diffusion Policy — per model
 
 ```bash
 conda activate robodiff
 cd diffusion_policy
 
-# Transformer (3 seeds)
-MUJOCO_GL=egl python eval_kitchen_combinations.py \
+MUJOCO_GL=egl python eval_kitchen.py \
   --model diffusion_policy_transformer \
-  --output_root data/kitchen_combo_eval \
-  --device cuda:0 --resume
+  --output_root data/kitchen_eval \
+  --device cuda:0
 
-# CNN (3 seeds)
-MUJOCO_GL=egl python eval_kitchen_combinations.py \
+MUJOCO_GL=egl python eval_kitchen.py \
   --model diffusion_policy_cnn \
-  --output_root data/kitchen_combo_eval \
-  --device cuda:0 --resume
+  --output_root data/kitchen_eval \
+  --device cuda:0
 ```
 
 ### FlowPolicy — full run
@@ -127,97 +142,73 @@ MUJOCO_GL=egl python eval_kitchen_combinations.py \
 ```bash
 conda activate flowpolicy-kitchen
 cd kripsy12/FlowPolicy
-MUJOCO_GL=egl python eval_kitchen_combinations.py \
-  --output_root data/kitchen_combo_eval/flowpolicy \
-  --device cuda:0 --resume
+MUJOCO_GL=egl python eval_kitchen.py \
+  --output_root data/kitchen_eval/flowpolicy \
+  --device cuda:0
 ```
 
 ### Semua model sekaligus
 
 ```bash
-bash scripts/run_all_kitchen_combo_eval.sh          # full run
-bash scripts/run_all_kitchen_combo_eval.sh --smoke  # smoke test
+bash scripts/run_kitchen_eval_1000.sh          # full run (900 episode)
+bash scripts/run_kitchen_eval_1000.sh --smoke  # smoke test
 ```
 
 ### CLI flags
 
 | Flag | Default | Deskripsi |
 |------|---------|-----------|
-| `--smoke` | off | 1 kombinasi, 2 episode |
-| `--resume` | on | Skip kombinasi/episode yang sudah selesai |
-| `--no-resume` | | Paksa re-run semua |
-| `--combination_id N` | all 35 | Hanya jalankan kombinasi N |
-| `--n_episodes_per_combo` | 50 | Episode per kombinasi |
+| `--smoke` | off | 10 episode, 1 checkpoint |
+| `--n_episodes` | 100 | Episode per checkpoint |
+| `--save-trajectory-logs` | on | Simpan NPZ+TXT per episode |
+| `--no-save-trajectory-logs` | — | Matikan trajectory logs |
+| `--dataset_dir` | data/kitchen | Folder all_init_qpos.npy |
+| `--overwrite/--no-overwrite` | no-overwrite | Paksa re-run jika output ada |
 | `-c / --checkpoints` | auto-scan | Path checkpoint (bisa glob) |
 | `--device` | cuda:0 | GPU device |
 
 ## Struktur Output
 
 ```
-data/kitchen_combo_eval/
+data/kitchen_eval/
   diffusion_policy_transformer/
     seed_train0/
-      combination_00/
-        metrics.json              # mean±std 50 episode: p1-p4, per-task, timing
-        episodes/
-          ep_000.json               # metadata episode
-          ep_000_joints.csv         # joint trajectory
-          ep_000.mp4                # video rollout
-      combination_01/ ...
-      seed_summary.json             # agregat 35 kombinasi
-      seed_report.txt               # tabel human-readable
+      eval_metrics.json
+      eval_report.txt
+      media/ep_0000.mp4 ... ep_0099.mp4
+      trajectory_logs/
+        SCHEMA.txt
+        ep_0000.npz
+        ep_0000_detail.txt
+        ...
     seed_train1/ ...
-    model_summary.json              # mean±std across 3 seeds
-    model_summary.txt
+    seed_train2/ ...
+    summary.json
   diffusion_policy_cnn/ ...
-  flowpolicy/ ...
+  flowpolicy/
+    seed_baseline_42/ ...
 ```
-
-### Contoh `metrics.json` per kombinasi
-
-```json
-{
-  "combination_id": 0,
-  "tasks": ["bottom burner", "top burner", "light switch", "slide cabinet"],
-  "n_episodes": 50,
-  "sequential_pk": {
-    "p1": {"mean": 0.82, "std": 0.39, "n_samples": 50},
-    "p2": {"mean": 0.64, "std": 0.49, "n_samples": 50},
-    "p3": {"mean": 0.42, "std": 0.50, "n_samples": 50},
-    "p4": {"mean": 0.28, "std": 0.45, "n_samples": 50}
-  },
-  "per_task_success": { "...": {"mean": 0.56, "std": 0.50, "n_samples": 50} },
-  "per_task_duration_ms": { "...": {"mean": 12400, "std": 3200, "n_samples": 28} },
-  "inference_latency_ms": {"mean": 45.2, "std": 8.1, "n_samples": 3500}
-}
-```
-
-Cross-seed summary menggunakan **mean-of-seed-means** (bukan pool 5.250 episode).
 
 ## Skala & Estimasi
 
-| Model | Seeds | Total episodes |
-|-------|-------|----------------|
-| DP Transformer | 3 | 5.250 |
-| DP CNN | 3 | 5.250 |
-| FlowPolicy | 3 | 5.250 |
-| **Total** | | **15.750** |
+| Model | Checkpoints | Total episodes |
+|-------|-------------|----------------|
+| DP Transformer | 3 | 300 |
+| DP CNN | 3 | 300 |
+| FlowPolicy | 3 | 300 |
+| **Total** | | **900** |
 
-- **Runtime:** ~30–60 detik/episode → ~130–260 jam GPU total
-- **Storage video:** ~30 GB per model (~2 MB/episode)
-- **Joint CSV:** ~3–4 GB per model (gzip recommended untuk analisis offline)
-
-Gunakan `--resume` agar evaluasi yang terputus dapat dilanjutkan tanpa re-run episode yang sudah selesai.
+- **Runtime:** ~10–30 detik/episode → ~1–4 jam GPU total
+- **Storage video:** ~200 MB per seed (~2 MB/episode)
+- **Storage trajectory logs:** ~50–150 MB per seed
 
 ## File Implementasi Utama
 
 | File | Peran |
 |------|-------|
-| `*/common/kitchen_combo_protocol.py` | 35 kombinasi, permutasi balanced, agregasi metrik, laporan |
-| `*/env/kitchen/kitchen_sequential_v0.py` | Env 4-subtask berurutan |
-| `*/env_runner/kitchen_combo_eval_runner.py` | Episode loop, joint CSV, video, timing |
-| `*/eval_kitchen_combinations.py` | CLI entry point |
-| `scripts/run_all_kitchen_combo_eval.sh` | Orkestrator multi-model |
+| `*/env_runner/kitchen_lowdim_eval_runner.py` | Episode loop, video, timing, metrik, trajectory logs |
+| `*/eval_kitchen.py` | CLI entry point |
+| `scripts/run_kitchen_eval_1000.sh` | Orkestrator multi-model |
 
 ## Known Issues
 
@@ -241,7 +232,7 @@ Lihat `kripsy12/ReinFlow/docs/KnownIssues.md` untuk detail lebih lanjut.
 
 ### Memory (MuJoCo leak)
 
-Runner memanggil `env.close()` setiap episode. Jangan reuse env antar episode — ini wajib untuk run 1.750+ episode per seed.
+Runner memanggil `env.close()` setiap episode. Jangan reuse env antar episode — ini wajib untuk run panjang per checkpoint.
 
 ## Referensi
 

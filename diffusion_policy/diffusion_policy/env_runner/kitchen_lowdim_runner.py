@@ -41,7 +41,6 @@ class KitchenLowdimRunner(BaseLowdimRunner):
             past_action=False,
             tqdm_interval_sec=5.0,
             abs_action=False,
-            robot_noise_ratio=0.1,
             n_envs=None
         ):
         super().__init__(output_dir)
@@ -56,7 +55,6 @@ class KitchenLowdimRunner(BaseLowdimRunner):
             from diffusion_policy.env.kitchen.v0 import KitchenAllV0
             from diffusion_policy.env.kitchen.kitchen_lowdim_wrapper import KitchenLowdimWrapper
             env = KitchenAllV0(use_abs_action=abs_action)
-            env.robot_noise_ratio = robot_noise_ratio
             return MultiStepWrapper(
                 VideoRecordingWrapper(
                     KitchenLowdimWrapper(
