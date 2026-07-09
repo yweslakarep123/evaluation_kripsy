@@ -3,6 +3,9 @@ import numpy as np
 import gym
 from gym.spaces import Box
 from flow_policy_3d.env.kitchen.base import KitchenBase
+#region agent log
+import json as _json, time as _time; open('/home/daffa/Documents/experiment/.cursor/debug-374ef1.log','a').write(_json.dumps({"sessionId":"374ef1","runId":"post-fix","hypothesisId":"A","location":"kitchen_lowdim_wrapper.py:import","message":"KitchenBase import ok","data":{"module":KitchenBase.__module__},"timestamp":int(_time.time()*1000)})+'\n')
+#endregion
 
 class KitchenLowdimWrapper(gym.Env):
     def __init__(self,
@@ -47,3 +50,7 @@ class KitchenLowdimWrapper(gym.Env):
     
     def step(self, a):
         return self.env.step(a)
+
+    def close(self):
+        if hasattr(self.env, "close"):
+            self.env.close()

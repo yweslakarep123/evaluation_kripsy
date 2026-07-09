@@ -1,0 +1,10 @@
+[2026-07-08 10:03:42] Kitchen flat eval started. Log: /home/daffa/Documents/experiment/logs/kitchen_eval_100_20260708_100342.log
+[2026-07-08 10:03:42] Episodes per checkpoint: 100
+[2026-07-08 10:03:42] Starting Diffusion Policy: diffusion_policy_transformer
+Traceback (most recent call last):
+  File "/home/daffa/Documents/experiment/diffusion_policy/eval_kitchen.py", line 28, in <module>
+    from diffusion_policy.env_runner.kitchen_lowdim_eval_runner import (
+  File "/home/daffa/Documents/experiment/diffusion_policy/diffusion_policy/env_runner/kitchen_lowdim_eval_runner.py", line 330
+    cells = [f"{names[i]:>8}={values[i:+.{precision}f}" for i in range(n)]
+                                                        ^
+SyntaxError: f-string: closing parenthesis '}' does not match opening parenthesis '['

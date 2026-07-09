@@ -1,0 +1,713 @@
+[2026-07-08 09:03:14] Kitchen flat eval started. Log: /home/daffa/Documents/experiment/logs/kitchen_eval_100_20260708_090314.log
+[2026-07-08 09:03:14] Episodes per checkpoint: 100
+[2026-07-08 09:03:14] Starting Diffusion Policy: diffusion_policy_transformer
+Model: diffusion_policy_transformer
+Checkpoints: ['data/diffusion_policy_transformer/train0/epoch=3000-test_mean_score=0.574.ckpt', 'data/diffusion_policy_transformer/train1/epoch=2700-test_mean_score=0.574.ckpt', 'data/diffusion_policy_transformer/train2/epoch=1750-test_mean_score=0.574.ckpt']
+Output: data/kitchen_eval/diffusion_policy_transformer
+Episodes per checkpoint: 100
+
+--- Evaluating seed=train0 ---
+Checkpoint: data/diffusion_policy_transformer/train0/epoch=3000-test_mean_score=0.574.ckpt
+/home/daffa/miniforge3/envs/robodiff/lib/python3.9/site-packages/wandb/apis/public.py:2997: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import parse_version
+Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+/home/daffa/miniforge3/envs/robodiff/lib/python3.9/site-packages/gym/spaces/box.py:73: UserWarning: [33mWARN: Box bound precision lowered by casting to float32[0m
+  logger.warn(
+Ep 1/100:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Ep 1/100:  20%|██        | 56/280 [00:05<00:21, 10.28it/s]Ep 1/100:  40%|████      | 112/280 [00:10<00:15, 10.70it/s]Task bottom burner completed!
+Ep 1/100:  63%|██████▎   | 176/280 [00:15<00:09, 11.37it/s]Task slide cabinet completed!
+Ep 1/100:  86%|████████▌ | 240/280 [00:21<00:03, 11.67it/s]                                                           Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 2/100:   0%|          | 0/280 [00:00<?, ?it/s]Task bottom burner completed!
+Ep 2/100:  23%|██▎       | 64/280 [00:05<00:18, 11.89it/s]Task top burner completed!
+Ep 2/100:  46%|████▌     | 128/280 [00:10<00:12, 11.99it/s]Task light switch completed!
+Task slide cabinet completed!
+Ep 2/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.98it/s]Ep 2/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.97it/s]Task hinge cabinet completed!
+                                                           Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 3/100:   0%|          | 0/280 [00:00<?, ?it/s]Task bottom burner completed!
+Ep 3/100:  23%|██▎       | 64/280 [00:05<00:18, 11.80it/s]Task top burner completed!
+Ep 3/100:  46%|████▌     | 128/280 [00:10<00:12, 11.89it/s]Task slide cabinet completed!
+Ep 3/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.92it/s]Task hinge cabinet completed!
+Ep 3/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.90it/s]                                                           Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 4/100:   0%|          | 0/280 [00:00<?, ?it/s]Task bottom burner completed!
+Ep 4/100:  23%|██▎       | 64/280 [00:05<00:18, 11.78it/s]Task top burner completed!
+Ep 4/100:  46%|████▌     | 128/280 [00:10<00:12, 11.88it/s]Task light switch completed!
+Task slide cabinet completed!
+Ep 4/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.91it/s]Ep 4/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.91it/s]                                                           Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 5/100:   0%|          | 0/280 [00:00<?, ?it/s]Task bottom burner completed!
+Ep 5/100:  23%|██▎       | 64/280 [00:05<00:18, 11.73it/s]Task top burner completed!
+Ep 5/100:  46%|████▌     | 128/280 [00:10<00:12, 11.85it/s]Task slide cabinet completed!
+Ep 5/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.87it/s]Ep 5/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.89it/s]Task hinge cabinet completed!
+                                                           Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 6/100:   0%|          | 0/280 [00:00<?, ?it/s]Task bottom burner completed!
+Ep 6/100:  23%|██▎       | 64/280 [00:05<00:18, 11.73it/s]Task top burner completed!
+Ep 6/100:  46%|████▌     | 128/280 [00:10<00:12, 11.84it/s]Task light switch completed!
+Task slide cabinet completed!
+Ep 6/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.88it/s]Ep 6/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.89it/s]                                                           Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 7/100:   0%|          | 0/280 [00:00<?, ?it/s]Task bottom burner completed!
+Ep 7/100:  23%|██▎       | 64/280 [00:05<00:18, 11.72it/s]Task top burner completed!
+Ep 7/100:  46%|████▌     | 128/280 [00:10<00:12, 11.80it/s]Task light switch completed!
+Task slide cabinet completed!
+Ep 7/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.83it/s]Ep 7/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.83it/s]                                                           Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 8/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 8/100:  23%|██▎       | 64/280 [00:05<00:18, 11.79it/s]Task kettle completed!
+Ep 8/100:  46%|████▌     | 128/280 [00:10<00:12, 11.83it/s]Task bottom burner completed!
+Ep 8/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.86it/s]Task light switch completed!
+Ep 8/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.89it/s]                                                           Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 9/100:   0%|          | 0/280 [00:00<?, ?it/s]Task kettle completed!
+Ep 9/100:  23%|██▎       | 64/280 [00:05<00:18, 11.72it/s]Ep 9/100:  46%|████▌     | 128/280 [00:10<00:12, 11.84it/s]Task bottom burner completed!
+Task light switch completed!
+Ep 9/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.85it/s]Task hinge cabinet completed!
+Ep 9/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.85it/s]                                                           Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 10/100:   0%|          | 0/280 [00:00<?, ?it/s]Task kettle completed!
+Ep 10/100:  23%|██▎       | 64/280 [00:05<00:18, 11.74it/s]Ep 10/100:  46%|████▌     | 128/280 [00:10<00:12, 11.84it/s]Task bottom burner completed!
+Task light switch completed!
+Ep 10/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.86it/s]Task hinge cabinet completed!
+Ep 10/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.86it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 11/100:   0%|          | 0/280 [00:00<?, ?it/s]Task kettle completed!
+Ep 11/100:  23%|██▎       | 64/280 [00:05<00:18, 11.72it/s]Task bottom burner completed!
+Ep 11/100:  46%|████▌     | 128/280 [00:10<00:12, 11.83it/s]Task top burner completed!
+Ep 11/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.86it/s]Task slide cabinet completed!
+Ep 11/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.86it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 12/100:   0%|          | 0/280 [00:00<?, ?it/s]Task bottom burner completed!
+Ep 12/100:  23%|██▎       | 64/280 [00:05<00:18, 11.77it/s]Task top burner completed!
+Ep 12/100:  46%|████▌     | 128/280 [00:10<00:12, 11.85it/s]Task slide cabinet completed!
+Ep 12/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.87it/s]Task hinge cabinet completed!
+Ep 12/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.87it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 13/100:   0%|          | 0/280 [00:00<?, ?it/s]Task bottom burner completed!
+Ep 13/100:  23%|██▎       | 64/280 [00:05<00:18, 11.76it/s]Task top burner completed!
+Ep 13/100:  46%|████▌     | 128/280 [00:10<00:12, 11.84it/s]Task light switch completed!
+Task slide cabinet completed!
+Ep 13/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.88it/s]Ep 13/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.88it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 14/100:   0%|          | 0/280 [00:00<?, ?it/s]Task bottom burner completed!
+Ep 14/100:  23%|██▎       | 64/280 [00:05<00:18, 11.71it/s]Task top burner completed!
+Ep 14/100:  46%|████▌     | 128/280 [00:10<00:12, 11.79it/s]Task slide cabinet completed!
+Ep 14/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.82it/s]Ep 14/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.84it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 15/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 15/100:  23%|██▎       | 64/280 [00:05<00:18, 11.78it/s]Task bottom burner completed!
+Task top burner completed!
+Ep 15/100:  46%|████▌     | 128/280 [00:10<00:12, 11.81it/s]Task light switch completed!
+Ep 15/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.87it/s]Task slide cabinet completed!
+Ep 15/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.88it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 16/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 16/100:  23%|██▎       | 64/280 [00:05<00:18, 11.80it/s]Task bottom burner completed!
+Task top burner completed!
+Ep 16/100:  46%|████▌     | 128/280 [00:10<00:12, 11.86it/s]Task light switch completed!
+Ep 16/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.90it/s]Task slide cabinet completed!
+Ep 16/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.89it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 17/100:   0%|          | 0/280 [00:00<?, ?it/s]Task kettle completed!
+Ep 17/100:  23%|██▎       | 64/280 [00:05<00:18, 11.75it/s]Task bottom burner completed!
+Ep 17/100:  46%|████▌     | 128/280 [00:10<00:12, 11.84it/s]Task top burner completed!
+Ep 17/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.86it/s]Task hinge cabinet completed!
+Ep 17/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.86it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 18/100:   0%|          | 0/280 [00:00<?, ?it/s]Task kettle completed!
+Ep 18/100:  23%|██▎       | 64/280 [00:05<00:18, 11.75it/s]Task top burner completed!
+Ep 18/100:  46%|████▌     | 128/280 [00:10<00:12, 11.84it/s]Task light switch completed!
+Task slide cabinet completed!
+Ep 18/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.86it/s]Ep 18/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.85it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 19/100:   0%|          | 0/280 [00:00<?, ?it/s]Task bottom burner completed!
+Ep 19/100:  23%|██▎       | 64/280 [00:05<00:18, 11.72it/s]Task top burner completed!
+Ep 19/100:  46%|████▌     | 128/280 [00:10<00:12, 11.81it/s]Task light switch completed!
+Task slide cabinet completed!
+Ep 19/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.85it/s]Ep 19/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.87it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 20/100:   0%|          | 0/280 [00:00<?, ?it/s]Task bottom burner completed!
+Ep 20/100:  23%|██▎       | 64/280 [00:05<00:18, 11.73it/s]Task top burner completed!
+Ep 20/100:  46%|████▌     | 128/280 [00:10<00:12, 11.82it/s]Task light switch completed!
+Task slide cabinet completed!
+Ep 20/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.85it/s]Ep 20/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.85it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 21/100:   0%|          | 0/280 [00:00<?, ?it/s]Task bottom burner completed!
+Ep 21/100:  23%|██▎       | 64/280 [00:05<00:18, 11.77it/s]Task top burner completed!
+Ep 21/100:  46%|████▌     | 128/280 [00:10<00:12, 11.85it/s]Task light switch completed!
+Task slide cabinet completed!
+Ep 21/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.88it/s]Ep 21/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.89it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 22/100:   0%|          | 0/280 [00:00<?, ?it/s]Task kettle completed!
+Ep 22/100:  23%|██▎       | 64/280 [00:05<00:18, 11.72it/s]Task bottom burner completed!
+Ep 22/100:  46%|████▌     | 128/280 [00:10<00:12, 11.82it/s]Task light switch completed!
+Ep 22/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.87it/s]Task slide cabinet completed!
+Ep 22/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.86it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 23/100:   0%|          | 0/280 [00:00<?, ?it/s]Task kettle completed!
+Ep 23/100:  23%|██▎       | 64/280 [00:05<00:18, 11.67it/s]Task bottom burner completed!
+Ep 23/100:  46%|████▌     | 128/280 [00:10<00:12, 11.77it/s]Task light switch completed!
+Ep 23/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.81it/s]Task slide cabinet completed!
+Ep 23/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.80it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 24/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 24/100:  23%|██▎       | 64/280 [00:05<00:18, 11.74it/s]Task bottom burner completed!
+Task top burner completed!
+Ep 24/100:  46%|████▌     | 128/280 [00:10<00:12, 11.81it/s]Task light switch completed!
+Ep 24/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.85it/s]Task slide cabinet completed!
+Ep 24/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.85it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 25/100:   0%|          | 0/280 [00:00<?, ?it/s]Task bottom burner completed!
+Ep 25/100:  23%|██▎       | 64/280 [00:05<00:18, 11.76it/s]Task top burner completed!
+Ep 25/100:  46%|████▌     | 128/280 [00:10<00:12, 11.83it/s]Task light switch completed!
+Ep 25/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.88it/s]Task slide cabinet completed!
+Ep 25/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.88it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 26/100:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Ep 26/100:  23%|██▎       | 64/280 [00:05<00:18, 11.74it/s]Task kettle completed!
+Ep 26/100:  46%|████▌     | 128/280 [00:10<00:12, 11.82it/s]Task top burner completed!
+Ep 26/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.84it/s]Task light switch completed!
+Ep 26/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.85it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 27/100:   0%|          | 0/280 [00:00<?, ?it/s]Task bottom burner completed!
+Ep 27/100:  23%|██▎       | 64/280 [00:05<00:18, 11.74it/s]Task top burner completed!
+Ep 27/100:  46%|████▌     | 128/280 [00:10<00:12, 11.83it/s]Task slide cabinet completed!
+Ep 27/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.87it/s]Ep 27/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.89it/s]Task hinge cabinet completed!
+                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 28/100:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Ep 28/100:  23%|██▎       | 64/280 [00:05<00:18, 11.78it/s]Task kettle completed!
+Ep 28/100:  46%|████▌     | 128/280 [00:10<00:12, 11.84it/s]Task light switch completed!
+Task slide cabinet completed!
+Ep 28/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.87it/s]Ep 28/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.88it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 29/100:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Ep 29/100:  23%|██▎       | 64/280 [00:05<00:18, 11.74it/s]Task kettle completed!
+Ep 29/100:  46%|████▌     | 128/280 [00:10<00:12, 11.83it/s]Task bottom burner completed!
+Ep 29/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.86it/s]Task hinge cabinet completed!
+Ep 29/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.85it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 30/100:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Ep 30/100:  23%|██▎       | 64/280 [00:05<00:18, 11.73it/s]Task top burner completed!
+Ep 30/100:  46%|████▌     | 128/280 [00:10<00:12, 11.82it/s]Task light switch completed!
+Ep 30/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.88it/s]Task hinge cabinet completed!
+Ep 30/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.89it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 31/100:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Ep 31/100:  23%|██▎       | 64/280 [00:05<00:18, 11.75it/s]Task light switch completed!
+Ep 31/100:  46%|████▌     | 128/280 [00:10<00:12, 11.84it/s]Task slide cabinet completed!
+Ep 31/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.86it/s]Task hinge cabinet completed!
+Ep 31/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.86it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 32/100:   0%|          | 0/280 [00:00<?, ?it/s]Task kettle completed!
+Ep 32/100:  23%|██▎       | 64/280 [00:05<00:18, 11.74it/s]Ep 32/100:  46%|████▌     | 128/280 [00:10<00:12, 11.86it/s]Task bottom burner completed!
+Task light switch completed!
+Ep 32/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.87it/s]Task hinge cabinet completed!
+Ep 32/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.88it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 33/100:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Ep 33/100:  23%|██▎       | 64/280 [00:05<00:18, 11.74it/s]Task bottom burner completed!
+Ep 33/100:  46%|████▌     | 128/280 [00:10<00:12, 11.80it/s]Task top burner completed!
+Task slide cabinet completed!
+Ep 33/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.83it/s]Ep 33/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.88it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 34/100:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Ep 34/100:  23%|██▎       | 64/280 [00:05<00:18, 11.72it/s]Task kettle completed!
+Ep 34/100:  46%|████▌     | 128/280 [00:10<00:12, 11.77it/s]Task light switch completed!
+Task slide cabinet completed!
+Ep 34/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.80it/s]Ep 34/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.80it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 35/100:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Ep 35/100:  23%|██▎       | 64/280 [00:05<00:18, 11.74it/s]Task kettle completed!
+Ep 35/100:  46%|████▌     | 128/280 [00:10<00:12, 11.80it/s]Task slide cabinet completed!
+Ep 35/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.83it/s]Task hinge cabinet completed!
+Ep 35/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.84it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 36/100:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Ep 36/100:  23%|██▎       | 64/280 [00:05<00:18, 11.73it/s]Task bottom burner completed!
+Ep 36/100:  46%|████▌     | 128/280 [00:10<00:12, 11.80it/s]Task slide cabinet completed!
+Ep 36/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.84it/s]Task hinge cabinet completed!
+Ep 36/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.84it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 37/100:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Ep 37/100:  23%|██▎       | 64/280 [00:05<00:18, 11.76it/s]Task kettle completed!
+Ep 37/100:  46%|████▌     | 128/280 [00:10<00:12, 11.82it/s]Task light switch completed!
+Ep 37/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.88it/s]Task slide cabinet completed!
+Ep 37/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.88it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 38/100:   0%|          | 0/280 [00:00<?, ?it/s]Task kettle completed!
+Ep 38/100:  23%|██▎       | 64/280 [00:05<00:18, 11.70it/s]Task bottom burner completed!
+Ep 38/100:  46%|████▌     | 128/280 [00:10<00:12, 11.78it/s]Task top burner completed!
+Ep 38/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.80it/s]Task slide cabinet completed!
+Ep 38/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.81it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 39/100:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Ep 39/100:  23%|██▎       | 64/280 [00:05<00:18, 11.70it/s]Task kettle completed!
+Ep 39/100:  46%|████▌     | 128/280 [00:10<00:12, 11.76it/s]Task light switch completed!
+Ep 39/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.80it/s]Task hinge cabinet completed!
+Ep 39/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.79it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 40/100:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Ep 40/100:  23%|██▎       | 64/280 [00:05<00:18, 11.77it/s]Task kettle completed!
+Ep 40/100:  46%|████▌     | 128/280 [00:10<00:12, 11.82it/s]Task top burner completed!
+Ep 40/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.85it/s]Task light switch completed!
+Ep 40/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.87it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 41/100:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Ep 41/100:  23%|██▎       | 64/280 [00:05<00:18, 11.74it/s]Task top burner completed!
+Ep 41/100:  46%|████▌     | 128/280 [00:10<00:12, 11.84it/s]Task light switch completed!
+Ep 41/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.88it/s]Task hinge cabinet completed!
+Ep 41/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.86it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 42/100:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Ep 42/100:  23%|██▎       | 64/280 [00:05<00:18, 11.77it/s]Task kettle completed!
+Ep 42/100:  46%|████▌     | 128/280 [00:10<00:12, 11.83it/s]Task light switch completed!
+Ep 42/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.88it/s]Task slide cabinet completed!
+Ep 42/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.85it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 43/100:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Ep 43/100:  23%|██▎       | 64/280 [00:05<00:18, 11.75it/s]Task kettle completed!
+Ep 43/100:  46%|████▌     | 128/280 [00:10<00:12, 11.83it/s]Task bottom burner completed!
+Ep 43/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.88it/s]Task hinge cabinet completed!
+Ep 43/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.88it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 44/100:   0%|          | 0/280 [00:00<?, ?it/s]Task kettle completed!
+Ep 44/100:  23%|██▎       | 64/280 [00:05<00:18, 11.74it/s]Task bottom burner completed!
+Ep 44/100:  46%|████▌     | 128/280 [00:10<00:12, 11.84it/s]Task top burner completed!
+Ep 44/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.85it/s]Task light switch completed!
+Ep 44/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.89it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 45/100:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Ep 45/100:  23%|██▎       | 64/280 [00:05<00:18, 11.75it/s]Task bottom burner completed!
+Ep 45/100:  46%|████▌     | 128/280 [00:10<00:12, 11.83it/s]Task top burner completed!
+Task slide cabinet completed!
+Ep 45/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.87it/s]Ep 45/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.88it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 46/100:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Ep 46/100:  23%|██▎       | 64/280 [00:05<00:18, 11.74it/s]Task light switch completed!
+Ep 46/100:  46%|████▌     | 128/280 [00:10<00:12, 11.83it/s]Task slide cabinet completed!
+Ep 46/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.84it/s]Task hinge cabinet completed!
+Ep 46/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.84it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 47/100:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Ep 47/100:  23%|██▎       | 64/280 [00:05<00:18, 11.73it/s]Task bottom burner completed!
+Ep 47/100:  46%|████▌     | 128/280 [00:10<00:12, 11.84it/s]Task top burner completed!
+Ep 47/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.88it/s]Task hinge cabinet completed!
+Ep 47/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.88it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 48/100:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Ep 48/100:  23%|██▎       | 64/280 [00:05<00:18, 11.76it/s]Task bottom burner completed!
+Ep 48/100:  46%|████▌     | 128/280 [00:10<00:12, 11.84it/s]Task light switch completed!
+Ep 48/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.89it/s]Task slide cabinet completed!
+Ep 48/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.88it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 49/100:   0%|          | 0/280 [00:00<?, ?it/s]Task kettle completed!
+Ep 49/100:  23%|██▎       | 64/280 [00:05<00:18, 11.73it/s]Task bottom burner completed!
+Ep 49/100:  46%|████▌     | 128/280 [00:10<00:12, 11.83it/s]Task top burner completed!
+Ep 49/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.87it/s]Task slide cabinet completed!
+Ep 49/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.86it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 50/100:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Ep 50/100:  23%|██▎       | 64/280 [00:05<00:18, 11.73it/s]Task kettle completed!
+Ep 50/100:  46%|████▌     | 128/280 [00:10<00:12, 11.81it/s]Task top burner completed!
+Ep 50/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.83it/s]Task bottom burner completed!
+Ep 50/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.84it/s]Task hinge cabinet completed!
+                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 51/100:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Ep 51/100:  23%|██▎       | 64/280 [00:05<00:18, 11.77it/s]Task kettle completed!
+Ep 51/100:  46%|████▌     | 128/280 [00:10<00:12, 11.83it/s]Task bottom burner completed!
+Ep 51/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.86it/s]Task hinge cabinet completed!
+Ep 51/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.85it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 52/100:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Ep 52/100:  23%|██▎       | 64/280 [00:05<00:18, 11.78it/s]Task kettle completed!
+Ep 52/100:  46%|████▌     | 128/280 [00:10<00:12, 11.83it/s]Task top burner completed!
+Ep 52/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.87it/s]Task light switch completed!
+Ep 52/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.90it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 53/100:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Ep 53/100:  23%|██▎       | 64/280 [00:05<00:18, 11.77it/s]Task kettle completed!
+Ep 53/100:  46%|████▌     | 128/280 [00:10<00:12, 11.83it/s]Task bottom burner completed!
+Ep 53/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.88it/s]Task slide cabinet completed!
+Ep 53/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.86it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 54/100:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Ep 54/100:  23%|██▎       | 64/280 [00:05<00:18, 11.75it/s]Task kettle completed!
+Ep 54/100:  46%|████▌     | 128/280 [00:10<00:12, 11.83it/s]Ep 54/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.88it/s]Task bottom burner completed!
+Task slide cabinet completed!
+Ep 54/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.89it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 55/100:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Ep 55/100:  23%|██▎       | 64/280 [00:05<00:18, 11.69it/s]Task kettle completed!
+Ep 55/100:  46%|████▌     | 128/280 [00:10<00:12, 11.77it/s]Task top burner completed!
+Ep 55/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.81it/s]Task light switch completed!
+Ep 55/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.83it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 56/100:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Ep 56/100:  23%|██▎       | 64/280 [00:05<00:18, 11.75it/s]Task bottom burner completed!
+Ep 56/100:  46%|████▌     | 128/280 [00:10<00:12, 11.83it/s]Task light switch completed!
+Ep 56/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.88it/s]Task slide cabinet completed!
+Ep 56/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.88it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 57/100:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Ep 57/100:  23%|██▎       | 64/280 [00:05<00:18, 11.73it/s]Task kettle completed!
+Ep 57/100:  46%|████▌     | 128/280 [00:10<00:12, 11.81it/s]Task light switch completed!
+Ep 57/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.85it/s]Task hinge cabinet completed!
+Ep 57/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.85it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 58/100:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Ep 58/100:  23%|██▎       | 64/280 [00:05<00:18, 11.76it/s]Task bottom burner completed!
+Ep 58/100:  46%|████▌     | 128/280 [00:10<00:12, 11.84it/s]Task light switch completed!
+Ep 58/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.90it/s]Task slide cabinet completed!
+Ep 58/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.90it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 59/100:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Ep 59/100:  23%|██▎       | 64/280 [00:05<00:18, 11.76it/s]Task light switch completed!
+Ep 59/100:  46%|████▌     | 128/280 [00:10<00:12, 11.88it/s]Task slide cabinet completed!
+Ep 59/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.91it/s]Ep 59/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.92it/s]Task hinge cabinet completed!
+                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 60/100:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Ep 60/100:  23%|██▎       | 64/280 [00:05<00:18, 11.78it/s]Task light switch completed!
+Ep 60/100:  46%|████▌     | 128/280 [00:10<00:12, 11.87it/s]Task slide cabinet completed!
+Ep 60/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.89it/s]Task hinge cabinet completed!
+Ep 60/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.90it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 61/100:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Ep 61/100:  23%|██▎       | 64/280 [00:05<00:18, 11.75it/s]Task kettle completed!
+Ep 61/100:  46%|████▌     | 128/280 [00:10<00:12, 11.83it/s]Task bottom burner completed!
+Ep 61/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.87it/s]Task slide cabinet completed!
+Ep 61/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.87it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 62/100:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Ep 62/100:  23%|██▎       | 64/280 [00:05<00:18, 11.72it/s]Task top burner completed!
+Ep 62/100:  46%|████▌     | 128/280 [00:10<00:12, 11.83it/s]Task light switch completed!
+Ep 62/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.87it/s]Task hinge cabinet completed!
+Ep 62/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.89it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 63/100:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Ep 63/100:  23%|██▎       | 64/280 [00:05<00:18, 11.75it/s]Task bottom burner completed!
+Ep 63/100:  46%|████▌     | 128/280 [00:10<00:12, 11.83it/s]Task light switch completed!
+Ep 63/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.88it/s]Task slide cabinet completed!
+Ep 63/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.89it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 64/100:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Ep 64/100:  23%|██▎       | 64/280 [00:05<00:18, 11.75it/s]Task bottom burner completed!
+Ep 64/100:  46%|████▌     | 128/280 [00:10<00:12, 11.82it/s]Ep 64/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.88it/s]Task slide cabinet completed!
+Ep 64/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.89it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 65/100:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Ep 65/100:  23%|██▎       | 64/280 [00:05<00:18, 11.72it/s]Task kettle completed!
+Ep 65/100:  46%|████▌     | 128/280 [00:10<00:12, 11.77it/s]Task bottom burner completed!
+Ep 65/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.82it/s]Task slide cabinet completed!
+Ep 65/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.83it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 66/100:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Ep 66/100:  23%|██▎       | 64/280 [00:05<00:18, 11.74it/s]Task bottom burner completed!
+Ep 66/100:  46%|████▌     | 128/280 [00:10<00:12, 11.82it/s]Task top burner completed!
+Ep 66/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.86it/s]Task hinge cabinet completed!
+Ep 66/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.87it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 67/100:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Ep 67/100:  23%|██▎       | 64/280 [00:05<00:18, 11.74it/s]Task bottom burner completed!
+Ep 67/100:  46%|████▌     | 128/280 [00:10<00:12, 11.82it/s]Task top burner completed!
+Ep 67/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.83it/s]Task light switch completed!
+Ep 67/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.86it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 68/100:   0%|          | 0/280 [00:00<?, ?it/s]Task kettle completed!
+Ep 68/100:  23%|██▎       | 64/280 [00:05<00:18, 11.75it/s]Ep 68/100:  46%|████▌     | 128/280 [00:10<00:12, 11.86it/s]Task bottom burner completed!
+Task top burner completed!
+Ep 68/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.87it/s]Task light switch completed!
+Ep 68/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.89it/s]Task slide cabinet completed!
+                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 69/100:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Ep 69/100:  23%|██▎       | 64/280 [00:05<00:18, 11.75it/s]Task kettle completed!
+Ep 69/100:  46%|████▌     | 128/280 [00:10<00:12, 11.82it/s]Task light switch completed!
+Ep 69/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.86it/s]Task hinge cabinet completed!
+Ep 69/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.88it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 70/100:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Ep 70/100:  23%|██▎       | 64/280 [00:05<00:18, 11.77it/s]Ep 70/100:  46%|████▌     | 128/280 [00:10<00:12, 11.86it/s]Task bottom burner completed!
+Ep 70/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.88it/s]Ep 70/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.90it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 71/100:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Ep 71/100:  23%|██▎       | 64/280 [00:05<00:18, 11.74it/s]Task kettle completed!
+Ep 71/100:  46%|████▌     | 128/280 [00:10<00:12, 11.80it/s]Task light switch completed!
+Ep 71/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.83it/s]Task hinge cabinet completed!
+Ep 71/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.81it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 72/100:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Ep 72/100:  23%|██▎       | 64/280 [00:05<00:18, 11.74it/s]Task kettle completed!
+Ep 72/100:  46%|████▌     | 128/280 [00:10<00:12, 11.81it/s]Task light switch completed!
+Ep 72/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.86it/s]Task hinge cabinet completed!
+Ep 72/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.86it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 73/100:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Ep 73/100:  23%|██▎       | 64/280 [00:05<00:18, 11.74it/s]Task kettle completed!
+Ep 73/100:  46%|████▌     | 128/280 [00:10<00:12, 11.81it/s]Task bottom burner completed!
+Ep 73/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.86it/s]Task slide cabinet completed!
+Ep 73/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.86it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 74/100:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Ep 74/100:  23%|██▎       | 64/280 [00:05<00:18, 11.75it/s]Task bottom burner completed!
+Ep 74/100:  46%|████▌     | 128/280 [00:10<00:12, 11.84it/s]Task light switch completed!
+Ep 74/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.90it/s]Task slide cabinet completed!
+Ep 74/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.88it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 75/100:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Ep 75/100:  23%|██▎       | 64/280 [00:05<00:18, 11.75it/s]Task bottom burner completed!
+Ep 75/100:  46%|████▌     | 128/280 [00:10<00:12, 11.86it/s]Task top burner completed!
+Ep 75/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.90it/s]Task hinge cabinet completed!
+Ep 75/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.89it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 76/100:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Ep 76/100:  23%|██▎       | 64/280 [00:05<00:18, 11.74it/s]Task bottom burner completed!
+Ep 76/100:  46%|████▌     | 128/280 [00:10<00:12, 11.81it/s]Task slide cabinet completed!
+Ep 76/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.84it/s]Task hinge cabinet completed!
+Ep 76/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.84it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 77/100:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Ep 77/100:  23%|██▎       | 64/280 [00:05<00:18, 11.77it/s]Task kettle completed!
+Ep 77/100:  46%|████▌     | 128/280 [00:10<00:12, 11.84it/s]Task bottom burner completed!
+Ep 77/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.88it/s]Task hinge cabinet completed!
+Ep 77/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.89it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 78/100:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Ep 78/100:  23%|██▎       | 64/280 [00:05<00:18, 11.74it/s]Task bottom burner completed!
+Ep 78/100:  46%|████▌     | 128/280 [00:10<00:12, 11.81it/s]Task top burner completed!
+Ep 78/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.84it/s]Task slide cabinet completed!
+Ep 78/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.83it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 79/100:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Ep 79/100:  23%|██▎       | 64/280 [00:05<00:18, 11.77it/s]Ep 79/100:  46%|████▌     | 128/280 [00:10<00:12, 11.87it/s]Task bottom burner completed!
+Task top burner completed!
+Ep 79/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.88it/s]Task light switch completed!
+Ep 79/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.92it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 80/100:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Ep 80/100:  23%|██▎       | 64/280 [00:05<00:18, 11.78it/s]Task bottom burner completed!
+Ep 80/100:  46%|████▌     | 128/280 [00:10<00:12, 11.84it/s]Task top burner completed!
+Ep 80/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.89it/s]Task slide cabinet completed!
+Ep 80/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.89it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 81/100:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Ep 81/100:  23%|██▎       | 64/280 [00:05<00:18, 11.78it/s]Task top burner completed!
+Ep 81/100:  46%|████▌     | 128/280 [00:10<00:12, 11.86it/s]Task light switch completed!
+Ep 81/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.90it/s]Task hinge cabinet completed!
+Ep 81/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.89it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 82/100:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Ep 82/100:  23%|██▎       | 64/280 [00:05<00:18, 11.76it/s]Task kettle completed!
+Ep 82/100:  46%|████▌     | 128/280 [00:10<00:12, 11.82it/s]Task bottom burner completed!
+Ep 82/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.86it/s]Task hinge cabinet completed!
+Ep 82/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.85it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 83/100:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Ep 83/100:  23%|██▎       | 64/280 [00:05<00:18, 11.72it/s]Task bottom burner completed!
+Ep 83/100:  46%|████▌     | 128/280 [00:10<00:12, 11.78it/s]Task light switch completed!
+Ep 83/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.83it/s]Task slide cabinet completed!
+Ep 83/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.82it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 84/100:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Ep 84/100:  23%|██▎       | 64/280 [00:05<00:18, 11.78it/s]Task bottom burner completed!
+Ep 84/100:  46%|████▌     | 128/280 [00:10<00:12, 11.85it/s]Task light switch completed!
+Ep 84/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.90it/s]Task slide cabinet completed!
+Ep 84/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.90it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 85/100:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Ep 85/100:  23%|██▎       | 64/280 [00:05<00:18, 11.78it/s]Task kettle completed!
+Ep 85/100:  46%|████▌     | 128/280 [00:10<00:12, 11.84it/s]Task light switch completed!
+Ep 85/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.87it/s]Task slide cabinet completed!
+Ep 85/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.85it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 86/100:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Ep 86/100:  23%|██▎       | 64/280 [00:05<00:18, 11.77it/s]Task bottom burner completed!
+Ep 86/100:  46%|████▌     | 128/280 [00:10<00:12, 11.85it/s]Task light switch completed!
+Ep 86/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.91it/s]Task slide cabinet completed!
+Ep 86/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.90it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 87/100:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Ep 87/100:  23%|██▎       | 64/280 [00:05<00:18, 11.75it/s]Ep 87/100:  46%|████▌     | 128/280 [00:10<00:12, 11.83it/s]Task top burner completed!
+Ep 87/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.88it/s]Task light switch completed!
+Ep 87/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.92it/s]Task hinge cabinet completed!
+                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 88/100:   0%|          | 0/280 [00:00<?, ?it/s]Task kettle completed!
+Ep 88/100:  23%|██▎       | 64/280 [00:05<00:18, 11.67it/s]Ep 88/100:  46%|████▌     | 128/280 [00:10<00:12, 11.78it/s]Task bottom burner completed!
+Task light switch completed!
+Ep 88/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.81it/s]Task hinge cabinet completed!
+Ep 88/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.82it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 89/100:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Ep 89/100:  23%|██▎       | 64/280 [00:05<00:18, 11.69it/s]Task bottom burner completed!
+Ep 89/100:  46%|████▌     | 128/280 [00:10<00:12, 11.79it/s]Task light switch completed!
+Task slide cabinet completed!
+Ep 89/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.84it/s]Ep 89/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.87it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 90/100:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Ep 90/100:  23%|██▎       | 64/280 [00:05<00:18, 11.74it/s]Task kettle completed!
+Ep 90/100:  46%|████▌     | 128/280 [00:10<00:12, 11.81it/s]Task top burner completed!
+Ep 90/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.85it/s]Task light switch completed!
+Ep 90/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.89it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 91/100:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Ep 91/100:  23%|██▎       | 64/280 [00:05<00:18, 11.69it/s]Task kettle completed!
+Ep 91/100:  46%|████▌     | 128/280 [00:10<00:12, 11.76it/s]Task light switch completed!
+Ep 91/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.82it/s]Task hinge cabinet completed!
+Ep 91/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.81it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 92/100:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Ep 92/100:  23%|██▎       | 64/280 [00:05<00:18, 11.77it/s]Task kettle completed!
+Ep 92/100:  46%|████▌     | 128/280 [00:10<00:12, 11.82it/s]Task slide cabinet completed!
+Ep 92/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.86it/s]Task hinge cabinet completed!
+Ep 92/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.84it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 93/100:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Ep 93/100:  23%|██▎       | 64/280 [00:05<00:18, 11.75it/s]Task bottom burner completed!
+Ep 93/100:  46%|████▌     | 128/280 [00:10<00:12, 11.83it/s]Task light switch completed!
+Ep 93/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.87it/s]Task slide cabinet completed!
+Ep 93/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.86it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 94/100:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Ep 94/100:  23%|██▎       | 64/280 [00:05<00:18, 11.73it/s]Task kettle completed!
+Ep 94/100:  46%|████▌     | 128/280 [00:10<00:12, 11.82it/s]Task slide cabinet completed!
+Ep 94/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.85it/s]Task hinge cabinet completed!
+Ep 94/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.85it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 95/100:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Ep 95/100:  23%|██▎       | 64/280 [00:05<00:18, 11.75it/s]Task light switch completed!
+Ep 95/100:  46%|████▌     | 128/280 [00:10<00:12, 11.84it/s]Task slide cabinet completed!
+Ep 95/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.87it/s]Ep 95/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.89it/s]Task hinge cabinet completed!
+                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 96/100:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Ep 96/100:  23%|██▎       | 64/280 [00:05<00:18, 11.76it/s]Task kettle completed!
+Ep 96/100:  46%|████▌     | 128/280 [00:10<00:12, 11.84it/s]Task top burner completed!
+Ep 96/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.86it/s]Task light switch completed!
+Ep 96/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.89it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 97/100:   0%|          | 0/280 [00:00<?, ?it/s]Task kettle completed!
+Ep 97/100:  23%|██▎       | 64/280 [00:05<00:18, 11.72it/s]Task top burner completed!
+Ep 97/100:  46%|████▌     | 128/280 [00:10<00:12, 11.82it/s]Task light switch completed!
+Task slide cabinet completed!
+Ep 97/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.84it/s]Ep 97/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.84it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 98/100:   0%|          | 0/280 [00:00<?, ?it/s]Task kettle completed!
+Ep 98/100:  23%|██▎       | 64/280 [00:05<00:18, 11.71it/s]Task bottom burner completed!
+Ep 98/100:  46%|████▌     | 128/280 [00:10<00:12, 11.80it/s]Task light switch completed!
+Ep 98/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.85it/s]Task hinge cabinet completed!
+Ep 98/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.86it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 99/100:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Ep 99/100:  23%|██▎       | 64/280 [00:05<00:18, 11.75it/s]Task kettle completed!
+Ep 99/100:  46%|████▌     | 128/280 [00:10<00:12, 11.82it/s]Task bottom burner completed!
+Ep 99/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.86it/s]Task slide cabinet completed!
+Ep 99/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.87it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 100/100:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Ep 100/100:  23%|██▎       | 64/280 [00:05<00:18, 11.76it/s]Task kettle completed!
+Ep 100/100:  46%|████▌     | 128/280 [00:10<00:12, 11.83it/s]Task slide cabinet completed!
+Ep 100/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.86it/s]Ep 100/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.86it/s]Task hinge cabinet completed!
+                                                             ========================================================================
+Kitchen Eval Report | seed=train0 | 100 episodes
+========================================================================
+
+Per-task success rate (fraction of episodes)
+------------------------------------------------------------------------
+  bottom burner     0.670 ± 0.473
+  top burner        0.460 ± 0.501
+  light switch      0.630 ± 0.485
+  slide cabinet     0.630 ± 0.485
+  hinge cabinet     0.420 ± 0.496
+  microwave         0.670 ± 0.473
+  kettle            0.490 ± 0.502
+
+Cumulative episode success (all 7 tasks completed)
+------------------------------------------------------------------------
+  success rate: 0.000 ± 0.000
+
+Multi-stage p_k (>= k of 7 tasks completed)
+------------------------------------------------------------------------
+  p1=1.000  p2=1.000  p3=0.990  p4=0.950  p5=0.030  p6=0.000  p7=0.000
+
+Timing
+------------------------------------------------------------------------
+  Inference latency (ms): 586.08 ± 8.57
+
+Wrote data/kitchen_eval/diffusion_policy_transformer/seed_train0/eval_metrics.json
+Wrote data/kitchen_eval/diffusion_policy_transformer/seed_train0/eval_report.txt
+
+--- Evaluating seed=train1 ---
+Checkpoint: data/diffusion_policy_transformer/train1/epoch=2700-test_mean_score=0.574.ckpt
+Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 1/100:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Ep 1/100:  23%|██▎       | 64/280 [00:05<00:18, 11.63it/s]Task kettle completed!
+Ep 1/100:  46%|████▌     | 128/280 [00:10<00:12, 11.71it/s]Task light switch completed!
+Ep 1/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.77it/s]Task hinge cabinet completed!
+Ep 1/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.77it/s]                                                           Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 2/100:   0%|          | 0/280 [00:00<?, ?it/s]Task bottom burner completed!
+Ep 2/100:  23%|██▎       | 64/280 [00:05<00:18, 11.75it/s]Task top burner completed!
+Ep 2/100:  46%|████▌     | 128/280 [00:10<00:12, 11.83it/s]Task light switch completed!
+Ep 2/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.86it/s]Task slide cabinet completed!
+Ep 2/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.86it/s]                                                           Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 3/100:   0%|          | 0/280 [00:00<?, ?it/s]Task bottom burner completed!
+Ep 3/100:  23%|██▎       | 64/280 [00:05<00:18, 11.75it/s]Task top burner completed!
+Ep 3/100:  46%|████▌     | 128/280 [00:10<00:12, 11.85it/s]Task slide cabinet completed!
+Ep 3/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.86it/s]Task hinge cabinet completed!
+Ep 3/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.85it/s]                                                           Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 4/100:   0%|          | 0/280 [00:00<?, ?it/s]Task bottom burner completed!
+Ep 4/100:  23%|██▎       | 64/280 [00:05<00:18, 11.75it/s]Task top burner completed!
+Ep 4/100:  46%|████▌     | 128/280 [00:10<00:12, 11.84it/s]Task light switch completed!
+Ep 4/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.88it/s]Task slide cabinet completed!
+Ep 4/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.88it/s]                                                           Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 5/100:   0%|          | 0/280 [00:00<?, ?it/s]Task bottom burner completed!
+Ep 5/100:  23%|██▎       | 64/280 [00:05<00:18, 11.78it/s]Task top burner completed!
+Ep 5/100:  46%|████▌     | 128/280 [00:10<00:12, 11.87it/s]Task slide cabinet completed!
+Ep 5/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.89it/s]Task hinge cabinet completed!
+Ep 5/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.89it/s]                                                           Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 6/100:   0%|          | 0/280 [00:00<?, ?it/s]Task bottom burner completed!
+Ep 6/100:  23%|██▎       | 64/280 [00:05<00:18, 11.77it/s]Task top burner completed!
+Ep 6/100:  46%|████▌     | 128/280 [00:10<00:12, 11.85it/s]Task slide cabinet completed!
+Ep 6/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.88it/s]Task hinge cabinet completed!
+Ep 6/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.88it/s]                                                           Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 7/100:   0%|          | 0/280 [00:00<?, ?it/s]Task bottom burner completed!
+Ep 7/100:  23%|██▎       | 64/280 [00:05<00:18, 11.77it/s]Task top burner completed!
+Ep 7/100:  46%|████▌     | 128/280 [00:10<00:12, 11.84it/s]Task light switch completed!
+Ep 7/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.90it/s]Task slide cabinet completed!
+Ep 7/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.88it/s]                                                           Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 8/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 8/100:  23%|██▎       | 64/280 [00:05<00:18, 11.78it/s]Task kettle completed!
+Ep 8/100:  46%|████▌     | 128/280 [00:10<00:12, 11.83it/s]Task bottom burner completed!
+Ep 8/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.86it/s]Task top burner completed!
+Ep 8/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.88it/s]Task light switch completed!
+                                                           Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 9/100:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Ep 9/100:  23%|██▎       | 64/280 [00:05<00:18, 11.77it/s]Task bottom burner completed!
+Ep 9/100:  46%|████▌     | 128/280 [00:10<00:12, 11.85it/s]Task light switch completed!
+Ep 9/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.89it/s]Task slide cabinet completed!
+Ep 9/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.90it/s]                                                           Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 10/100:   0%|          | 0/280 [00:00<?, ?it/s]Task kettle completed!
+Ep 10/100:  23%|██▎       | 64/280 [00:05<00:18, 11.74it/s]Ep 10/100:  46%|████▌     | 128/280 [00:10<00:12, 11.84it/s]Task bottom burner completed!
+Task light switch completed!
+Ep 10/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.87it/s]Task hinge cabinet completed!
+Ep 10/100:  91%|█████████▏| 256/280 [00:21<00:02, 11.84it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 11/100:   0%|          | 0/280 [00:00<?, ?it/s]Task bottom burner completed!
+Ep 11/100:  23%|██▎       | 64/280 [00:05<00:18, 11.41it/s]Task top burner completed!
+Ep 11/100:  46%|████▌     | 128/280 [00:11<00:13, 11.59it/s]Task light switch completed!
+Task slide cabinet completed!
+Ep 11/100:  69%|██████▊   | 192/280 [00:16<00:07, 11.56it/s]Ep 11/100:  91%|█████████▏| 256/280 [00:22<00:02, 11.67it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 12/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 12/100:  20%|██        | 56/280 [00:05<00:20, 11.01it/s]Task bottom burner completed!
+Task top burner completed!
+Ep 12/100:  43%|████▎     | 120/280 [00:10<00:14, 11.21it/s]Task slide cabinet completed!

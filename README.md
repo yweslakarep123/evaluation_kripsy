@@ -62,11 +62,32 @@ Setiap episode menulis ke `trajectory_logs/`:
 
 | File | Isi |
 |------|-----|
-| `ep_XXXX.npz` | Arrays numerik: prediksi policy, rollout executed, demo GT, error L2 |
-| `ep_XXXX_detail.txt` | Versi human-readable (grep/less friendly) |
+| `ep_XXXX.npz` | Arrays numerik + metadata window/horizon, obs terpecah, label joint/action, alignment indices |
+| `ep_XXXX_detail.txt` | Versi human-readable: legend joint/action, tabel urutan demo & rollout, detail per env step |
 | `SCHEMA.txt` | Dokumentasi key/shape NPZ |
 
 NPZ mencakup: `action_pred`, `action_executed`, `policy_obs`, `qp`/`qv`/`obj_qp`/`obj_qv`, `demo_obs`/`demo_action`, dan error vs demo GT per env step.
+
+### Analisis trajectory logs
+
+Setelah eval selesai, plot dan ringkasan numerik:
+
+```bash
+conda activate robodiff
+cd /home/daffa/Documents/experiment
+
+# Satu episode
+python scripts/analyze_kitchen_trajectory.py \
+  --npz diffusion_policy/data/kitchen_eval/diffusion_policy_transformer/seed_train0/trajectory_logs/ep_0000.npz \
+  --output_dir /tmp/kitchen_analysis/ep_0000
+
+# Semua episode satu seed
+python scripts/analyze_kitchen_trajectory.py \
+  --seed_dir diffusion_policy/data/kitchen_eval/diffusion_policy_transformer/seed_train0 \
+  --output_dir /tmp/kitchen_analysis/seed_train0
+```
+
+Output analisis: `joints_vs_demo.png`, `actions_vs_demo.png`, `errors_vs_demo.png`, `action_pred_heatmap.png`, `analysis_summary.json`.
 
 ## Setup
 

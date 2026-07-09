@@ -17,7 +17,6 @@
 # limitations under the License.
 
 
-import collections
 import collections.abc
 import os
 import time
@@ -91,6 +90,9 @@ class MujocoEnv(gym.Env):
             if isinstance(observation, collections.abc.Mapping):
                 self.observation_space = spaces.Dict({
                 k: spaces.Box(-np.inf, np.inf, shape=v.shape, dtype=np.float32) for k, v in observation.items()})
+                #region agent log
+                import json as _json, time as _time; open('/home/daffa/Documents/experiment/.cursor/debug-374ef1.log','a').write(_json.dumps({"sessionId":"374ef1","runId":"post-fix","hypothesisId":"A","location":"mujoco_env.py:obs_space","message":"dict observation space set","data":{"obs_keys":list(observation.keys())},"timestamp":int(_time.time()*1000)})+'\n')
+                #endregion
             else:
                 self.obs_dim = np.sum([o.size for o in observation]) if type(observation) is tuple else observation.size
                 self.observation_space = spaces.Box(

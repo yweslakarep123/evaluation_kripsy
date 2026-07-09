@@ -75,6 +75,9 @@ class MujocoSimRobot:
     def close(self):
         """Cleans up any resources being used by the simulation."""
         self.renderer.close()
+        self.sim = None
+        self.model = None
+        self.data = None
 
     def save_binary(self, path: str):
         """Saves the loaded model to a binary .mjb file."""
