@@ -1,0 +1,25 @@
+[2026-07-11 09:03:55] Kitchen NFE/variance check started. Log: /home/daffa/Documents/experiment/logs/kitchen_nfe_variance_20260711_090355.log
+[2026-07-11 09:03:55] Episodes: 50  Device: cuda:0  dry_run=1
+[2026-07-11 09:03:55] DP-CNN ckpt: /home/daffa/Documents/experiment/diffusion_policy/data/diffusion_policy_cnn/train0/epoch=1700-test_mean_score=0.580.ckpt
+[2026-07-11 09:03:55] FlowPolicy ckpt: /home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/baseline_42/latest-001.ckpt
+[2026-07-11 09:03:55] DP-Transformer ckpt: /home/daffa/Documents/experiment/diffusion_policy/data/diffusion_policy_transformer/train0/epoch=3000-test_mean_score=0.574.ckpt
+[2026-07-11 09:03:55] === Claim #1: NFE sweep (sseed=0) ===
+[2026-07-11 09:03:55] DP diffusion_policy_cnn nfe=1 sseed=0 eps=50
+[2026-07-11 09:03:55]   DRY-RUN would eval: /home/daffa/Documents/experiment/diffusion_policy/data/diffusion_policy_cnn/train0/epoch=1700-test_mean_score=0.580.ckpt -> /home/daffa/Documents/experiment/diffusion_policy/data/kitchen_eval_nfe/diffusion_policy_cnn/seed_train0_nfe1_sseed0
+[2026-07-11 09:03:55] DP diffusion_policy_transformer nfe=1 sseed=0 eps=50
+[2026-07-11 09:03:55]   DRY-RUN would eval: /home/daffa/Documents/experiment/diffusion_policy/data/diffusion_policy_transformer/train0/epoch=3000-test_mean_score=0.574.ckpt -> /home/daffa/Documents/experiment/diffusion_policy/data/kitchen_eval_nfe/diffusion_policy_transformer/seed_train0_nfe1_sseed0
+[2026-07-11 09:03:55] DP diffusion_policy_cnn nfe=2 sseed=0 eps=50
+[2026-07-11 09:03:55]   DRY-RUN would eval: /home/daffa/Documents/experiment/diffusion_policy/data/diffusion_policy_cnn/train0/epoch=1700-test_mean_score=0.580.ckpt -> /home/daffa/Documents/experiment/diffusion_policy/data/kitchen_eval_nfe/diffusion_policy_cnn/seed_train0_nfe2_sseed0
+[2026-07-11 09:03:55] DP diffusion_policy_transformer nfe=2 sseed=0 eps=50
+[2026-07-11 09:03:55]   DRY-RUN would eval: /home/daffa/Documents/experiment/diffusion_policy/data/diffusion_policy_transformer/train0/epoch=3000-test_mean_score=0.574.ckpt -> /home/daffa/Documents/experiment/diffusion_policy/data/kitchen_eval_nfe/diffusion_policy_transformer/seed_train0_nfe2_sseed0
+[2026-07-11 09:03:55] DP diffusion_policy_cnn nfe=4 sseed=0 eps=50
+[2026-07-11 09:03:55]   DRY-RUN would eval: /home/daffa/Documents/experiment/diffusion_policy/data/diffusion_policy_cnn/train0/epoch=1700-test_mean_score=0.580.ckpt -> /home/daffa/Documents/experiment/diffusion_policy/data/kitchen_eval_nfe/diffusion_policy_cnn/seed_train0_nfe4_sseed0
+[2026-07-11 09:03:55] DP diffusion_policy_transformer nfe=4 sseed=0 eps=50
+[2026-07-11 09:03:55]   DRY-RUN would eval: /home/daffa/Documents/experiment/diffusion_policy/data/diffusion_policy_transformer/train0/epoch=3000-test_mean_score=0.574.ckpt -> /home/daffa/Documents/experiment/diffusion_policy/data/kitchen_eval_nfe/diffusion_policy_transformer/seed_train0_nfe4_sseed0
+[2026-07-11 09:03:55] DP diffusion_policy_cnn nfe=8 sseed=0 eps=50
+[2026-07-11 09:03:55]   DRY-RUN would eval: /home/daffa/Documents/experiment/diffusion_policy/data/diffusion_policy_cnn/train0/epoch=1700-test_mean_score=0.580.ckpt -> /home/daffa/Documents/experiment/diffusion_policy/data/kitchen_eval_nfe/diffusion_policy_cnn/seed_train0_nfe8_sseed0
+[2026-07-11 09:03:55] DP diffusion_policy_transformer nfe=8 sseed=0 eps=50
+[2026-07-11 09:03:55]   DRY-RUN would eval: /home/daffa/Documents/experiment/diffusion_policy/data/diffusion_policy_transformer/train0/epoch=3000-test_mean_score=0.574.ckpt -> /home/daffa/Documents/experiment/diffusion_policy/data/kitchen_eval_nfe/diffusion_policy_transformer/seed_train0_nfe8_sseed0
+[2026-07-11 09:03:55] DP diffusion_policy_cnn nfe=16 sseed=0 eps=50
+[2026-07-11 09:03:55]   DRY-RUN would eval: /home/daffa/Documents/experiment/diffusion_policy/data/diffusion_policy_cnn/train0/epoch=1700-test_mean_score=0.580.ckpt -> /home/daffa/Documents/experiment/diffusion_policy/data/kitchen_eval_nfe/diffusion_policy_cnn/seed_train0_nfe16_sseed0
+[2026-07-11 09:03:55] DP diffusion_policy_transformer nfe=16 sseed=0 eps=50

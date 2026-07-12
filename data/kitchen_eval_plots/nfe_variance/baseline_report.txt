@@ -1,0 +1,73 @@
+==============================================================================
+BASELINE REPORT — Why existing Kitchen eval cannot verify the two claims
+==============================================================================
+
+Sources: summary.json from the 100-ep × 3-checkpoint Kitchen eval.
+
+------------------------------------------------------------------------------
+1) Claim #1 (success vs NFE) — NOT TESTED
+------------------------------------------------------------------------------
+Existing eval uses a single NFE point per model:
+  FlowPolicy:  num_inference_step = 1  (CCFM, sigma_var=0)
+  DP (CNN/TF): num_inference_steps = 100 (DDPM ancestral)
+Comparing FP@1 vs DP@100 mixes quality with compute budget.
+A fair quality-at-equal-NFE claim needs a sweep (planned separately).
+
+------------------------------------------------------------------------------
+2) Claim #2 (ODE vs SDE sampling variance) — WRONG PROXY
+------------------------------------------------------------------------------
+summary.json std is across TRAINING checkpoints (3 seeds), not across
+sampling RNG re-runs of the same checkpoint. That cannot support the
+ODE-determinism reproducibility claim.
+
+Training-seed std of per-task success (n=3 checkpoints):
+
+task                  FlowPolicy          DP-CNN  DP-Transformer
+----------------------------------------------------------------
+bottom burner        83.0± 11.0%     69.3±  7.5%     65.7±  5.0%
+top burner           29.7±  6.4%     53.3±  8.1%     42.0±  5.6%
+light switch         19.7±  5.8%     63.3±  1.2%     63.7± 11.0%
+slide cabinet        61.0± 13.9%     55.3±  5.5%     58.0±  5.3%
+hinge cabinet         4.7±  1.5%     51.3±  6.7%     48.0±  7.5%
+microwave            64.3±  4.5%     71.0±  4.0%     68.0±  3.6%
+kettle               67.3±  5.1%     43.7±  6.0%     50.7±  8.3%
+
+Mean per-task training-seed std (percentage points):
+  FlowPolicy        6.89 pp
+  DP-CNN            5.57 pp
+  DP-Transformer    6.63 pp
+
+Naive reading: FlowPolicy does NOT have clearly tighter training-seed
+std than DP-CNN. But this is irrelevant to claim #2 anyway.
+
+------------------------------------------------------------------------------
+3) Overall quality at default NFE (context, not claim #1/#2)
+------------------------------------------------------------------------------
+Multi-stage p_k (mean ± training-seed std):
+
+metric          FlowPolicy          DP-CNN  DP-Transformer
+----------------------------------------------------------
+p1             97.3±  1.5%    100.0±  0.0%    100.0±  0.0%
+p2             95.3±  1.5%    100.0±  0.0%    100.0±  0.0%
+p3             82.3±  7.2%    100.0±  0.0%     99.7±  0.6%
+p4             54.0± 11.5%     99.3±  0.6%     96.0±  1.0%
+p5              0.7±  0.6%      8.0±  1.7%      0.3±  0.6%
+
+Inference latency (ms):
+  FlowPolicy        14.3 ± 0.1
+  DP-CNN            634.8 ± 0.5
+  DP-Transformer    564.9 ± 2.5
+
+Takeaway: DP wins multi-stage (p3/p4); FP wins latency and some early
+tasks (kettle/bottom burner). 'FP better overall' is not supported.
+
+------------------------------------------------------------------------------
+4) Sampling mechanics (why claim #2 is plausible a priori)
+------------------------------------------------------------------------------
+FlowPolicy: sigma_var=0 → sigma_t=0 → no per-step noise; only initial
+  torch.randn. ODE-like given initial noise.
+DP DDPM: scheduler.step injects noise each step (ancestral/SDE).
+Existing eval does not fix sampling_seed, so reproducibility unmeasured.
+
+Next: lean NFE + sampling-seed sweep under data/kitchen_eval_nfe/
+==============================================================================

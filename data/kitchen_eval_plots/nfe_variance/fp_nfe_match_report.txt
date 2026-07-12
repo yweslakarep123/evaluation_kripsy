@@ -1,0 +1,24 @@
+==============================================================================
+FlowPolicy NFE match report — target p3>=0.98 and p4>=0.95 (DP@100-like)
+==============================================================================
+
+DP@100 reference:
+  diffusion_policy_cnn: p3=1.0 p4=0.98 mean_tasks=3.980 lat_ms=637.6
+  diffusion_policy_transformer: p3=0.98 p4=0.96 mean_tasks=3.920 lat_ms=585.7
+
+FlowPolicy curve (sseed=0):
+   NFE      p3      p4  mean_tasks    lat_ms
+     1   0.860   0.580       3.380      13.8
+     2   0.960   0.860       3.780      29.1
+     4   0.960   0.700       3.660      60.1
+     8   1.000   0.840       3.840     121.7
+    16   0.980   0.760       3.740     250.8
+    32   1.000   0.880       3.880     504.8
+    64   1.000   0.800       3.800    1009.8
+   100   0.900   0.780       3.600    1583.3
+
+VERDICT: TARGET NOT REACHED in swept NFE grid.
+  Best FP point: NFE=32 p3=1.0 p4=0.88 mean_tasks=3.880 lat=504.8 ms
+  Likely ceiling: adding inference steps does not push p4 to DP levels (policy chaining / stop behavior), not just insufficient NFE.
+
+==============================================================================

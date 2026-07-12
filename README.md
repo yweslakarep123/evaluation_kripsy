@@ -89,6 +89,8 @@ python scripts/analyze_kitchen_trajectory.py \
 
 Output analisis: `joints_vs_demo.png`, `actions_vs_demo.png`, `errors_vs_demo.png`, `action_pred_heatmap.png`, `analysis_summary.json`.
 
+Analisis completion-order (mengapa task success berbeda) ada di `scripts/analyze_kitchen_completion_order.py` → `data/kitchen_eval_plots/why/`.
+
 ## Setup
 
 ### Conda environments

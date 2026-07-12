@@ -1,0 +1,46 @@
+[2026-07-11 09:03:49] Kitchen NFE/variance check started. Log: /home/daffa/Documents/experiment/logs/kitchen_nfe_variance_20260711_090349.log
+[2026-07-11 09:03:49] Episodes: 50  Device: cuda:0  dry_run=1
+[2026-07-11 09:03:49] DP-CNN ckpt: /home/daffa/Documents/experiment/diffusion_policy/data/diffusion_policy_cnn/train0/epoch=1700-test_mean_score=0.580.ckpt
+[2026-07-11 09:03:49] FlowPolicy ckpt: /home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/baseline_42/latest-001.ckpt
+[2026-07-11 09:03:49] === Claim #1: NFE sweep (sseed=0) ===
+[2026-07-11 09:03:49] DP diffusion_policy_cnn nfe=1 sseed=0 eps=50
+[2026-07-11 09:03:49]   DRY-RUN would eval: /home/daffa/Documents/experiment/diffusion_policy/data/diffusion_policy_cnn/train0/epoch=1700-test_mean_score=0.580.ckpt -> /home/daffa/Documents/experiment/diffusion_policy/data/kitchen_eval_nfe/diffusion_policy_cnn/seed_train0_nfe1_sseed0
+[2026-07-11 09:03:49] DP diffusion_policy_cnn nfe=2 sseed=0 eps=50
+[2026-07-11 09:03:49]   DRY-RUN would eval: /home/daffa/Documents/experiment/diffusion_policy/data/diffusion_policy_cnn/train0/epoch=1700-test_mean_score=0.580.ckpt -> /home/daffa/Documents/experiment/diffusion_policy/data/kitchen_eval_nfe/diffusion_policy_cnn/seed_train0_nfe2_sseed0
+[2026-07-11 09:03:49] DP diffusion_policy_cnn nfe=4 sseed=0 eps=50
+[2026-07-11 09:03:49]   DRY-RUN would eval: /home/daffa/Documents/experiment/diffusion_policy/data/diffusion_policy_cnn/train0/epoch=1700-test_mean_score=0.580.ckpt -> /home/daffa/Documents/experiment/diffusion_policy/data/kitchen_eval_nfe/diffusion_policy_cnn/seed_train0_nfe4_sseed0
+[2026-07-11 09:03:49] DP diffusion_policy_cnn nfe=8 sseed=0 eps=50
+[2026-07-11 09:03:49]   DRY-RUN would eval: /home/daffa/Documents/experiment/diffusion_policy/data/diffusion_policy_cnn/train0/epoch=1700-test_mean_score=0.580.ckpt -> /home/daffa/Documents/experiment/diffusion_policy/data/kitchen_eval_nfe/diffusion_policy_cnn/seed_train0_nfe8_sseed0
+[2026-07-11 09:03:49] DP diffusion_policy_cnn nfe=16 sseed=0 eps=50
+[2026-07-11 09:03:49]   DRY-RUN would eval: /home/daffa/Documents/experiment/diffusion_policy/data/diffusion_policy_cnn/train0/epoch=1700-test_mean_score=0.580.ckpt -> /home/daffa/Documents/experiment/diffusion_policy/data/kitchen_eval_nfe/diffusion_policy_cnn/seed_train0_nfe16_sseed0
+[2026-07-11 09:03:49] DP diffusion_policy_cnn nfe=32 sseed=0 eps=50
+[2026-07-11 09:03:49]   DRY-RUN would eval: /home/daffa/Documents/experiment/diffusion_policy/data/diffusion_policy_cnn/train0/epoch=1700-test_mean_score=0.580.ckpt -> /home/daffa/Documents/experiment/diffusion_policy/data/kitchen_eval_nfe/diffusion_policy_cnn/seed_train0_nfe32_sseed0
+[2026-07-11 09:03:49] DP diffusion_policy_cnn nfe=50 sseed=0 eps=50
+[2026-07-11 09:03:49]   DRY-RUN would eval: /home/daffa/Documents/experiment/diffusion_policy/data/diffusion_policy_cnn/train0/epoch=1700-test_mean_score=0.580.ckpt -> /home/daffa/Documents/experiment/diffusion_policy/data/kitchen_eval_nfe/diffusion_policy_cnn/seed_train0_nfe50_sseed0
+[2026-07-11 09:03:49] DP diffusion_policy_cnn nfe=100 sseed=0 eps=50
+[2026-07-11 09:03:49]   DRY-RUN would eval: /home/daffa/Documents/experiment/diffusion_policy/data/diffusion_policy_cnn/train0/epoch=1700-test_mean_score=0.580.ckpt -> /home/daffa/Documents/experiment/diffusion_policy/data/kitchen_eval_nfe/diffusion_policy_cnn/seed_train0_nfe100_sseed0
+[2026-07-11 09:03:49] FlowPolicy nfe=1 sseed=0 eps=50
+[2026-07-11 09:03:49]   DRY-RUN would eval: /home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/baseline_42/latest-001.ckpt -> /home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe/flowpolicy/seed_baseline_42_nfe1_sseed0
+[2026-07-11 09:03:49] FlowPolicy nfe=2 sseed=0 eps=50
+[2026-07-11 09:03:49]   DRY-RUN would eval: /home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/baseline_42/latest-001.ckpt -> /home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe/flowpolicy/seed_baseline_42_nfe2_sseed0
+[2026-07-11 09:03:49] FlowPolicy nfe=4 sseed=0 eps=50
+[2026-07-11 09:03:49]   DRY-RUN would eval: /home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/baseline_42/latest-001.ckpt -> /home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe/flowpolicy/seed_baseline_42_nfe4_sseed0
+[2026-07-11 09:03:49] === Claim #2: sampling-seed variance at default NFE ===
+[2026-07-11 09:03:49] Skipping sseed=0 (already from NFE sweep)
+[2026-07-11 09:03:49] DP diffusion_policy_cnn nfe=100 sseed=1 eps=50
+[2026-07-11 09:03:49]   DRY-RUN would eval: /home/daffa/Documents/experiment/diffusion_policy/data/diffusion_policy_cnn/train0/epoch=1700-test_mean_score=0.580.ckpt -> /home/daffa/Documents/experiment/diffusion_policy/data/kitchen_eval_nfe/diffusion_policy_cnn/seed_train0_nfe100_sseed1
+[2026-07-11 09:03:49] FlowPolicy nfe=1 sseed=1 eps=50
+[2026-07-11 09:03:49]   DRY-RUN would eval: /home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/baseline_42/latest-001.ckpt -> /home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe/flowpolicy/seed_baseline_42_nfe1_sseed1
+[2026-07-11 09:03:49] DP diffusion_policy_cnn nfe=100 sseed=2 eps=50
+[2026-07-11 09:03:49]   DRY-RUN would eval: /home/daffa/Documents/experiment/diffusion_policy/data/diffusion_policy_cnn/train0/epoch=1700-test_mean_score=0.580.ckpt -> /home/daffa/Documents/experiment/diffusion_policy/data/kitchen_eval_nfe/diffusion_policy_cnn/seed_train0_nfe100_sseed2
+[2026-07-11 09:03:49] FlowPolicy nfe=1 sseed=2 eps=50
+[2026-07-11 09:03:49]   DRY-RUN would eval: /home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/baseline_42/latest-001.ckpt -> /home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe/flowpolicy/seed_baseline_42_nfe1_sseed2
+[2026-07-11 09:03:49] DP diffusion_policy_cnn nfe=100 sseed=3 eps=50
+[2026-07-11 09:03:49]   DRY-RUN would eval: /home/daffa/Documents/experiment/diffusion_policy/data/diffusion_policy_cnn/train0/epoch=1700-test_mean_score=0.580.ckpt -> /home/daffa/Documents/experiment/diffusion_policy/data/kitchen_eval_nfe/diffusion_policy_cnn/seed_train0_nfe100_sseed3
+[2026-07-11 09:03:49] FlowPolicy nfe=1 sseed=3 eps=50
+[2026-07-11 09:03:49]   DRY-RUN would eval: /home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/baseline_42/latest-001.ckpt -> /home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe/flowpolicy/seed_baseline_42_nfe1_sseed3
+[2026-07-11 09:03:49] DP diffusion_policy_cnn nfe=100 sseed=4 eps=50
+[2026-07-11 09:03:49]   DRY-RUN would eval: /home/daffa/Documents/experiment/diffusion_policy/data/diffusion_policy_cnn/train0/epoch=1700-test_mean_score=0.580.ckpt -> /home/daffa/Documents/experiment/diffusion_policy/data/kitchen_eval_nfe/diffusion_policy_cnn/seed_train0_nfe100_sseed4
+[2026-07-11 09:03:49] FlowPolicy nfe=1 sseed=4 eps=50
+[2026-07-11 09:03:49]   DRY-RUN would eval: /home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/baseline_42/latest-001.ckpt -> /home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe/flowpolicy/seed_baseline_42_nfe1_sseed4
+[2026-07-11 09:03:49] DRY-RUN complete (no eval / no analyze).

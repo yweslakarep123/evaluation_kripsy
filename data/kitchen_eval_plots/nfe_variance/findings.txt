@@ -1,0 +1,40 @@
+==============================================================================
+FINDINGS — Kitchen NFE / sampling-variance sweep
+==============================================================================
+Runs: 31  |  Plots: 01–07 in this directory
+
+CLAIM #1 — Quality at equal/low NFE: SUPPORTED
+------------------------------------------------------------------------------
+At NFE ∈ {1,2,4}, FlowPolicy completes ~3.4–3.8 tasks/episode while
+both DP models collapse to ~0.1–0.3 tasks (p3=0).
+
+DP only recovers when NFE ≥ ~50:
+  DP-CNN: @1=0.28  @32=0.04  @50=3.68  @100=3.98
+  DP-Transformer: @1=0.22  @32=0.52  @50=3.90  @100=3.92
+  FlowPolicy: @1=3.38  @2=3.78  @4=3.66
+
+Latency note: FP@1 ≈ 14ms vs DP@100 ≈ 586–638ms (~40–45×).
+At equal low NFE, DP is fast but useless; FP is both fast and competent.
+
+CLAIM #2 — Lower sampling variance from ODE: MIXED / NOT CLEARLY SUPPORTED
+------------------------------------------------------------------------------
+  DP-CNN           NFE=100  mean_tasks=3.992±0.030  (n=5)
+  DP-Transformer   NFE=100  mean_tasks=3.968±0.039  (n=5)
+  FlowPolicy       NFE=1    mean_tasks=3.420±0.051  (n=5)
+
+FP mean_tasks std (0.051) is slightly HIGHER than DP-CNN (0.030) and
+DP-Transformer (0.039). Per-task SR std is similar (~0.048–0.058).
+So ODE vs ancestral-SDE does not produce a clear reproducibility win
+for FlowPolicy in this Kitchen setup (5 seeds × 50 episodes).
+Likely reason: both policies still sample random initial noise each
+predict_action; env init is fixed, but policy stochasticity from a0
+dominates outcome variance more than per-step DDPM noise here.
+
+BOTTOM LINE
+------------------------------------------------------------------------------
+1. Yes — FlowPolicy is far better at low NFE (the big quality claim).
+2. No clear win — deterministic ODE does not yield tighter eval std
+   than DDPM across sampling seeds in this experiment.
+3. At full DP budget (NFE=100), DP still edges FP on mean tasks
+   (~3.97–3.99 vs FP@1 ~3.42), matching the original Kitchen eval.
+==============================================================================

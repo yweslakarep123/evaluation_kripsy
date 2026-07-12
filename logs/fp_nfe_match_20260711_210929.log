@@ -1,0 +1,14 @@
+[2026-07-11 21:09:29] FP NFE match sweep start. log=/home/daffa/Documents/experiment/logs/fp_nfe_match_20260711_210929.log
+[2026-07-11 21:09:29] ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/baseline_42/latest-001.ckpt
+[2026-07-11 21:09:29] episodes=50 device=cuda:0 dry_run=1
+[2026-07-11 21:09:29] RUN FlowPolicy nfe=8 episodes=50
+[2026-07-11 21:09:29]   DRY-RUN would write /home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe/flowpolicy/seed_baseline_42_nfe8_sseed0
+[2026-07-11 21:09:29] RUN FlowPolicy nfe=16 episodes=50
+[2026-07-11 21:09:29]   DRY-RUN would write /home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe/flowpolicy/seed_baseline_42_nfe16_sseed0
+[2026-07-11 21:09:29] RUN FlowPolicy nfe=32 episodes=50
+[2026-07-11 21:09:29]   DRY-RUN would write /home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe/flowpolicy/seed_baseline_42_nfe32_sseed0
+[2026-07-11 21:09:29] RUN FlowPolicy nfe=64 episodes=50
+[2026-07-11 21:09:29]   DRY-RUN would write /home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe/flowpolicy/seed_baseline_42_nfe64_sseed0
+[2026-07-11 21:09:29] RUN FlowPolicy nfe=100 episodes=50
+[2026-07-11 21:09:29]   DRY-RUN would write /home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe/flowpolicy/seed_baseline_42_nfe100_sseed0
+[2026-07-11 21:09:29] DRY-RUN complete (no eval / no analyze).

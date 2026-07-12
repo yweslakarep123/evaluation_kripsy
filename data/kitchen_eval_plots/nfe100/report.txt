@@ -1,0 +1,32 @@
+==============================================================================
+Kitchen NFE100 full eval report
+DP-CNN / DP-Transformer / FlowPolicy × NFE {1,8,32,100} × 3 seeds × 100 ep
+==============================================================================
+
+Discovered runs: 0
+Aggregated (model,NFE) points: 0
+
+model                             NFE n_seeds     mean_tasks             p3             p4       lat_ms
+--------------------------------------------------------------------------------------------------------------
+
+Equal-NFE snapshots (mean_tasks / p3 / p4):
+  NFE=1:
+    FlowPolicy: (missing)
+    DP-CNN: (missing)
+    DP-Transformer: (missing)
+  NFE=8:
+    FlowPolicy: (missing)
+    DP-CNN: (missing)
+    DP-Transformer: (missing)
+  NFE=32:
+    FlowPolicy: (missing)
+    DP-CNN: (missing)
+    DP-Transformer: (missing)
+  NFE=100:
+    FlowPolicy: (missing)
+    DP-CNN: (missing)
+    DP-Transformer: (missing)
+
+Completeness: 0/36 runs (INCOMPLETE — resume orchestrator)
+
+==============================================================================

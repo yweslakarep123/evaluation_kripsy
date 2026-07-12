@@ -1,0 +1,120 @@
+[2026-07-12 07:44:30] Kitchen NFE100 full eval start. log=/home/daffa/Documents/experiment/logs/kitchen_nfe100_20260712_074430.log
+[2026-07-12 07:44:30] episodes=100 device=cuda:0 sampling_seed=0 dry_run=1 model=all
+[2026-07-12 07:44:30] DP-CNN train0: /home/daffa/Documents/experiment/diffusion_policy/data/diffusion_policy_cnn/train0/epoch=1700-test_mean_score=0.580.ckpt
+[2026-07-12 07:44:30] DP-CNN train1: /home/daffa/Documents/experiment/diffusion_policy/data/diffusion_policy_cnn/train1/epoch=3400-test_mean_score=0.589.ckpt
+[2026-07-12 07:44:31] DP-CNN train2: /home/daffa/Documents/experiment/diffusion_policy/data/diffusion_policy_cnn/train2/epoch=4600-test_mean_score=0.580.ckpt
+[2026-07-12 07:44:31] DP-Transformer train0: /home/daffa/Documents/experiment/diffusion_policy/data/diffusion_policy_transformer/train0/epoch=3000-test_mean_score=0.574.ckpt
+[2026-07-12 07:44:31] DP-Transformer train1: /home/daffa/Documents/experiment/diffusion_policy/data/diffusion_policy_transformer/train1/epoch=2700-test_mean_score=0.574.ckpt
+[2026-07-12 07:44:31] DP-Transformer train2: /home/daffa/Documents/experiment/diffusion_policy/data/diffusion_policy_transformer/train2/epoch=1750-test_mean_score=0.574.ckpt
+[2026-07-12 07:44:31] FlowPolicy baseline_42: /home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/baseline_42/latest-001.ckpt
+[2026-07-12 07:44:31] FlowPolicy baseline_43: /home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/baseline_43/latest-001.ckpt
+[2026-07-12 07:44:31] FlowPolicy baseline_44: /home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/baseline_44/latest-001(1).ckpt
+[2026-07-12 07:44:31] RUN diffusion_policy_cnn seed=train0 nfe=1 eps=100
+[2026-07-12 07:44:31]   DRY-RUN ckpt=/home/daffa/Documents/experiment/diffusion_policy/data/diffusion_policy_cnn/train0/epoch=1700-test_mean_score=0.580.ckpt
+[2026-07-12 07:44:31]   DRY-RUN out=/home/daffa/Documents/experiment/diffusion_policy/data/kitchen_eval_nfe100/diffusion_policy_cnn/seed_train0_nfe1_sseed0
+[2026-07-12 07:44:31] RUN diffusion_policy_cnn seed=train0 nfe=8 eps=100
+[2026-07-12 07:44:31]   DRY-RUN ckpt=/home/daffa/Documents/experiment/diffusion_policy/data/diffusion_policy_cnn/train0/epoch=1700-test_mean_score=0.580.ckpt
+[2026-07-12 07:44:31]   DRY-RUN out=/home/daffa/Documents/experiment/diffusion_policy/data/kitchen_eval_nfe100/diffusion_policy_cnn/seed_train0_nfe8_sseed0
+[2026-07-12 07:44:31] RUN diffusion_policy_cnn seed=train0 nfe=32 eps=100
+[2026-07-12 07:44:31]   DRY-RUN ckpt=/home/daffa/Documents/experiment/diffusion_policy/data/diffusion_policy_cnn/train0/epoch=1700-test_mean_score=0.580.ckpt
+[2026-07-12 07:44:31]   DRY-RUN out=/home/daffa/Documents/experiment/diffusion_policy/data/kitchen_eval_nfe100/diffusion_policy_cnn/seed_train0_nfe32_sseed0
+[2026-07-12 07:44:31] RUN diffusion_policy_cnn seed=train0 nfe=100 eps=100
+[2026-07-12 07:44:31]   DRY-RUN ckpt=/home/daffa/Documents/experiment/diffusion_policy/data/diffusion_policy_cnn/train0/epoch=1700-test_mean_score=0.580.ckpt
+[2026-07-12 07:44:31]   DRY-RUN out=/home/daffa/Documents/experiment/diffusion_policy/data/kitchen_eval_nfe100/diffusion_policy_cnn/seed_train0_nfe100_sseed0
+[2026-07-12 07:44:31] RUN diffusion_policy_cnn seed=train1 nfe=1 eps=100
+[2026-07-12 07:44:31]   DRY-RUN ckpt=/home/daffa/Documents/experiment/diffusion_policy/data/diffusion_policy_cnn/train1/epoch=3400-test_mean_score=0.589.ckpt
+[2026-07-12 07:44:31]   DRY-RUN out=/home/daffa/Documents/experiment/diffusion_policy/data/kitchen_eval_nfe100/diffusion_policy_cnn/seed_train1_nfe1_sseed0
+[2026-07-12 07:44:31] RUN diffusion_policy_cnn seed=train1 nfe=8 eps=100
+[2026-07-12 07:44:31]   DRY-RUN ckpt=/home/daffa/Documents/experiment/diffusion_policy/data/diffusion_policy_cnn/train1/epoch=3400-test_mean_score=0.589.ckpt
+[2026-07-12 07:44:31]   DRY-RUN out=/home/daffa/Documents/experiment/diffusion_policy/data/kitchen_eval_nfe100/diffusion_policy_cnn/seed_train1_nfe8_sseed0
+[2026-07-12 07:44:31] RUN diffusion_policy_cnn seed=train1 nfe=32 eps=100
+[2026-07-12 07:44:31]   DRY-RUN ckpt=/home/daffa/Documents/experiment/diffusion_policy/data/diffusion_policy_cnn/train1/epoch=3400-test_mean_score=0.589.ckpt
+[2026-07-12 07:44:31]   DRY-RUN out=/home/daffa/Documents/experiment/diffusion_policy/data/kitchen_eval_nfe100/diffusion_policy_cnn/seed_train1_nfe32_sseed0
+[2026-07-12 07:44:31] RUN diffusion_policy_cnn seed=train1 nfe=100 eps=100
+[2026-07-12 07:44:31]   DRY-RUN ckpt=/home/daffa/Documents/experiment/diffusion_policy/data/diffusion_policy_cnn/train1/epoch=3400-test_mean_score=0.589.ckpt
+[2026-07-12 07:44:31]   DRY-RUN out=/home/daffa/Documents/experiment/diffusion_policy/data/kitchen_eval_nfe100/diffusion_policy_cnn/seed_train1_nfe100_sseed0
+[2026-07-12 07:44:31] RUN diffusion_policy_cnn seed=train2 nfe=1 eps=100
+[2026-07-12 07:44:31]   DRY-RUN ckpt=/home/daffa/Documents/experiment/diffusion_policy/data/diffusion_policy_cnn/train2/epoch=4600-test_mean_score=0.580.ckpt
+[2026-07-12 07:44:31]   DRY-RUN out=/home/daffa/Documents/experiment/diffusion_policy/data/kitchen_eval_nfe100/diffusion_policy_cnn/seed_train2_nfe1_sseed0
+[2026-07-12 07:44:31] RUN diffusion_policy_cnn seed=train2 nfe=8 eps=100
+[2026-07-12 07:44:31]   DRY-RUN ckpt=/home/daffa/Documents/experiment/diffusion_policy/data/diffusion_policy_cnn/train2/epoch=4600-test_mean_score=0.580.ckpt
+[2026-07-12 07:44:31]   DRY-RUN out=/home/daffa/Documents/experiment/diffusion_policy/data/kitchen_eval_nfe100/diffusion_policy_cnn/seed_train2_nfe8_sseed0
+[2026-07-12 07:44:31] RUN diffusion_policy_cnn seed=train2 nfe=32 eps=100
+[2026-07-12 07:44:31]   DRY-RUN ckpt=/home/daffa/Documents/experiment/diffusion_policy/data/diffusion_policy_cnn/train2/epoch=4600-test_mean_score=0.580.ckpt
+[2026-07-12 07:44:31]   DRY-RUN out=/home/daffa/Documents/experiment/diffusion_policy/data/kitchen_eval_nfe100/diffusion_policy_cnn/seed_train2_nfe32_sseed0
+[2026-07-12 07:44:31] RUN diffusion_policy_cnn seed=train2 nfe=100 eps=100
+[2026-07-12 07:44:31]   DRY-RUN ckpt=/home/daffa/Documents/experiment/diffusion_policy/data/diffusion_policy_cnn/train2/epoch=4600-test_mean_score=0.580.ckpt
+[2026-07-12 07:44:31]   DRY-RUN out=/home/daffa/Documents/experiment/diffusion_policy/data/kitchen_eval_nfe100/diffusion_policy_cnn/seed_train2_nfe100_sseed0
+[2026-07-12 07:44:31] RUN diffusion_policy_transformer seed=train0 nfe=1 eps=100
+[2026-07-12 07:44:31]   DRY-RUN ckpt=/home/daffa/Documents/experiment/diffusion_policy/data/diffusion_policy_transformer/train0/epoch=3000-test_mean_score=0.574.ckpt
+[2026-07-12 07:44:31]   DRY-RUN out=/home/daffa/Documents/experiment/diffusion_policy/data/kitchen_eval_nfe100/diffusion_policy_transformer/seed_train0_nfe1_sseed0
+[2026-07-12 07:44:31] RUN diffusion_policy_transformer seed=train0 nfe=8 eps=100
+[2026-07-12 07:44:31]   DRY-RUN ckpt=/home/daffa/Documents/experiment/diffusion_policy/data/diffusion_policy_transformer/train0/epoch=3000-test_mean_score=0.574.ckpt
+[2026-07-12 07:44:31]   DRY-RUN out=/home/daffa/Documents/experiment/diffusion_policy/data/kitchen_eval_nfe100/diffusion_policy_transformer/seed_train0_nfe8_sseed0
+[2026-07-12 07:44:31] RUN diffusion_policy_transformer seed=train0 nfe=32 eps=100
+[2026-07-12 07:44:31]   DRY-RUN ckpt=/home/daffa/Documents/experiment/diffusion_policy/data/diffusion_policy_transformer/train0/epoch=3000-test_mean_score=0.574.ckpt
+[2026-07-12 07:44:31]   DRY-RUN out=/home/daffa/Documents/experiment/diffusion_policy/data/kitchen_eval_nfe100/diffusion_policy_transformer/seed_train0_nfe32_sseed0
+[2026-07-12 07:44:31] RUN diffusion_policy_transformer seed=train0 nfe=100 eps=100
+[2026-07-12 07:44:31]   DRY-RUN ckpt=/home/daffa/Documents/experiment/diffusion_policy/data/diffusion_policy_transformer/train0/epoch=3000-test_mean_score=0.574.ckpt
+[2026-07-12 07:44:31]   DRY-RUN out=/home/daffa/Documents/experiment/diffusion_policy/data/kitchen_eval_nfe100/diffusion_policy_transformer/seed_train0_nfe100_sseed0
+[2026-07-12 07:44:31] RUN diffusion_policy_transformer seed=train1 nfe=1 eps=100
+[2026-07-12 07:44:31]   DRY-RUN ckpt=/home/daffa/Documents/experiment/diffusion_policy/data/diffusion_policy_transformer/train1/epoch=2700-test_mean_score=0.574.ckpt
+[2026-07-12 07:44:31]   DRY-RUN out=/home/daffa/Documents/experiment/diffusion_policy/data/kitchen_eval_nfe100/diffusion_policy_transformer/seed_train1_nfe1_sseed0
+[2026-07-12 07:44:31] RUN diffusion_policy_transformer seed=train1 nfe=8 eps=100
+[2026-07-12 07:44:31]   DRY-RUN ckpt=/home/daffa/Documents/experiment/diffusion_policy/data/diffusion_policy_transformer/train1/epoch=2700-test_mean_score=0.574.ckpt
+[2026-07-12 07:44:31]   DRY-RUN out=/home/daffa/Documents/experiment/diffusion_policy/data/kitchen_eval_nfe100/diffusion_policy_transformer/seed_train1_nfe8_sseed0
+[2026-07-12 07:44:31] RUN diffusion_policy_transformer seed=train1 nfe=32 eps=100
+[2026-07-12 07:44:31]   DRY-RUN ckpt=/home/daffa/Documents/experiment/diffusion_policy/data/diffusion_policy_transformer/train1/epoch=2700-test_mean_score=0.574.ckpt
+[2026-07-12 07:44:31]   DRY-RUN out=/home/daffa/Documents/experiment/diffusion_policy/data/kitchen_eval_nfe100/diffusion_policy_transformer/seed_train1_nfe32_sseed0
+[2026-07-12 07:44:31] RUN diffusion_policy_transformer seed=train1 nfe=100 eps=100
+[2026-07-12 07:44:31]   DRY-RUN ckpt=/home/daffa/Documents/experiment/diffusion_policy/data/diffusion_policy_transformer/train1/epoch=2700-test_mean_score=0.574.ckpt
+[2026-07-12 07:44:31]   DRY-RUN out=/home/daffa/Documents/experiment/diffusion_policy/data/kitchen_eval_nfe100/diffusion_policy_transformer/seed_train1_nfe100_sseed0
+[2026-07-12 07:44:31] RUN diffusion_policy_transformer seed=train2 nfe=1 eps=100
+[2026-07-12 07:44:31]   DRY-RUN ckpt=/home/daffa/Documents/experiment/diffusion_policy/data/diffusion_policy_transformer/train2/epoch=1750-test_mean_score=0.574.ckpt
+[2026-07-12 07:44:31]   DRY-RUN out=/home/daffa/Documents/experiment/diffusion_policy/data/kitchen_eval_nfe100/diffusion_policy_transformer/seed_train2_nfe1_sseed0
+[2026-07-12 07:44:31] RUN diffusion_policy_transformer seed=train2 nfe=8 eps=100
+[2026-07-12 07:44:31]   DRY-RUN ckpt=/home/daffa/Documents/experiment/diffusion_policy/data/diffusion_policy_transformer/train2/epoch=1750-test_mean_score=0.574.ckpt
+[2026-07-12 07:44:31]   DRY-RUN out=/home/daffa/Documents/experiment/diffusion_policy/data/kitchen_eval_nfe100/diffusion_policy_transformer/seed_train2_nfe8_sseed0
+[2026-07-12 07:44:31] RUN diffusion_policy_transformer seed=train2 nfe=32 eps=100
+[2026-07-12 07:44:31]   DRY-RUN ckpt=/home/daffa/Documents/experiment/diffusion_policy/data/diffusion_policy_transformer/train2/epoch=1750-test_mean_score=0.574.ckpt
+[2026-07-12 07:44:31]   DRY-RUN out=/home/daffa/Documents/experiment/diffusion_policy/data/kitchen_eval_nfe100/diffusion_policy_transformer/seed_train2_nfe32_sseed0
+[2026-07-12 07:44:31] RUN diffusion_policy_transformer seed=train2 nfe=100 eps=100
+[2026-07-12 07:44:31]   DRY-RUN ckpt=/home/daffa/Documents/experiment/diffusion_policy/data/diffusion_policy_transformer/train2/epoch=1750-test_mean_score=0.574.ckpt
+[2026-07-12 07:44:31]   DRY-RUN out=/home/daffa/Documents/experiment/diffusion_policy/data/kitchen_eval_nfe100/diffusion_policy_transformer/seed_train2_nfe100_sseed0
+[2026-07-12 07:44:31] RUN flowpolicy seed=baseline_42 nfe=1 eps=100
+[2026-07-12 07:44:31]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/baseline_42/latest-001.ckpt
+[2026-07-12 07:44:31]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_42_nfe1_sseed0
+[2026-07-12 07:44:31] RUN flowpolicy seed=baseline_42 nfe=8 eps=100
+[2026-07-12 07:44:31]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/baseline_42/latest-001.ckpt
+[2026-07-12 07:44:31]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_42_nfe8_sseed0
+[2026-07-12 07:44:31] RUN flowpolicy seed=baseline_42 nfe=32 eps=100
+[2026-07-12 07:44:31]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/baseline_42/latest-001.ckpt
+[2026-07-12 07:44:31]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_42_nfe32_sseed0
+[2026-07-12 07:44:31] RUN flowpolicy seed=baseline_42 nfe=100 eps=100
+[2026-07-12 07:44:31]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/baseline_42/latest-001.ckpt
+[2026-07-12 07:44:31]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_42_nfe100_sseed0
+[2026-07-12 07:44:31] RUN flowpolicy seed=baseline_43 nfe=1 eps=100
+[2026-07-12 07:44:31]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/baseline_43/latest-001.ckpt
+[2026-07-12 07:44:31]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_43_nfe1_sseed0
+[2026-07-12 07:44:31] RUN flowpolicy seed=baseline_43 nfe=8 eps=100
+[2026-07-12 07:44:31]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/baseline_43/latest-001.ckpt
+[2026-07-12 07:44:31]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_43_nfe8_sseed0
+[2026-07-12 07:44:31] RUN flowpolicy seed=baseline_43 nfe=32 eps=100
+[2026-07-12 07:44:31]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/baseline_43/latest-001.ckpt
+[2026-07-12 07:44:31]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_43_nfe32_sseed0
+[2026-07-12 07:44:31] RUN flowpolicy seed=baseline_43 nfe=100 eps=100
+[2026-07-12 07:44:31]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/baseline_43/latest-001.ckpt
+[2026-07-12 07:44:31]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_43_nfe100_sseed0
+[2026-07-12 07:44:31] RUN flowpolicy seed=baseline_44 nfe=1 eps=100
+[2026-07-12 07:44:31]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/baseline_44/latest-001(1).ckpt
+[2026-07-12 07:44:31]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_44_nfe1_sseed0
+[2026-07-12 07:44:31] RUN flowpolicy seed=baseline_44 nfe=8 eps=100
+[2026-07-12 07:44:31]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/baseline_44/latest-001(1).ckpt
+[2026-07-12 07:44:31]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_44_nfe8_sseed0
+[2026-07-12 07:44:31] RUN flowpolicy seed=baseline_44 nfe=32 eps=100
+[2026-07-12 07:44:31]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/baseline_44/latest-001(1).ckpt
+[2026-07-12 07:44:31]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_44_nfe32_sseed0
+[2026-07-12 07:44:31] RUN flowpolicy seed=baseline_44 nfe=100 eps=100
+[2026-07-12 07:44:31]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/baseline_44/latest-001(1).ckpt
+[2026-07-12 07:44:31]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_44_nfe100_sseed0
+[2026-07-12 07:44:31] DRY-RUN complete (no eval / no analyze).

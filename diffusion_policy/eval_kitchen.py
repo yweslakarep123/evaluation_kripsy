@@ -109,13 +109,16 @@ def build_runner(
     dataset_dir: str,
     n_episodes: int,
     save_trajectory_logs: bool = True,
+    n_episodes_vis: Optional[int] = None,
 ) -> KitchenLowdimEvalRunner:
     task_cfg = cfg.get("task", cfg)
     env_runner_cfg = task_cfg.get("env_runner", {})
+    if n_episodes_vis is None:
+        n_episodes_vis = n_episodes
     return KitchenLowdimEvalRunner(
         output_dir=output_dir,
         n_episodes=n_episodes,
-        n_episodes_vis=n_episodes,
+        n_episodes_vis=n_episodes_vis,
         max_steps=env_runner_cfg.get("max_steps", 280),
         n_obs_steps=cfg.get("n_obs_steps", env_runner_cfg.get("n_obs_steps", 4)),
         n_action_steps=cfg.get(
@@ -320,6 +323,23 @@ def aggregate_checkpoint_metrics(
     default=False,
     help="Overwrite existing checkpoint output directories",
 )
+@click.option(
+    "--num_inference_steps",
+    default=None,
+    type=int,
+    help="Override policy.num_inference_steps (NFE). Default: checkpoint config.",
+)
+@click.option(
+    "--sampling_seed",
+    default=None,
+    type=int,
+    help="Fix torch/cuda RNG for policy sampling. Default: unset.",
+)
+@click.option(
+    "--no-video/--video",
+    default=False,
+    help="Skip MP4 rendering (n_episodes_vis=0). Faster for sweeps.",
+)
 def main(
     model: str,
     checkpoints: Tuple[str, ...],
@@ -330,6 +350,9 @@ def main(
     smoke: bool,
     save_trajectory_logs: bool,
     overwrite: bool,
+    num_inference_steps: Optional[int],
+    sampling_seed: Optional[int],
+    no_video: bool,
 ):
     os.environ.setdefault("MUJOCO_GL", "egl")
 
@@ -350,19 +373,32 @@ def main(
     click.echo(f"Checkpoints: {ckpt_paths}")
     click.echo(f"Output: {output_model_dir}")
     click.echo(f"Episodes per checkpoint: {n_episodes}")
+    if num_inference_steps is not None:
+        if num_inference_steps < 1:
+            raise click.ClickException("--num_inference_steps must be >= 1")
+        click.echo(f"num_inference_steps override: {num_inference_steps}")
+    if sampling_seed is not None:
+        click.echo(f"sampling_seed: {sampling_seed}")
     if smoke:
         click.echo("SMOKE TEST mode")
+    if no_video:
+        click.echo("Video rendering disabled")
 
     checkpoint_metrics: List[Dict[str, Any]] = []
 
     for ckpt_path in ckpt_paths:
         seed_name = seed_name_from_checkpoint(ckpt_path)
-        seed_output_dir = output_model_dir / f"seed_{seed_name}"
+        dir_name = f"seed_{seed_name}"
+        if num_inference_steps is not None:
+            dir_name += f"_nfe{num_inference_steps}"
+        if sampling_seed is not None:
+            dir_name += f"_sseed{sampling_seed}"
+        seed_output_dir = output_model_dir / dir_name
 
         if seed_output_dir.exists() and not overwrite:
             existing_metrics = seed_output_dir / "eval_metrics.json"
             if existing_metrics.is_file():
-                click.echo(f"Skipping {seed_name}: {existing_metrics} exists")
+                click.echo(f"Skipping {dir_name}: {existing_metrics} exists")
                 with open(existing_metrics, "r") as f:
                     metrics = json.load(f)
                 metrics["model_seed"] = seed_name
@@ -370,10 +406,24 @@ def main(
                 checkpoint_metrics.append(metrics)
                 continue
 
-        click.echo(f"\n--- Evaluating seed={seed_name} ---")
+        click.echo(f"\n--- Evaluating {dir_name} ---")
         click.echo(f"Checkpoint: {ckpt_path}")
 
+        if sampling_seed is not None:
+            torch.manual_seed(sampling_seed)
+            if torch.cuda.is_available():
+                torch.cuda.manual_seed_all(sampling_seed)
+            np.random.seed(sampling_seed)
+
         policy, cfg = load_policy(ckpt_path, device_t)
+        effective_nfe = getattr(policy, "num_inference_steps", None)
+        if num_inference_steps is not None:
+            if not hasattr(policy, "num_inference_steps"):
+                raise click.ClickException(
+                    "Policy has no num_inference_steps attribute to override"
+                )
+            policy.num_inference_steps = num_inference_steps
+            effective_nfe = num_inference_steps
         seed_output_dir.mkdir(parents=True, exist_ok=True)
 
         runner = build_runner(
@@ -382,10 +432,13 @@ def main(
             dataset_dir=dataset_dir,
             n_episodes=n_episodes,
             save_trajectory_logs=save_trajectory_logs,
+            n_episodes_vis=0 if no_video else None,
         )
         metrics = runner.run(policy)
         metrics["model_seed"] = seed_name
         metrics["checkpoint"] = str(pathlib.Path(ckpt_path).resolve())
+        metrics["num_inference_steps"] = effective_nfe
+        metrics["sampling_seed"] = sampling_seed
 
         metrics_path = seed_output_dir / "eval_metrics.json"
         with open(metrics_path, "w") as f:

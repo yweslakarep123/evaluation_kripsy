@@ -1,0 +1,813 @@
+[2026-07-12 08:07:19] Kitchen NFE100 full eval start. log=/home/daffa/Documents/experiment/logs/kitchen_nfe100_20260712_080719.log
+[2026-07-12 08:07:19] episodes=100 device=cuda:0 sampling_seed=0 dry_run=0 model=all
+[2026-07-12 08:07:19] DP-CNN train0: /home/daffa/Documents/experiment/diffusion_policy/data/diffusion_policy_cnn/train0/epoch=1700-test_mean_score=0.580.ckpt
+[2026-07-12 08:07:19] DP-CNN train1: /home/daffa/Documents/experiment/diffusion_policy/data/diffusion_policy_cnn/train1/epoch=3400-test_mean_score=0.589.ckpt
+[2026-07-12 08:07:19] DP-CNN train2: /home/daffa/Documents/experiment/diffusion_policy/data/diffusion_policy_cnn/train2/epoch=4600-test_mean_score=0.580.ckpt
+[2026-07-12 08:07:19] DP-Transformer train0: /home/daffa/Documents/experiment/diffusion_policy/data/diffusion_policy_transformer/train0/epoch=3000-test_mean_score=0.574.ckpt
+[2026-07-12 08:07:19] DP-Transformer train1: /home/daffa/Documents/experiment/diffusion_policy/data/diffusion_policy_transformer/train1/epoch=2700-test_mean_score=0.574.ckpt
+[2026-07-12 08:07:19] DP-Transformer train2: /home/daffa/Documents/experiment/diffusion_policy/data/diffusion_policy_transformer/train2/epoch=1750-test_mean_score=0.574.ckpt
+[2026-07-12 08:07:19] FlowPolicy baseline_42: /home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/baseline_42/latest-001.ckpt
+[2026-07-12 08:07:20] FlowPolicy baseline_43: /home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/baseline_43/latest-001.ckpt
+[2026-07-12 08:07:20] FlowPolicy baseline_44: /home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/baseline_44/latest-001(1).ckpt
+[2026-07-12 08:07:20] RUN diffusion_policy_cnn seed=train0 nfe=1 eps=100
+Model: diffusion_policy_cnn
+Checkpoints: ['/home/daffa/Documents/experiment/diffusion_policy/data/diffusion_policy_cnn/train0/epoch=1700-test_mean_score=0.580.ckpt']
+Output: /home/daffa/Documents/experiment/diffusion_policy/data/kitchen_eval_nfe100/diffusion_policy_cnn
+Episodes per checkpoint: 100
+num_inference_steps override: 1
+sampling_seed: 0
+
+--- Evaluating seed_train0_nfe1_sseed0 ---
+Checkpoint: /home/daffa/Documents/experiment/diffusion_policy/data/diffusion_policy_cnn/train0/epoch=1700-test_mean_score=0.580.ckpt
+/home/daffa/miniforge3/envs/robodiff/lib/python3.9/site-packages/wandb/apis/public.py:2997: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import parse_version
+Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+/home/daffa/miniforge3/envs/robodiff/lib/python3.9/site-packages/gym/spaces/box.py:73: UserWarning: [33mWARN: Box bound precision lowered by casting to float32[0m
+  logger.warn(
+Ep 1/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 1/100:  86%|████████▌ | 240/280 [00:05<00:00, 47.26it/s]                                                           Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 2/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                 Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 3/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                 Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 4/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                 Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 5/100:   0%|          | 0/280 [00:00<?, ?it/s]Task slide cabinet completed!
+                                                 Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 6/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                 Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 7/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                 Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 8/100:   0%|          | 0/280 [00:00<?, ?it/s]Task light switch completed!
+                                                 Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 9/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                 Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 10/100:   0%|          | 0/280 [00:00<?, ?it/s]Task light switch completed!
+                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 11/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 12/100:   0%|          | 0/280 [00:00<?, ?it/s]Task slide cabinet completed!
+                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 13/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 14/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 15/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 16/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 17/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 18/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 19/100:   0%|          | 0/280 [00:00<?, ?it/s]Task light switch completed!
+                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 20/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 21/100:   0%|          | 0/280 [00:00<?, ?it/s]Task light switch completed!
+                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 22/100:   0%|          | 0/280 [00:00<?, ?it/s]Task slide cabinet completed!
+                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 23/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 24/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 25/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 26/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 27/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 28/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 29/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 30/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 31/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 32/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 33/100:   0%|          | 0/280 [00:00<?, ?it/s]Task slide cabinet completed!
+                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 34/100:   0%|          | 0/280 [00:00<?, ?it/s]Task light switch completed!
+                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 35/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 36/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 37/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 38/100:   0%|          | 0/280 [00:00<?, ?it/s]Task light switch completed!
+Task bottom burner completed!
+                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 39/100:   0%|          | 0/280 [00:00<?, ?it/s]Task light switch completed!
+                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 40/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 41/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 42/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 43/100:   0%|          | 0/280 [00:00<?, ?it/s]Task light switch completed!
+                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 44/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 45/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 46/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 47/100:   0%|          | 0/280 [00:00<?, ?it/s]Task slide cabinet completed!
+                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 48/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 49/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 50/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 51/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 52/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 53/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 54/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 55/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 56/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 57/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 58/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 59/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 60/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 61/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 62/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 63/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 64/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 65/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 66/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 67/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 68/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 69/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 70/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 71/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 72/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 73/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 74/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 75/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 76/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 77/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 78/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 79/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 80/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 81/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 82/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 83/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 84/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 85/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 86/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 87/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 88/100:   0%|          | 0/280 [00:00<?, ?it/s]Task slide cabinet completed!
+                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 89/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 90/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 91/100:   0%|          | 0/280 [00:00<?, ?it/s]Task slide cabinet completed!
+                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 92/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 93/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 94/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 95/100:   0%|          | 0/280 [00:00<?, ?it/s]Task slide cabinet completed!
+                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 96/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 97/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 98/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 99/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 100/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                   ========================================================================
+Kitchen Eval Report | seed=train0 | 100 episodes
+========================================================================
+
+Per-task success rate (fraction of episodes)
+------------------------------------------------------------------------
+  bottom burner     0.010 ± 0.100
+  top burner        0.000 ± 0.000
+  light switch      0.080 ± 0.273
+  slide cabinet     0.080 ± 0.273
+  hinge cabinet     0.000 ± 0.000
+  microwave         0.000 ± 0.000
+  kettle            0.000 ± 0.000
+
+Cumulative episode success (all 7 tasks completed)
+------------------------------------------------------------------------
+  success rate: 0.000 ± 0.000
+
+Multi-stage p_k (>= k of 7 tasks completed)
+------------------------------------------------------------------------
+  p1=0.160  p2=0.010  p3=0.000  p4=0.000  p5=0.000  p6=0.000  p7=0.000
+
+Timing
+------------------------------------------------------------------------
+  Inference latency (ms): 8.15 ± 35.82
+
+Wrote /home/daffa/Documents/experiment/diffusion_policy/data/kitchen_eval_nfe100/diffusion_policy_cnn/seed_train0_nfe1_sseed0/eval_metrics.json
+Wrote /home/daffa/Documents/experiment/diffusion_policy/data/kitchen_eval_nfe100/diffusion_policy_cnn/seed_train0_nfe1_sseed0/eval_report.txt
+[2026-07-12 08:14:02] RUN diffusion_policy_cnn seed=train0 nfe=8 eps=100
+Model: diffusion_policy_cnn
+Checkpoints: ['/home/daffa/Documents/experiment/diffusion_policy/data/diffusion_policy_cnn/train0/epoch=1700-test_mean_score=0.580.ckpt']
+Output: /home/daffa/Documents/experiment/diffusion_policy/data/kitchen_eval_nfe100/diffusion_policy_cnn
+Episodes per checkpoint: 100
+num_inference_steps override: 8
+sampling_seed: 0
+
+--- Evaluating seed_train0_nfe8_sseed0 ---
+Checkpoint: /home/daffa/Documents/experiment/diffusion_policy/data/diffusion_policy_cnn/train0/epoch=1700-test_mean_score=0.580.ckpt
+/home/daffa/miniforge3/envs/robodiff/lib/python3.9/site-packages/wandb/apis/public.py:2997: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import parse_version
+Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+/home/daffa/miniforge3/envs/robodiff/lib/python3.9/site-packages/gym/spaces/box.py:73: UserWarning: [33mWARN: Box bound precision lowered by casting to float32[0m
+  logger.warn(
+Ep 1/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 1/100:  74%|███████▍  | 208/280 [00:05<00:01, 40.61it/s]                                                           Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 2/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                 Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 3/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                 Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 4/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                 Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 5/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                 Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 6/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                 Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 7/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                 Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 8/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                 Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 9/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                 Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 10/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 11/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 12/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 13/100:   0%|          | 0/280 [00:00<?, ?it/s]Task slide cabinet completed!
+                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 14/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 15/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 16/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 17/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 18/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 19/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 20/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 21/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 22/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 23/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 24/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 25/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 26/100:   0%|          | 0/280 [00:00<?, ?it/s]Task light switch completed!
+                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 27/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 28/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 29/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 30/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 31/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 32/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 33/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 34/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 35/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 36/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 37/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 38/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 39/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 40/100:   0%|          | 0/280 [00:00<?, ?it/s]Task slide cabinet completed!
+                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 41/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 42/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 43/100:   0%|          | 0/280 [00:00<?, ?it/s]Task bottom burner completed!
+                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 44/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 45/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 46/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 47/100:   0%|          | 0/280 [00:00<?, ?it/s]Task kettle completed!
+                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 48/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 49/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 50/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 51/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 52/100:   0%|          | 0/280 [00:00<?, ?it/s]Task light switch completed!
+                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 53/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 54/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 55/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 56/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 57/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 58/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 59/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 60/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 61/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 62/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 63/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 64/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 65/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 66/100:   0%|          | 0/280 [00:00<?, ?it/s]Task kettle completed!
+                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 67/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 68/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 69/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 70/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 71/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 72/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 73/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 74/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 75/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 76/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 77/100:   0%|          | 0/280 [00:00<?, ?it/s]Task kettle completed!
+                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 78/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 79/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 80/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 81/100:   0%|          | 0/280 [00:00<?, ?it/s]Task light switch completed!
+                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 82/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 83/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 84/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 85/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 86/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 87/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 88/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 89/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 90/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 91/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 92/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 93/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 94/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 95/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 96/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 96/100: 100%|██████████| 280/280 [00:05<00:00, 55.88it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 97/100:   0%|          | 0/280 [00:00<?, ?it/s]Task light switch completed!
+                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 98/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 99/100:   0%|          | 0/280 [00:00<?, ?it/s]Task light switch completed!
+                                                  Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 100/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                   ========================================================================
+Kitchen Eval Report | seed=train0 | 100 episodes
+========================================================================
+
+Per-task success rate (fraction of episodes)
+------------------------------------------------------------------------
+  bottom burner     0.010 ± 0.100
+  top burner        0.000 ± 0.000
+  light switch      0.050 ± 0.219
+  slide cabinet     0.020 ± 0.141
+  hinge cabinet     0.000 ± 0.000
+  microwave         0.000 ± 0.000
+  kettle            0.030 ± 0.171
+
+Cumulative episode success (all 7 tasks completed)
+------------------------------------------------------------------------
+  success rate: 0.000 ± 0.000
+
+Multi-stage p_k (>= k of 7 tasks completed)
+------------------------------------------------------------------------
+  p1=0.110  p2=0.000  p3=0.000  p4=0.000  p5=0.000  p6=0.000  p7=0.000
+
+Timing
+------------------------------------------------------------------------
+  Inference latency (ms): 54.96 ± 24.13
+
+Wrote /home/daffa/Documents/experiment/diffusion_policy/data/kitchen_eval_nfe100/diffusion_policy_cnn/seed_train0_nfe8_sseed0/eval_metrics.json
+Wrote /home/daffa/Documents/experiment/diffusion_policy/data/kitchen_eval_nfe100/diffusion_policy_cnn/seed_train0_nfe8_sseed0/eval_report.txt
+[2026-07-12 08:23:24] RUN diffusion_policy_cnn seed=train0 nfe=32 eps=100
+Model: diffusion_policy_cnn
+Checkpoints: ['/home/daffa/Documents/experiment/diffusion_policy/data/diffusion_policy_cnn/train0/epoch=1700-test_mean_score=0.580.ckpt']
+Output: /home/daffa/Documents/experiment/diffusion_policy/data/kitchen_eval_nfe100/diffusion_policy_cnn
+Episodes per checkpoint: 100
+num_inference_steps override: 32
+sampling_seed: 0
+
+--- Evaluating seed_train0_nfe32_sseed0 ---
+Checkpoint: /home/daffa/Documents/experiment/diffusion_policy/data/diffusion_policy_cnn/train0/epoch=1700-test_mean_score=0.580.ckpt
+/home/daffa/miniforge3/envs/robodiff/lib/python3.9/site-packages/wandb/apis/public.py:2997: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import parse_version
+Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+/home/daffa/miniforge3/envs/robodiff/lib/python3.9/site-packages/gym/spaces/box.py:73: UserWarning: [33mWARN: Box bound precision lowered by casting to float32[0m
+  logger.warn(
+Ep 1/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 1/100:  34%|███▍      | 96/280 [00:05<00:09, 18.94it/s]Ep 1/100:  86%|████████▌ | 240/280 [00:10<00:01, 23.92it/s]                                                           Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 2/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 2/100:  49%|████▊     | 136/280 [00:05<00:05, 26.89it/s]Ep 2/100: 100%|██████████| 280/280 [00:10<00:00, 27.16it/s]                                                           Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 3/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 3/100:  49%|████▊     | 136/280 [00:05<00:05, 26.76it/s]Ep 3/100:  97%|█████████▋| 272/280 [00:10<00:00, 27.01it/s]                                                           Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 4/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 4/100:  49%|████▊     | 136/280 [00:05<00:05, 26.83it/s]Ep 4/100:  97%|█████████▋| 272/280 [00:10<00:00, 27.02it/s]                                                           Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 5/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 5/100:  49%|████▊     | 136/280 [00:05<00:05, 26.81it/s]Ep 5/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.83it/s]                                                           Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 6/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 6/100:  49%|████▊     | 136/280 [00:05<00:05, 26.75it/s]Ep 6/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.97it/s]                                                           Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 7/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 7/100:  49%|████▊     | 136/280 [00:05<00:05, 26.77it/s]Ep 7/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.83it/s]                                                           Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 8/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 8/100:  49%|████▊     | 136/280 [00:05<00:05, 26.67it/s]Ep 8/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.83it/s]                                                           Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 9/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 9/100:  49%|████▊     | 136/280 [00:05<00:05, 26.68it/s]Ep 9/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.67it/s]                                                           Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 10/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 10/100:  49%|████▊     | 136/280 [00:05<00:05, 26.67it/s]Ep 10/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.78it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 11/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 11/100:  49%|████▊     | 136/280 [00:05<00:05, 26.74it/s]Ep 11/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.83it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 12/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 12/100:  49%|████▊     | 136/280 [00:05<00:05, 26.63it/s]Ep 12/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.68it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 13/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 13/100:  49%|████▊     | 136/280 [00:05<00:05, 26.67it/s]Ep 13/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.72it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 14/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 14/100:  49%|████▊     | 136/280 [00:05<00:05, 26.58it/s]Ep 14/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.54it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 15/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 15/100:  49%|████▊     | 136/280 [00:05<00:05, 26.38it/s]Ep 15/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.48it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 16/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 16/100:  49%|████▊     | 136/280 [00:05<00:05, 26.46it/s]Ep 16/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.63it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 17/100:   0%|          | 0/280 [00:00<?, ?it/s]Task top burner completed!
+Ep 17/100:  49%|████▊     | 136/280 [00:05<00:05, 26.47it/s]Ep 17/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.71it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 18/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 18/100:  49%|████▊     | 136/280 [00:05<00:05, 26.67it/s]Ep 18/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.78it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 19/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 19/100:  49%|████▊     | 136/280 [00:05<00:05, 26.62it/s]Ep 19/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.73it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 20/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 20/100:  49%|████▊     | 136/280 [00:05<00:05, 26.57it/s]Ep 20/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.69it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 21/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 21/100:  49%|████▊     | 136/280 [00:05<00:05, 26.49it/s]Ep 21/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.59it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 22/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 22/100:  49%|████▊     | 136/280 [00:05<00:05, 26.62it/s]Ep 22/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.70it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 23/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 23/100:  49%|████▊     | 136/280 [00:05<00:05, 26.54it/s]Ep 23/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.69it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 24/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 24/100:  49%|████▊     | 136/280 [00:05<00:05, 26.44it/s]Ep 24/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.49it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 25/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 25/100:  49%|████▊     | 136/280 [00:05<00:05, 26.57it/s]Ep 25/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.68it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 26/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 26/100:  49%|████▊     | 136/280 [00:05<00:05, 26.38it/s]Ep 26/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.53it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 27/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 27/100:  49%|████▊     | 136/280 [00:05<00:05, 26.40it/s]Task bottom burner completed!
+Ep 27/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.71it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 28/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 28/100:  49%|████▊     | 136/280 [00:05<00:05, 26.40it/s]Ep 28/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.55it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 29/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 29/100:  49%|████▊     | 136/280 [00:05<00:05, 26.46it/s]Ep 29/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.58it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 30/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 30/100:  49%|████▊     | 136/280 [00:05<00:05, 26.45it/s]Ep 30/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.57it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 31/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 31/100:  49%|████▊     | 136/280 [00:05<00:05, 26.45it/s]Ep 31/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.53it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 32/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 32/100:  49%|████▊     | 136/280 [00:05<00:05, 26.58it/s]Ep 32/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.66it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 33/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 33/100:  49%|████▊     | 136/280 [00:05<00:05, 26.59it/s]Ep 33/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.71it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 34/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 34/100:  49%|████▊     | 136/280 [00:05<00:05, 26.32it/s]Ep 34/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.41it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 35/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 35/100:  49%|████▊     | 136/280 [00:05<00:05, 26.41it/s]Ep 35/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.48it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 36/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 36/100:  49%|████▊     | 136/280 [00:05<00:05, 26.54it/s]Ep 36/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.57it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 37/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 37/100:  49%|████▊     | 136/280 [00:05<00:05, 26.30it/s]Ep 37/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.40it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 38/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 38/100:  49%|████▊     | 136/280 [00:05<00:05, 26.39it/s]Ep 38/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.56it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 39/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 39/100:  49%|████▊     | 136/280 [00:05<00:05, 26.35it/s]Ep 39/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.46it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 40/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 40/100:  49%|████▊     | 136/280 [00:05<00:05, 26.50it/s]Ep 40/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.64it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 41/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 41/100:  49%|████▊     | 136/280 [00:05<00:05, 26.47it/s]Ep 41/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.63it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 42/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 42/100:  49%|████▊     | 136/280 [00:05<00:05, 26.35it/s]Ep 42/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.37it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 43/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 43/100:  49%|████▊     | 136/280 [00:05<00:05, 26.50it/s]Ep 43/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.57it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 44/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 44/100:  49%|████▊     | 136/280 [00:05<00:05, 26.40it/s]Ep 44/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.57it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 45/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 45/100:  49%|████▊     | 136/280 [00:05<00:05, 26.35it/s]Ep 45/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.42it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 46/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 46/100:  49%|████▊     | 136/280 [00:05<00:05, 26.49it/s]Ep 46/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.49it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 47/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 47/100:  49%|████▊     | 136/280 [00:05<00:05, 26.45it/s]Ep 47/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.52it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 48/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 48/100:  49%|████▊     | 136/280 [00:05<00:05, 26.37it/s]Ep 48/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.40it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 49/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 49/100:  49%|████▊     | 136/280 [00:05<00:05, 26.54it/s]Ep 49/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.57it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 50/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 50/100:  49%|████▊     | 136/280 [00:05<00:05, 26.35it/s]Ep 50/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.44it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 51/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 51/100:  49%|████▊     | 136/280 [00:05<00:05, 26.38it/s]Ep 51/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.41it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 52/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 52/100:  49%|████▊     | 136/280 [00:05<00:05, 26.39it/s]Ep 52/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.47it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 53/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 53/100:  49%|████▊     | 136/280 [00:05<00:05, 26.36it/s]Ep 53/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.47it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 54/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 54/100:  49%|████▊     | 136/280 [00:05<00:05, 26.45it/s]Ep 54/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.56it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 55/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 55/100:  49%|████▊     | 136/280 [00:05<00:05, 26.43it/s]Ep 55/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.57it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 56/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 56/100:  49%|████▊     | 136/280 [00:05<00:05, 26.42it/s]Ep 56/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.55it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 57/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 57/100:  49%|████▊     | 136/280 [00:05<00:05, 26.35it/s]Ep 57/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.42it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 58/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 58/100:  49%|████▊     | 136/280 [00:05<00:05, 26.39it/s]Ep 58/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.47it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 59/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 59/100:  49%|████▊     | 136/280 [00:05<00:05, 26.25it/s]Ep 59/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.40it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 60/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 60/100:  49%|████▊     | 136/280 [00:05<00:05, 26.47it/s]Ep 60/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.53it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 61/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 61/100:  49%|████▊     | 136/280 [00:05<00:05, 26.45it/s]Ep 61/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.63it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 62/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 62/100:  49%|████▊     | 136/280 [00:05<00:05, 26.34it/s]Ep 62/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.42it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 63/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 63/100:  49%|████▊     | 136/280 [00:05<00:05, 26.48it/s]Ep 63/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.55it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 64/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 64/100:  49%|████▊     | 136/280 [00:05<00:05, 26.45it/s]Ep 64/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.49it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 65/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 65/100:  49%|████▊     | 136/280 [00:05<00:05, 26.13it/s]Ep 65/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.32it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 66/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 66/100:  49%|████▊     | 136/280 [00:05<00:05, 26.44it/s]Ep 66/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.50it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 67/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 67/100:  49%|████▊     | 136/280 [00:05<00:05, 26.45it/s]Ep 67/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.58it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 68/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 68/100:  49%|████▊     | 136/280 [00:05<00:05, 26.25it/s]Ep 68/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.27it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 69/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 69/100:  49%|████▊     | 136/280 [00:05<00:05, 26.37it/s]Task microwave completed!
+Ep 69/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.41it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 70/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 70/100:  49%|████▊     | 136/280 [00:05<00:05, 26.32it/s]Ep 70/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.43it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 71/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 71/100:  49%|████▊     | 136/280 [00:05<00:05, 26.44it/s]Ep 71/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.46it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 72/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 72/100:  49%|████▊     | 136/280 [00:05<00:05, 26.37it/s]Ep 72/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.42it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 73/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 73/100:  49%|████▊     | 136/280 [00:05<00:05, 26.40it/s]Ep 73/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.53it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 74/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 74/100:  49%|████▊     | 136/280 [00:05<00:05, 26.41it/s]Ep 74/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.57it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 75/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 75/100:  49%|████▊     | 136/280 [00:05<00:05, 26.40it/s]Ep 75/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.48it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 76/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 76/100:  49%|████▊     | 136/280 [00:05<00:05, 26.23it/s]Ep 76/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.27it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 77/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 77/100:  49%|████▊     | 136/280 [00:05<00:05, 26.43it/s]Ep 77/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.56it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 78/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 78/100:  49%|████▊     | 136/280 [00:05<00:05, 26.49it/s]Ep 78/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.57it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 79/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 79/100:  49%|████▊     | 136/280 [00:05<00:05, 26.35it/s]Ep 79/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.44it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 80/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 80/100:  49%|████▊     | 136/280 [00:05<00:05, 26.46it/s]Ep 80/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.58it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 81/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 81/100:  49%|████▊     | 136/280 [00:05<00:05, 26.26it/s]Ep 81/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.43it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 82/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 82/100:  49%|████▊     | 136/280 [00:05<00:05, 26.26it/s]Ep 82/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.50it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 83/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 83/100:  49%|████▊     | 136/280 [00:05<00:05, 26.20it/s]Ep 83/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.52it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 84/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 84/100:  49%|████▊     | 136/280 [00:05<00:05, 26.36it/s]Ep 84/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.46it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 85/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 85/100:  49%|████▊     | 136/280 [00:05<00:05, 26.34it/s]Ep 85/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.42it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 86/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 86/100:  49%|████▊     | 136/280 [00:05<00:05, 26.42it/s]Ep 86/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.46it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 87/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 87/100:  49%|████▊     | 136/280 [00:05<00:05, 26.39it/s]Ep 87/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.56it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 88/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 88/100:  49%|████▊     | 136/280 [00:05<00:05, 26.44it/s]Ep 88/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.62it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 89/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 89/100:  49%|████▊     | 136/280 [00:05<00:05, 26.19it/s]Ep 89/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.25it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 90/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 90/100:  49%|████▊     | 136/280 [00:05<00:05, 26.45it/s]Ep 90/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.54it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 91/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 91/100:  49%|████▊     | 136/280 [00:05<00:05, 26.29it/s]Ep 91/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.35it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 92/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 92/100:  49%|████▊     | 136/280 [00:05<00:05, 26.26it/s]Ep 92/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.31it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 93/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 93/100:  49%|████▊     | 136/280 [00:05<00:05, 26.37it/s]Ep 93/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.44it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 94/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 94/100:  49%|████▊     | 136/280 [00:05<00:05, 26.51it/s]Ep 94/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.57it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 95/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 95/100:  49%|████▊     | 136/280 [00:05<00:05, 26.41it/s]Task microwave completed!
+Ep 95/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.45it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 96/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 96/100:  49%|████▊     | 136/280 [00:05<00:05, 26.35it/s]Ep 96/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.57it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 97/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 97/100:  49%|████▊     | 136/280 [00:05<00:05, 26.43it/s]Ep 97/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.61it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 98/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 98/100:  49%|████▊     | 136/280 [00:05<00:05, 26.18it/s]Ep 98/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.34it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 99/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 99/100:  49%|████▊     | 136/280 [00:05<00:05, 26.28it/s]Task microwave completed!
+Ep 99/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.37it/s]                                                            Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 100/100:   0%|          | 0/280 [00:00<?, ?it/s]Ep 100/100:  49%|████▊     | 136/280 [00:05<00:05, 26.28it/s]Ep 100/100:  97%|█████████▋| 272/280 [00:10<00:00, 26.45it/s]                                                             ========================================================================
+Kitchen Eval Report | seed=train0 | 100 episodes
+========================================================================
+
+Per-task success rate (fraction of episodes)
+------------------------------------------------------------------------
+  bottom burner     0.010 ± 0.100
+  top burner        0.010 ± 0.100
+  light switch      0.000 ± 0.000
+  slide cabinet     0.000 ± 0.000
+  hinge cabinet     0.000 ± 0.000
+  microwave         0.030 ± 0.171
+  kettle            0.000 ± 0.000
+
+Cumulative episode success (all 7 tasks completed)
+------------------------------------------------------------------------
+  success rate: 0.000 ± 0.000
+
+Multi-stage p_k (>= k of 7 tasks completed)
+------------------------------------------------------------------------
+  p1=0.050  p2=0.000  p3=0.000  p4=0.000  p5=0.000  p6=0.000  p7=0.000
+
+Timing
+------------------------------------------------------------------------
+  Inference latency (ms): 210.11 ± 24.26
+
+Wrote /home/daffa/Documents/experiment/diffusion_policy/data/kitchen_eval_nfe100/diffusion_policy_cnn/seed_train0_nfe32_sseed0/eval_metrics.json
+Wrote /home/daffa/Documents/experiment/diffusion_policy/data/kitchen_eval_nfe100/diffusion_policy_cnn/seed_train0_nfe32_sseed0/eval_report.txt
+[2026-07-12 08:42:08] RUN diffusion_policy_cnn seed=train0 nfe=100 eps=100
+Model: diffusion_policy_cnn
+Checkpoints: ['/home/daffa/Documents/experiment/diffusion_policy/data/diffusion_policy_cnn/train0/epoch=1700-test_mean_score=0.580.ckpt']
+Output: /home/daffa/Documents/experiment/diffusion_policy/data/kitchen_eval_nfe100/diffusion_policy_cnn
+Episodes per checkpoint: 100
+num_inference_steps override: 100
+sampling_seed: 0
+
+--- Evaluating seed_train0_nfe100_sseed0 ---
+Checkpoint: /home/daffa/Documents/experiment/diffusion_policy/data/diffusion_policy_cnn/train0/epoch=1700-test_mean_score=0.580.ckpt
+/home/daffa/miniforge3/envs/robodiff/lib/python3.9/site-packages/wandb/apis/public.py:2997: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import parse_version
+Traceback (most recent call last):
+  File "/home/daffa/Documents/experiment/diffusion_policy/eval_kitchen.py", line 465, in <module>
+    main()
+  File "/home/daffa/miniforge3/envs/robodiff/lib/python3.9/site-packages/click/core.py", line 1128, in __call__
+    return self.main(*args, **kwargs)
+  File "/home/daffa/miniforge3/envs/robodiff/lib/python3.9/site-packages/click/core.py", line 1053, in main
+    rv = self.invoke(ctx)
+  File "/home/daffa/miniforge3/envs/robodiff/lib/python3.9/site-packages/click/core.py", line 1395, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+  File "/home/daffa/miniforge3/envs/robodiff/lib/python3.9/site-packages/click/core.py", line 754, in invoke
+    return __callback(*args, **kwargs)
+  File "/home/daffa/Documents/experiment/diffusion_policy/eval_kitchen.py", line 418, in main
+    policy, cfg = load_policy(ckpt_path, device_t)
+  File "/home/daffa/Documents/experiment/diffusion_policy/eval_kitchen.py", line 101, in load_policy
+    policy.to(device)
+  File "/home/daffa/miniforge3/envs/robodiff/lib/python3.9/site-packages/torch/nn/modules/module.py", line 927, in to
+    return self._apply(convert)
+  File "/home/daffa/miniforge3/envs/robodiff/lib/python3.9/site-packages/torch/nn/modules/module.py", line 579, in _apply
+    module._apply(fn)
+  File "/home/daffa/miniforge3/envs/robodiff/lib/python3.9/site-packages/torch/nn/modules/module.py", line 579, in _apply
+    module._apply(fn)
+  File "/home/daffa/miniforge3/envs/robodiff/lib/python3.9/site-packages/torch/nn/modules/module.py", line 579, in _apply
+    module._apply(fn)
+  [Previous line repeated 4 more times]
+  File "/home/daffa/miniforge3/envs/robodiff/lib/python3.9/site-packages/torch/nn/modules/module.py", line 602, in _apply
+    param_applied = fn(param)
+  File "/home/daffa/miniforge3/envs/robodiff/lib/python3.9/site-packages/torch/nn/modules/module.py", line 925, in convert
+    return t.to(device, dtype if t.is_floating_point() or t.is_complex() else None, non_blocking)
+RuntimeError: CUDA error: all CUDA-capable devices are busy or unavailable
+CUDA kernel errors might be asynchronously reported at some other API call,so the stacktrace below might be incorrect.
+For debugging consider passing CUDA_LAUNCH_BLOCKING=1.

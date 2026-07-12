@@ -1,0 +1,48 @@
+[2026-07-11 21:07:00] FP NFE match sweep start. log=/home/daffa/Documents/experiment/logs/fp_nfe_match_20260711_210700.log
+[2026-07-11 21:07:00] ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/baseline_42/latest-001.ckpt
+[2026-07-11 21:07:00] RUN FlowPolicy nfe=8 episodes=50
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+Checkpoints: ['/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/baseline_42/latest-001.ckpt']
+Output: /home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe/flowpolicy
+Episodes per checkpoint: 50
+num_inference_steps override: 8
+sampling_seed: 0
+Video rendering disabled
+
+--- Evaluating seed_baseline_42_nfe8_sseed0 ---
+Checkpoint: /home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/baseline_42/latest-001.ckpt
+[FlowPolicyLowdim] obs_dim=60 action_dim=9 encoder_output_dim=64
+----------------------------------
+Class name: FlowPolicyLowdim
+  Number of parameters: 251.9655M
+   _dummy_variable: 0.0000M (0.00%)
+   obs_encoder: 0.0122M (0.00%)
+   model: 251.9533M (100.00%)
+   mask_generator: 0.0000M (0.00%)
+----------------------------------
+Reading configurations for Franka
+Initializing Franka sim
+Ep 1/50:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Ep 1/50:  42%|████▏     | 117/280 [00:05<00:07, 23.04it/s]Task bottom burner completed!
+Task top burner completed!
+Task slide cabinet completed!
+Ep 1/50:  86%|████████▌ | 240/280 [00:10<00:01, 23.79it/s]                                                          Ep 2/50:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Task light switch completed!
+Ep 2/50:  44%|████▍     | 123/280 [00:05<00:06, 24.29it/s]Task slide cabinet completed!
+Ep 2/50:  88%|████████▊ | 246/280 [00:10<00:01, 24.15it/s]Task hinge cabinet completed!
+                                                          Ep 3/50:   0%|          | 0/280 [00:00<?, ?it/s]Task bottom burner completed!
+Ep 3/50:  43%|████▎     | 120/280 [00:05<00:06, 23.81it/s]Task top burner completed!
+Task slide cabinet completed!
+Ep 3/50:  86%|████████▌ | 240/280 [00:10<00:01, 23.67it/s]                                                          Ep 4/50:   0%|          | 0/280 [00:00<?, ?it/s]Task bottom burner completed!
+Ep 4/50:  42%|████▏     | 117/280 [00:05<00:06, 23.39it/s]Task top burner completed!
+Task slide cabinet completed!
+Ep 4/50:  84%|████████▎ | 234/280 [00:10<00:01, 23.11it/s]                                                          Ep 5/50:   0%|          | 0/280 [00:00<?, ?it/s]Task bottom burner completed!
+Ep 5/50:  42%|████▏     | 117/280 [00:05<00:07, 22.86it/s]Task top burner completed!
+Task slide cabinet completed!
+Ep 5/50:  84%|████████▎ | 234/280 [00:10<00:02, 22.73it/s]Task hinge cabinet completed!
+                                                          Ep 6/50:   0%|          | 0/280 [00:00<?, ?it/s]Task bottom burner completed!
+Task top burner completed!
+Ep 6/50:  41%|████      | 114/280 [00:05<00:07, 22.45it/s]
