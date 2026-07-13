@@ -371,7 +371,8 @@ def main() -> None:
     ap.add_argument(
         "--input_root_dp",
         type=Path,
-        default=ROOT / "diffusion_policy/data/kitchen_eval_nfe100",
+        default=None,
+        help="Default: kitchen_eval_nfe100_diffusion if present, else kitchen_eval_nfe100",
     )
     ap.add_argument(
         "--input_root_fp",
@@ -384,6 +385,15 @@ def main() -> None:
         default=ROOT / "data/kitchen_eval_plots/nfe100",
     )
     args = ap.parse_args()
+    if args.input_root_dp is None:
+        cand = [
+            ROOT / "diffusion_policy/data/kitchen_eval_nfe100_diffusion",
+            ROOT / "diffusion_policy/data/kitchen_eval_nfe100",
+        ]
+        args.input_root_dp = next(
+            (p for p in cand if p.is_dir() and any(p.rglob("eval_metrics.json"))),
+            cand[0],
+        )
     args.output_dir.mkdir(parents=True, exist_ok=True)
 
     runs = discover(args.input_root_dp, args.input_root_fp)

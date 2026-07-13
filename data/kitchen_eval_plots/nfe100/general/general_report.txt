@@ -1,0 +1,44 @@
+==============================================================================
+NFE100 general comparison report
+==============================================================================
+
+--- operating FP@8 vs DP@100 ---
+  FlowPolicy: p3=0.980±0.017  p4=0.840±0.026  lat=117.2±1.1 ms
+    SR: bottom=82%, top=56%, light=44%, slide=62%, hinge=31%, microwave=72%, kettle=34%
+  DP-CNN: p3=1.000±0.000  p4=0.990±0.010  lat=631.8±5.6 ms
+    SR: bottom=69%, top=52%, light=62%, slide=57%, hinge=51%, microwave=69%, kettle=43%
+  DP-Transformer: p3=0.997±0.006  p4=0.957±0.015  lat=578.6±7.7 ms
+    SR: bottom=65%, top=41%, light=57%, slide=58%, hinge=49%, microwave=69%, kettle=56%
+
+--- equal NFE=1 ---
+  FlowPolicy: p3=0.793±0.045  p4=0.560±0.070  lat=13.9±0.1 ms
+    SR: bottom=82%, top=28%, light=22%, slide=56%, hinge=5%, microwave=65%, kettle=68%
+  DP-CNN: p3=0.000±0.000  p4=0.000±0.000  lat=8.0±0.1 ms
+    SR: bottom=0%, top=0%, light=7%, slide=15%, hinge=0%, microwave=0%, kettle=1%
+  DP-Transformer: p3=0.000±0.000  p4=0.000±0.000  lat=6.5±0.2 ms
+    SR: bottom=0%, top=0%, light=10%, slide=12%, hinge=0%, microwave=0%, kettle=1%
+
+--- equal NFE=8 ---
+  FlowPolicy: p3=0.980±0.017  p4=0.840±0.026  lat=117.2±1.1 ms
+    SR: bottom=82%, top=56%, light=44%, slide=62%, hinge=31%, microwave=72%, kettle=34%
+  DP-CNN: p3=0.000±0.000  p4=0.000±0.000  lat=55.0±0.1 ms
+    SR: bottom=1%, top=0%, light=3%, slide=2%, hinge=0%, microwave=0%, kettle=2%
+  DP-Transformer: p3=0.000±0.000  p4=0.000±0.000  lat=53.9±0.4 ms
+    SR: bottom=2%, top=0%, light=8%, slide=5%, hinge=0%, microwave=0%, kettle=1%
+
+--- equal NFE=32 ---
+  FlowPolicy: p3=0.967±0.006  p4=0.850±0.017  lat=499.5±4.3 ms
+    SR: bottom=77%, top=57%, light=44%, slide=56%, hinge=39%, microwave=69%, kettle=38%
+  DP-CNN: p3=0.003±0.006  p4=0.003±0.006  lat=211.7±1.8 ms
+    SR: bottom=1%, top=1%, light=1%, slide=1%, hinge=0%, microwave=5%, kettle=1%
+  DP-Transformer: p3=0.030±0.020  p4=0.007±0.006  lat=197.3±2.9 ms
+    SR: bottom=10%, top=7%, light=10%, slide=8%, hinge=0%, microwave=5%, kettle=3%
+
+--- equal NFE=100 ---
+  FlowPolicy: p3=0.980±0.010  p4=0.863±0.021  lat=1579.8±5.6 ms
+    SR: bottom=79%, top=57%, light=43%, slide=60%, hinge=40%, microwave=70%, kettle=34%
+  DP-CNN: p3=1.000±0.000  p4=0.990±0.010  lat=631.8±5.6 ms
+    SR: bottom=69%, top=52%, light=62%, slide=57%, hinge=51%, microwave=69%, kettle=43%
+  DP-Transformer: p3=0.997±0.006  p4=0.957±0.015  lat=578.6±7.7 ms
+    SR: bottom=65%, top=41%, light=57%, slide=58%, hinge=49%, microwave=69%, kettle=56%
+

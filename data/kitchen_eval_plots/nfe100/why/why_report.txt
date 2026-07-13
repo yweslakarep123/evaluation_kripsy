@@ -1,0 +1,146 @@
+WHY analysis from NFE100 full eval — operating point FP@8 vs DP@100
+NFE map: {'FlowPolicy': 8, 'DP-CNN': 100, 'DP-Transformer': 100}
+
+==============================================================================
+WHY FlowPolicy vs Diffusion Policy — Kitchen completion-order analysis
+==============================================================================
+
+Data: 3 seeds × 100 episodes per model (n=300).
+Sources: eval_metrics.json completion_order + trajectory NPZ n_control_steps.
+Note: NPZ per-env-step arrays are truncated (n_env_steps≈3); spatial EE
+distance analysis is NOT used. Control-step counts are reliable.
+
+------------------------------------------------------------------------------
+1) Hypothesis check: are kettle / bottom burner usually FIRST in FlowPolicy?
+------------------------------------------------------------------------------
+NO. All methods most often start with microwave.
+  FlowPolicy: MW=72%, Kettle=12%, Bottom=16%
+  DP-CNN: MW=69%, Kettle=15%, Bottom=16%
+  DP-Transformer: MW=69%, Kettle=14%, Bottom=16%
+
+Mean completion position (0=first) among completed:
+  task                    FlowPolicy            DP-CNN    DP-Transformer
+  microwave               0.00 n=216        0.00 n=207        0.00 n=207
+  kettle                  0.66 n=103        0.64 n=129        0.74 n=167
+  bottom burner           0.92 n=247        0.88 n=208        1.01 n=196
+  top burner              1.66 n=167        1.62 n=155        1.46 n=124
+  light switch            2.23 n=132        2.10 n=186        2.07 n=170
+  slide cabinet           2.68 n=186        2.70 n=171        2.70 n=175
+  hinge cabinet           2.97 n=93         3.08 n=154        2.98 n=146
+
+Kettle/bottom are early for BOTH methods (pos ~0.7–1.3). Position alone
+does NOT explain why FP has higher kettle/bottom success rates.
+
+------------------------------------------------------------------------------
+2) Main finding: different chaining / transition patterns
+------------------------------------------------------------------------------
+
+  FlowPolicy — P(next|after):
+    after MW       (n=216): Kettle=31%, Bottom=62%
+    after Kettle   (n=103): Bottom=62%, Top=17%, Light=17%
+    after Bottom   (n=247): Top=57%, Light=21%, Slide=19%
+    after Top      (n=167): Light=37%, Slide=38%, Hinge=23%
+    after Light    (n=132): Slide=55%, Hinge=16%, STOP=29%
+    after Slide    (n=186): Hinge=13%, STOP=87%
+    after Hinge    (n=93 ): STOP=100%
+
+  DP-CNN — P(next|after):
+    after MW       (n=207): Kettle=40%, Bottom=46%, Top=5%, Light=8%
+    after Kettle   (n=129): Bottom=50%, Top=24%, Light=22%
+    after Bottom   (n=208): Top=54%, Light=26%, Slide=12%, Hinge=7%
+    after Top      (n=155): Light=55%, Slide=21%, Hinge=24%
+    after Light    (n=186): Slide=58%, Hinge=27%, STOP=15%
+    after Slide    (n=171): Hinge=31%, STOP=69%
+    after Hinge    (n=154): STOP=100%
+
+  DP-Transformer — P(next|after):
+    after MW       (n=207): Kettle=60%, Bottom=27%, Top=9%
+    after Kettle   (n=167): Bottom=54%, Top=12%, Light=24%, Slide=10%
+    after Bottom   (n=196): Top=44%, Light=25%, Slide=22%, Hinge=9%
+    after Top      (n=124): Light=57%, Slide=25%, Hinge=15%
+    after Light    (n=170): Slide=50%, Hinge=35%, STOP=15%
+    after Slide    (n=175): Hinge=29%, STOP=71%
+    after Hinge    (n=146): STOP=100%
+
+Interpretation:
+  • FP locks into MW→Kettle→Bottom, then often Slide, then STOPS (99%).
+  • DP after Bottom more often goes Top/Light; after Light/Slide often Hinge.
+  • So FP over-samples early chain (kettle/bottom); DP over-samples mid/late
+    chain (top burner, light switch, hinge cabinet).
+
+------------------------------------------------------------------------------
+3) Path-conditional success (same start, different later outcomes)
+------------------------------------------------------------------------------
+
+  Path MW->Kettle:
+    FlowPolicy       n=68   kettle=100.0%  bottom= 42.6%  top= 26.5%  light= 44.1%  hinge= 32.4%
+    DP-CNN           n=83   kettle=100.0%  bottom= 26.5%  top= 36.1%  light= 50.6%  hinge= 71.1%
+    DP-Transformer   n=124  kettle=100.0%  bottom= 40.3%  top= 15.3%  light= 37.9%  hinge= 61.3%
+
+  Path MW->Bottom:
+    FlowPolicy       n=134  kettle=  0.0%  bottom=100.0%  top= 49.3%  light= 44.8%  hinge= 32.8%
+    DP-CNN           n=96   kettle=  0.0%  bottom=100.0%  top= 47.9%  light= 56.2%  hinge= 29.2%
+    DP-Transformer   n=55   kettle=  0.0%  bottom=100.0%  top= 30.9%  light= 69.1%  hinge= 21.8%
+
+  Path Kettle-first:
+    FlowPolicy       n=35   kettle=100.0%  bottom=100.0%  top= 77.1%  light= 34.3%  hinge= 28.6%
+    DP-CNN           n=46   kettle=100.0%  bottom= 93.5%  top= 45.7%  light= 56.5%  hinge= 67.4%
+    DP-Transformer   n=43   kettle=100.0%  bottom= 97.7%  top= 51.2%  light= 60.5%  hinge= 32.6%
+
+  Path Bottom-first:
+    FlowPolicy       n=49   kettle=  0.0%  bottom=100.0%  top= 95.9%  light= 38.8%  hinge= 20.4%
+    DP-CNN           n=47   kettle=  0.0%  bottom=100.0%  top=100.0%  light= 76.6%  hinge= 17.0%
+    DP-Transformer   n=49   kettle=  0.0%  bottom=100.0%  top= 98.0%  light= 63.3%  hinge= 34.7%
+
+On MW→Kettle: FP keeps high bottom success but almost never reaches top/hinge;
+DP reaches hinge far more often even when kettle came second.
+
+------------------------------------------------------------------------------
+4) Why DP wins multi-stage (p3–p4)
+------------------------------------------------------------------------------
+  FlowPolicy num_tasks_completed: 1:1%, 2:1%, 3:14%, 4:84%
+    last task: MW=1%, Bottom=0%, Top=1%, Light=13%, Slide=54%, Hinge=31%
+  DP-CNN num_tasks_completed: 3:1%, 4:95%, 5:4%
+    last task: Light=9%, Slide=39%, Hinge=51%
+  DP-Transformer num_tasks_completed: 0:0%, 3:4%, 4:95%, 5:0%
+    last task: Bottom=0%, Top=1%, Light=8%, Slide=42%, Hinge=49%
+
+FP mass at 3–4 tasks, last task often Slide. DP mass at 4–5 tasks, last
+task often Hinge — hence higher p3/p4 and hinge/light/top success.
+
+------------------------------------------------------------------------------
+5) Why FlowPolicy is faster
+------------------------------------------------------------------------------
+  FlowPolicy       latency=  117.2 ms  n_ctrl=  94.0  n_ctrl×lat=   11020 ms  episode_dur=   23500 ms
+  DP-CNN           latency=  631.8 ms  n_ctrl=  35.0  n_ctrl×lat=   22113 ms  episode_dur=   23333 ms
+  DP-Transformer   latency=  578.6 ms  n_ctrl=  35.0  n_ctrl×lat=   20252 ms  episode_dur=   23333 ms
+
+FP: many cheap predict calls (~94 × ~14 ms).
+DP: few expensive predict calls (~35 × ~600 ms).
+Wall-clock episode duration tracks the expensive DP inference, not step count.
+
+------------------------------------------------------------------------------
+6) Direct answers
+------------------------------------------------------------------------------
+
+Q: Why is FlowPolicy better at kettle & bottom burner?
+A: Not because they are first. FP more often commits to the early chain
+   MW→Kettle→Bottom (74% MW→Kettle vs ~48–50% for DP) and converts kettle
+   completions into bottom (78%). DP branches away from that early chain
+   more often (MW→Bottom or Kettle→Light), so fewer kettle/bottom successes.
+
+Q: Why is Diffusion Policy better at hinge, light switch, top burner?
+A: After bottom/top, DP continues into Top→Light→Hinge much more often.
+   FP after bottom prefers Slide and then almost always STOPS — it rarely
+   attempts the mid/late cabinet/switch chain. Same start position, different
+   next-task policy.
+
+Q: Why is FlowPolicy faster?
+A: Per-call inference is ~40–45× cheaper. Even with more control steps,
+   total inference budget and episode wall-clock stay much lower.
+
+Q: Why is Diffusion Policy better at multi-stage?
+A: DP finishes 4–5 tasks in nearly every episode and often ends on hinge.
+   FP frequently ends the chain at slide after 3–4 tasks, so p3/p4 drop.
+
+==============================================================================

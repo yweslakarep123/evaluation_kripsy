@@ -3,30 +3,42 @@ Kitchen NFE100 full eval report
 DP-CNN / DP-Transformer / FlowPolicy × NFE {1,8,32,100} × 3 seeds × 100 ep
 ==============================================================================
 
-Discovered runs: 0
-Aggregated (model,NFE) points: 0
+Discovered runs: 36
+Aggregated (model,NFE) points: 12
 
 model                             NFE n_seeds     mean_tasks             p3             p4       lat_ms
 --------------------------------------------------------------------------------------------------------------
+diffusion_policy_cnn                1       3  0.227±0.060  0.000±0.000  0.000±0.000      8.0±0.1
+diffusion_policy_cnn                8       3  0.087±0.025  0.000±0.000  0.000±0.000     55.0±0.1
+diffusion_policy_cnn               32       3  0.100±0.123  0.003±0.006  0.003±0.006    211.7±1.8
+diffusion_policy_cnn              100       3  4.033±0.012  1.000±0.000  0.990±0.010    631.8±5.6
+diffusion_policy_transformer        1       3  0.237±0.074  0.000±0.000  0.000±0.000      6.5±0.2
+diffusion_policy_transformer        8       3  0.160±0.046  0.000±0.000  0.000±0.000     53.9±0.4
+diffusion_policy_transformer       32       3  0.437±0.081  0.030±0.020  0.007±0.006    197.3±2.9
+diffusion_policy_transformer      100       3  3.950±0.017  0.997±0.006  0.957±0.015    578.6±7.7
+flowpolicy                          1       3  3.257±0.135  0.793±0.045  0.560±0.070     13.9±0.1
+flowpolicy                          8       3  3.813±0.032  0.980±0.017  0.840±0.026    117.2±1.1
+flowpolicy                         32       3  3.803±0.023  0.967±0.006  0.850±0.017    499.5±4.3
+flowpolicy                        100       3  3.830±0.030  0.980±0.010  0.863±0.021   1579.8±5.6
 
 Equal-NFE snapshots (mean_tasks / p3 / p4):
   NFE=1:
-    FlowPolicy: (missing)
-    DP-CNN: (missing)
-    DP-Transformer: (missing)
+    FlowPolicy: tasks=3.257±0.135  p3=0.7933333333333333  p4=0.5599999999999999  lat=13.9ms
+    DP-CNN: tasks=0.227±0.060  p3=0.0  p4=0.0  lat=8.0ms
+    DP-Transformer: tasks=0.237±0.074  p3=0.0  p4=0.0  lat=6.5ms
   NFE=8:
-    FlowPolicy: (missing)
-    DP-CNN: (missing)
-    DP-Transformer: (missing)
+    FlowPolicy: tasks=3.813±0.032  p3=0.98  p4=0.84  lat=117.2ms
+    DP-CNN: tasks=0.087±0.025  p3=0.0  p4=0.0  lat=55.0ms
+    DP-Transformer: tasks=0.160±0.046  p3=0.0  p4=0.0  lat=53.9ms
   NFE=32:
-    FlowPolicy: (missing)
-    DP-CNN: (missing)
-    DP-Transformer: (missing)
+    FlowPolicy: tasks=3.803±0.023  p3=0.9666666666666667  p4=0.85  lat=499.5ms
+    DP-CNN: tasks=0.100±0.123  p3=0.0033333333333333335  p4=0.0033333333333333335  lat=211.7ms
+    DP-Transformer: tasks=0.437±0.081  p3=0.03  p4=0.006666666666666667  lat=197.3ms
   NFE=100:
-    FlowPolicy: (missing)
-    DP-CNN: (missing)
-    DP-Transformer: (missing)
+    FlowPolicy: tasks=3.830±0.030  p3=0.98  p4=0.8633333333333333  lat=1579.8ms
+    DP-CNN: tasks=4.033±0.012  p3=1.0  p4=0.9899999999999999  lat=631.8ms
+    DP-Transformer: tasks=3.950±0.017  p3=0.9966666666666667  p4=0.9566666666666667  lat=578.6ms
 
-Completeness: 0/36 runs (INCOMPLETE — resume orchestrator)
+Completeness: 36/36 runs (COMPLETE)
 
 ==============================================================================
