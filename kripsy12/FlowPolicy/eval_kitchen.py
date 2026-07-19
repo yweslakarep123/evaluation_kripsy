@@ -49,6 +49,23 @@ def _compute_mean_std(values: List[float]) -> Dict[str, Any]:
     }
 
 
+def _metric_mean(value: Any) -> Optional[float]:
+    """Unwrap mean from float or {mean, std, n_samples}."""
+    if value is None:
+        return None
+    if isinstance(value, dict):
+        m = value.get("mean")
+        return float(m) if m is not None else None
+    return float(value)
+
+
+def _metric_std(value: Any) -> Optional[float]:
+    if isinstance(value, dict):
+        s = value.get("std")
+        return float(s) if s is not None else None
+    return None
+
+
 def resolve_checkpoint(pattern: str) -> str:
     if pathlib.Path(pattern).is_file():
         return pattern
@@ -151,12 +168,20 @@ def format_eval_report(metrics: Dict[str, Any], seed_name: str) -> str:
     px7 = ms7.get("px", {})
     if px7:
         lines.extend(["", "Multi-stage p_k (>= k of 7 tasks completed)", "-" * 72])
-        px_line = "  ".join(
-            f"p{k}={px7[f'p{k}']:.3f}"
-            for k in range(1, len(ALL_TASKS) + 1)
-            if f"p{k}" in px7
-        )
-        lines.append(f"  {px_line}")
+        parts = []
+        for k in range(1, len(ALL_TASKS) + 1):
+            pk = f"p{k}"
+            if pk not in px7:
+                continue
+            mean = _metric_mean(px7[pk])
+            std = _metric_std(px7[pk])
+            if mean is None:
+                continue
+            if std is not None:
+                parts.append(f"p{k}={mean:.3f} ± {std:.3f}")
+            else:
+                parts.append(f"p{k}={mean:.3f}")
+        lines.append(f"  {'  '.join(parts)}")
 
     inf = metrics.get("timing_ms", {}).get("inference_latency", {})
     if inf.get("mean") is not None:
@@ -244,16 +269,19 @@ def aggregate_checkpoint_metrics(
         agg_px = {}
         for pk in sorted(px_keys, key=lambda x: int(x[1:])):
             vals = [
-                m["multistage_metrics"][label]["px"][pk]
+                _metric_mean(m["multistage_metrics"][label]["px"][pk])
                 for m in checkpoint_metrics
                 if pk in m.get("multistage_metrics", {}).get(label, {}).get("px", {})
+                and _metric_mean(m["multistage_metrics"][label]["px"][pk]) is not None
             ]
             agg_px[pk] = _compute_mean_std(vals)
         cum_vals = [
-            m["multistage_metrics"][label]["cumulative_order_success_rate"]
+            _metric_mean(m["multistage_metrics"][label]["cumulative_order_success_rate"])
             for m in checkpoint_metrics
             if label in m.get("multistage_metrics", {})
-            and m["multistage_metrics"][label].get("cumulative_order_success_rate")
+            and _metric_mean(
+                m["multistage_metrics"][label].get("cumulative_order_success_rate")
+            )
             is not None
         ]
         sub_goals = (

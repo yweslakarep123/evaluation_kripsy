@@ -71,10 +71,14 @@ read_px() {
 import json, sys
 m=json.load(open(sys.argv[1]))
 px=m.get('multistage_metrics',{}).get('all_7_tasks',{}).get('px',{})
+def mean(v):
+    if isinstance(v, dict):
+        return v.get('mean', float('nan'))
+    return v if v is not None else float('nan')
 lat=m.get('timing_ms',{}).get('inference_latency',{}).get('mean')
 eps=m.get('episodes') or []
 mt=(sum(e.get('num_tasks_completed',0) for e in eps)/len(eps)) if eps else float('nan')
-print(f\"{px.get('p3', float('nan'))} {px.get('p4', float('nan'))} {mt} {lat}\")
+print(f\"{mean(px.get('p3'))} {mean(px.get('p4'))} {mt} {lat}\")
 " "${metrics}"
 }
 

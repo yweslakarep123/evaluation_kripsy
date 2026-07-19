@@ -151,9 +151,10 @@ def load_summary(model_key: str, nfe: int, dp_root: Path) -> Dict[str, Any]:
 
     for k in range(1, 8):
         pk = f"p{k}"
-        means = [
-            m["multistage_metrics"]["all_7_tasks"]["px"][pk] for m in metrics_list
-        ]
+        means = []
+        for m in metrics_list:
+            v = m["multistage_metrics"]["all_7_tasks"]["px"][pk]
+            means.append(v["mean"] if isinstance(v, dict) else v)
         mu, sd = _mean_std(means)
         out["multistage_metrics"]["all_7_tasks"]["px"][pk] = {
             "mean": mu,

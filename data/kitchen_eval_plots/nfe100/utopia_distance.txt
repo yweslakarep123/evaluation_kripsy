@@ -1,0 +1,30 @@
+Utopia distance to Ideal (0, 1) in normalized (latency, success) space
+========================================================================
+
+Ideal point: (x*, y*) = (0, 1)
+  x_tilde_i = L_i / L_max
+  y_i       = (p1 + p2 + p3 + p4) / 4
+  d_i       = sqrt( x_tilde_i^2 + (1 - y_i)^2 )
+
+L_max (ms) = 1585.752220   (max latency among 36 seed points)
+
+Mean distance per (model, NFE), sorted ascending:
+model               NFE     lat_ms       SR  x_tilde        d
+------------------------------------------------------------------------
+FlowPolicy            8     117.23   0.9533   0.0739   0.0874
+FlowPolicy            1      13.93   0.8133   0.0088   0.1869
+FlowPolicy           32     499.46   0.9500   0.3150   0.3189
+DP-Transformer      100     578.62   0.9867   0.3649   0.3651
+DP-CNN              100     631.81   0.9975   0.3984   0.3984
+DP-Transformer       32     197.28   0.1092   0.1244   0.8995
+DP-Transformer        1       6.52   0.0592   0.0041   0.9408
+DP-CNN                1       8.04   0.0567   0.0051   0.9433
+DP-Transformer        8      53.91   0.0400   0.0340   0.9606
+DP-CNN                8      55.04   0.0217   0.0347   0.9789
+DP-CNN               32     211.69   0.0250   0.1335   0.9841
+FlowPolicy          100    1579.80   0.9575   0.9962   0.9972
+
+Per-seed distances (see utopia_distance.csv for full table).
+Closest seed point: FlowPolicy seed=baseline_43 NFE=8 d=0.0825
+Farthest seed point: DP-CNN seed=train1 NFE=32 d=1.0064
+
