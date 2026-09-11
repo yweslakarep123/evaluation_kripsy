@@ -25,9 +25,9 @@ policy:
   
   diffusion_step_embed_dim: 128
   down_dims:
+  - 256
   - 512
   - 1024
-  - 2048
   crop_shape:
   - 84
   - 84
@@ -139,10 +139,10 @@ logging:
 checkpoint:
   save_ckpt: False # if True, save checkpoint every checkpoint_every
   topk:
-    monitor_key: test_mean_score
-    mode: max
+    monitor_key: val_loss
+    mode: min
     k: 1
-    format_str: 'epoch={epoch:04d}-test_mean_score={test_mean_score:.3f}.ckpt'
+    format_str: 'epoch={epoch:04d}-val_loss={val_loss:.5f}.ckpt'
   save_last_ckpt: True # this only saves when save_ckpt is True
   save_last_snapshot: False
 

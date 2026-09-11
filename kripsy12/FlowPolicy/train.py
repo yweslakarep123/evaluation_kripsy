@@ -34,6 +34,11 @@ from flow_policy_3d.dataset.base_dataset import BaseDataset
 from flow_policy_3d.env_runner.base_runner import BaseRunner
 from flow_policy_3d.common.checkpoint_util import TopKCheckpointManager
 from flow_policy_3d.common.pytorch_util import dict_apply, optimizer_to
+from flow_policy_3d.common.training_curves import (
+    append_loss_row,
+    restore_best_val_tracker,
+    write_run_artifacts,
+)
 from flow_policy_3d.model.flow.ema_model import EMAModel
 from flow_policy_3d.model.common.lr_scheduler import get_scheduler
 import warnings
@@ -155,7 +160,7 @@ def _json_safe_for_metrics(obj):
 
 
 class TrainFlowPolicyWorkspace:
-    include_keys = ['global_step', 'epoch']
+    include_keys = ['global_step', 'epoch', 'best_val_loss', 'best_val_epoch']
     exclude_keys = tuple()
 
     def __init__(self, cfg: OmegaConf, output_dir=None):
@@ -187,6 +192,8 @@ class TrainFlowPolicyWorkspace:
         # configure training state
         self.global_step = 0
         self.epoch = 0
+        self.best_val_loss = None
+        self.best_val_epoch = None
 
 
 
@@ -219,6 +226,13 @@ class TrainFlowPolicyWorkspace:
             if lastest_ckpt_path.is_file():
                 print(f"Resuming from checkpoint {lastest_ckpt_path}")
                 self.load_checkpoint(path=lastest_ckpt_path)
+            if self.best_val_loss is None:
+                restored_loss, restored_epoch = restore_best_val_tracker(
+                    self.output_dir
+                )
+                if restored_loss is not None:
+                    self.best_val_loss = restored_loss
+                    self.best_val_epoch = restored_epoch
 
         # configure dataset
         dataset: BaseDataset
@@ -509,6 +523,36 @@ class TrainFlowPolicyWorkspace:
                         step_log['val_loss'] = val_loss
                         last_epoch_val_loss = float(val_loss)
 
+            is_best_val = False
+            epoch_val_loss = step_log.get("val_loss")
+            if epoch_val_loss is not None and (
+                self.best_val_loss is None
+                or float(epoch_val_loss) < float(self.best_val_loss)
+            ):
+                self.best_val_loss = float(epoch_val_loss)
+                self.best_val_epoch = int(self.epoch)
+                is_best_val = True
+                if RUN_CKPT and cfg.checkpoint.save_ckpt:
+                    self.save_checkpoint(
+                        path=os.path.join(
+                            self.output_dir, "checkpoints", "best_val.ckpt"
+                        )
+                    )
+
+            try:
+                append_loss_row(
+                    self.output_dir,
+                    epoch=int(self.epoch),
+                    train_loss=last_epoch_train_loss,
+                    val_loss=(
+                        float(epoch_val_loss) if epoch_val_loss is not None else None
+                    ),
+                    lr=float(step_log.get("lr", lr_scheduler.get_last_lr()[0])),
+                    is_best_val=is_best_val,
+                )
+            except Exception as exc:
+                cprint(f"[training_curves] gagal menulis loss_history: {exc}", "yellow")
+
             # run diffusion sampling on a training batch
             if (self.epoch % cfg.training.sample_every) == 0:
                 with torch.no_grad():
@@ -534,10 +578,13 @@ class TrainFlowPolicyWorkspace:
                     del mse
 
             _mk_topk = OmegaConf.select(
-                cfg, "checkpoint.topk.monitor_key", default="test_mean_score"
+                cfg, "checkpoint.topk.monitor_key", default="val_loss"
             )
             if _mk_topk not in step_log:
-                step_log[_mk_topk] = -float(train_loss)
+                if last_epoch_val_loss is not None:
+                    step_log[_mk_topk] = float(last_epoch_val_loss)
+                else:
+                    step_log[_mk_topk] = float(train_loss)
 
             # checkpoint
             if (self.epoch % cfg.training.checkpoint_every) == 0 and cfg.checkpoint.save_ckpt:
@@ -579,6 +626,21 @@ class TrainFlowPolicyWorkspace:
 
                 if topk_ckpt_path is not None:
                     self.save_checkpoint(path=topk_ckpt_path)
+
+                try:
+                    write_run_artifacts(
+                        self.output_dir,
+                        best_val_epoch=self.best_val_epoch,
+                        best_val_loss=self.best_val_loss,
+                        final_epoch=int(self.epoch),
+                        final_train_loss=last_epoch_train_loss,
+                        final_val_loss=last_epoch_val_loss,
+                    )
+                except Exception as exc:
+                    cprint(
+                        f"[training_curves] gagal menulis plot checkpoint: {exc}",
+                        "yellow",
+                    )
             # ========= eval end for this epoch ==========
             policy.train()
 
@@ -600,6 +662,16 @@ class TrainFlowPolicyWorkspace:
         final_metrics = {
             "train_loss_final": last_epoch_train_loss,
             "val_loss_final": last_epoch_val_loss,
+            "best_val_loss": self.best_val_loss,
+            "best_val_epoch": self.best_val_epoch,
+            "checkpoint_selection_criterion": "min_val_loss",
+            "checkpoint_used_for_eval": (
+                "best_val"
+                if os.path.isfile(
+                    os.path.join(self.output_dir, "checkpoints", "best_val.ckpt")
+                )
+                else "latest"
+            ),
         }
         if early_stop_enabled:
             final_metrics["early_stop"] = {
@@ -609,17 +681,31 @@ class TrainFlowPolicyWorkspace:
                 "stopped_at_epoch": int(self.epoch),
             }
         with open(os.path.join(self.output_dir, "training_final.json"), "w") as f:
-            json.dump(final_metrics, f, indent=2)
+            json.dump(_json_safe_for_metrics(final_metrics), f, indent=2)
 
         if RUN_CKPT and cfg.checkpoint.save_last_ckpt:
             self.save_checkpoint()
+
+        try:
+            write_run_artifacts(
+                self.output_dir,
+                best_val_epoch=self.best_val_epoch,
+                best_val_loss=self.best_val_loss,
+                final_epoch=int(self.epoch),
+                final_train_loss=last_epoch_train_loss,
+                final_val_loss=last_epoch_val_loss,
+            )
+        except Exception as exc:
+            cprint(f"[training_curves] gagal menulis artefak akhir: {exc}", "yellow")
 
     def eval(self):
         # load the latest checkpoint
         
         cfg = copy.deepcopy(self.cfg)
         
-        lastest_ckpt_path = self.get_checkpoint_path(tag="latest")
+        lastest_ckpt_path = self.get_checkpoint_path(tag="best")
+        if not lastest_ckpt_path.is_file():
+            lastest_ckpt_path = self.get_checkpoint_path(tag="latest")
         if lastest_ckpt_path.is_file():
             cprint(f"Resuming from checkpoint {lastest_ckpt_path}", 'magenta')
             self.load_checkpoint(path=lastest_ckpt_path)
@@ -695,23 +781,39 @@ class TrainFlowPolicyWorkspace:
         return str(path.absolute())
     
     def get_checkpoint_path(self, tag='latest'):
-        if tag=='latest':
-            return pathlib.Path(self.output_dir).joinpath('checkpoints', f'{tag}.ckpt')
-        elif tag=='best': 
-            # the checkpoints are saved as format: epoch={}-test_mean_score={}.ckpt
-            # find the best checkpoint
-            checkpoint_dir = pathlib.Path(self.output_dir).joinpath('checkpoints')
-            all_checkpoints = os.listdir(checkpoint_dir)
+        checkpoint_dir = pathlib.Path(self.output_dir).joinpath('checkpoints')
+        if tag == 'latest':
+            return checkpoint_dir.joinpath('latest.ckpt')
+        elif tag == 'best':
+            best_val = checkpoint_dir.joinpath('best_val.ckpt')
+            if best_val.is_file():
+                return best_val
+            latest = checkpoint_dir.joinpath('latest.ckpt')
+            if not checkpoint_dir.is_dir():
+                return best_val
             best_ckpt = None
-            best_score = -1e10
-            for ckpt in all_checkpoints:
-                if 'latest' in ckpt:
-                    continue
-                score = float(ckpt.split('test_mean_score=')[1].split('.ckpt')[0])
-                if score > best_score:
-                    best_ckpt = ckpt
-                    best_score = score
-            return pathlib.Path(self.output_dir).joinpath('checkpoints', best_ckpt)
+            best_score = None
+            try:
+                for ckpt in os.listdir(checkpoint_dir):
+                    if 'latest' in ckpt or ckpt == 'best_val.ckpt':
+                        continue
+                    if 'val_loss=' in ckpt:
+                        score = float(ckpt.split('val_loss=')[1].split('.ckpt')[0])
+                        if best_score is None or score < best_score:
+                            best_ckpt = ckpt
+                            best_score = score
+                    elif 'test_mean_score=' in ckpt:
+                        score = float(
+                            ckpt.split('test_mean_score=')[1].split('.ckpt')[0]
+                        )
+                        if best_score is None or score > best_score:
+                            best_ckpt = ckpt
+                            best_score = score
+            except (OSError, ValueError, IndexError):
+                best_ckpt = None
+            if best_ckpt is not None:
+                return checkpoint_dir.joinpath(best_ckpt)
+            return latest if latest.is_file() else best_val
         else:
             raise NotImplementedError(f"tag {tag} not implemented")
             

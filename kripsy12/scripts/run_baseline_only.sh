@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Hanya 3 pelatihan baseline: 3 seed × 1 profil (standard).
-# Split demo MJL: 70%% train / 20%% val / 10%% test (~605 episode).
+# Split demo MJL: 80% train / 20% val / 0% test (~605 episode).
 # Eval policy: simulasi MuJoCo KitchenAllV0, multi-seed 0,42,101 via infer_kitchen_lowdim.py.
 # Dari akar repositori: ./scripts/run_baseline_only.sh
 set -euo pipefail

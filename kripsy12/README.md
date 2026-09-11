@@ -16,6 +16,7 @@ Struktur repositori:
 │   ├── cv_splits.py
 │   ├── summarize.py
 │   ├── plot_results.py
+│   ├── plot_training_convergence.py  # overlay kurva loss 3 seed
 │   └── experiment_constants.py
 └── FlowPolicy/             # train.py, infer_kitchen_lowdim.py, paket flow_policy_3d
     ├── train.py
@@ -125,29 +126,31 @@ ls FlowPolicy/data/kitchen/kitchen_demos_multitask/*.mjl | wc -l
 # Harus ~605
 ```
 
-### 3. Eksperimen yang direkomendasikan — baseline only
+### 3. Eksperimen yang direkomendasikan — baseline only (Vast.ai)
 
-Enam run: **3 seed training** (`0`, `42`, `101`) × **2 profil** (`standard`, `minimal`). Setiap run: train 3000 epoch → eval MuJoCo **50 episode × 3 eval-seed** (`0,42,101`) → metrik **p1–p7** + `test_all_7_success`.
+Konfigurasi yang dipakai: **baseline yang sudah diperbaiki** (split demo **80% train / 20% val / tanpa test**, UNet `down_dims=[256,512,1024]`, checkpoint eval = `best_val.ckpt`). **Tanpa Hyperband.**
 
-Dari **akar repo**:
+**3 seed training: `42`, `43`, `44`** × profil **`standard`** = **3 run**. Setiap run: train 3000 epoch → eval MuJoCo **50 episode × 3 eval-seed** (`0,42,101`) → metrik **p1–p7** + plot konvergensi.
+
+Dari **akar repo** (setelah `conda activate flowpolicy-kitchen`):
 
 ```bash
-conda activate flowpolicy-kitchen
 chmod +x scripts/*.sh
+export MUJOCO_GL=egl
+export WANDB_MODE=offline
 
 ./scripts/run_baseline_only.sh \
-  --output-dir outputs/baseline_only \
-  --max-batch-size 64 \
-  --dataloader-num-workers 2
+  --seeds 42 43 44 \
+  --output-dir outputs/vast_baseline \
+  --max-batch-size 128 \
+  --dataloader-num-workers 4 \
+  --skip-inference-videos \
+  2>&1 | tee vast_baseline.log
 ```
 
-**GPU 24 GB+** — batch default orkestrator:
+`--max-batch-size 128` dan `--dataloader-num-workers 4` sesuai baseline (VRAM 32 GB).
 
-```bash
-./scripts/run_baseline_only.sh --output-dir outputs/baseline_only
-```
-
-**GPU 16 GB** — mulai dari batch 64 (lihat [Opsi VRAM](#opsi-vram-gpu-cloud)).
+Resume jika instance mati: jalankan **perintah yang sama** ( `--output-dir` sama). Run yang sudah `metrics.json` / `status=ok` dilewati; training terputus dilanjutkan dari `latest.ckpt`.
 
 ### 4. Eksperimen penuh (baseline + Hyperband + rerun pemenang)
 
@@ -205,6 +208,7 @@ Jalankan **perintah yang sama** dengan `--output-dir` yang sama. Run selesai (`m
 ```bash
 python scripts/summarize.py --output-dir outputs/baseline_only
 python scripts/plot_results.py --output-dir outputs/baseline_only
+python scripts/plot_training_convergence.py --output-dir outputs/baseline_only
 ```
 
 Keluaran penting:
@@ -213,8 +217,11 @@ Keluaran penting:
 |------|-----|
 | `outputs/.../results.csv` | Metrik per run: `test_p1`…`test_p7`, `test_all_7_success`, `test_p4_paper`. |
 | `outputs/.../runs/baseline_seed*_*/metrics.json` | Metrik eval lengkap per run. |
-| `outputs/.../runs/baseline_seed*_*/checkpoints/latest.ckpt` | Checkpoint untuk eval ulang. |
-| `outputs/.../summary.csv`, `plots/` | Agregat statistik + grafik. |
+| `outputs/.../runs/baseline_seed*_*/checkpoints/best_val.ckpt` | Checkpoint **eval** (val_loss minimum). |
+| `outputs/.../runs/baseline_seed*_*/checkpoints/latest.ckpt` | Checkpoint **resume** (epoch terakhir). |
+| `outputs/.../runs/baseline_seed*_*/plots/` | Kurva train/val loss, analisis konvergensi, kriteria checkpoint. |
+| `outputs/.../seed_convergence.json` | Apakah 3 seed konvergen secara comparable. |
+| `outputs/.../summary.csv`, `plots/` | Agregat statistik + grafik eval. |
 
 ### 8. Eval manual satu checkpoint (opsional)
 
@@ -225,7 +232,7 @@ cd FlowPolicy
 conda activate flowpolicy-kitchen
 
 MUJOCO_GL=egl python infer_kitchen_lowdim.py \
-  --checkpoint runs/<run_name>/checkpoints/latest.ckpt \
+  --checkpoint runs/<run_name>/checkpoints/best_val.ckpt \
   --metrics-json runs/<run_name>/metrics.json \
   --n-infer-episodes 50 \
   --eval-seeds 0,42,101
@@ -235,7 +242,7 @@ Hemat disk (tanpa video MP4):
 
 ```bash
 MUJOCO_GL=egl python infer_kitchen_lowdim.py \
-  --checkpoint path/ke/latest.ckpt \
+  --checkpoint path/ke/best_val.ckpt \
   --metrics-json path/ke/metrics.json \
   --n-infer-episodes 50 \
   --eval-seeds 0,42,101 \
@@ -285,7 +292,7 @@ Tidak melatih model — hanya cek bracket / `hyperband_state.json`:
 | Mode | Skrip | Isi |
 |------|-------|-----|
 | Baseline + Hyperband + rerun pemenang | `./scripts/run_experiment.sh` | Fase 1→2→3 |
-| Hanya baseline (6 run) | `./scripts/run_baseline_only.sh` | Lewati Hyperband |
+| Hanya baseline (3 seed × 1 profil) | `./scripts/run_baseline_only.sh` | Lewati Hyperband; di Vast.ai: `--seeds 42 43 44` |
 | Hanya Hyperband + rerun pemenang | `./scripts/run_hyperband_only.sh` | Lewati baseline |
 
 Setara Python langsung:
@@ -308,7 +315,7 @@ Flag eksklusif: `--baseline-only` atau `--hyperband-only` (maksimal satu).
 
 | VRAM | `--max-batch-size` | `--dataloader-num-workers` |
 |------|--------------------|----------------------------|
-| **≥ 24 GB** | `128` (default) | `4` |
+| **≥ 24 GB** (termasuk 32 GB) | `128` (baseline) | `4` |
 | **16 GB** | `64` (mulai di sini) | `2` |
 | **8 GB** | `16`–`32` | `0` |
 
@@ -352,7 +359,7 @@ Checkpoint dan log Hydra: `FlowPolicy/data/outputs/` atau sesuai `hydra.run.dir`
 
 ## Pipeline eksperimen (baseline + Hyperband, tanpa k-fold)
 
-Pelatihan **tidak** memakai k-fold. Episode dibagi **sekali** train/val/test (`scripts/cv_splits.py`).
+Pelatihan **tidak** memakai k-fold. Episode dibagi **sekali** train/val **tanpa test** (`scripts/cv_splits.py`, default **80/20/0**). Eval policy memakai simulasi MuJoCo, bukan holdout demo.
 
 Skrip **`scripts/run_experiment.py`** menjalankan tiga fase **berurutan**:
 
@@ -365,6 +372,10 @@ Skrip **`scripts/run_experiment.py`** menjalankan tiga fase **berurutan**:
 Profil preprocessing: **`standard`** (noise observasi) dan **`minimal`**.
 
 Eval setelah training: **`infer_kitchen_lowdim.py`** — 7 task KitchenAllV0, metrik **p1–p7**, `test_all_7_success`, `test_p4_paper`, agregasi **3 eval-seed** (`0,42,101`).
+
+**Checkpoint:** kriteria seleksi adalah **`min val_loss`**. Inferensi memakai `best_val.ckpt`; `latest.ckpt` hanya untuk resume. Setiap run menulis `plots/train_val_loss.{png,pdf}`, `plots/convergence_analysis.{png,pdf}`, `plots/checkpoint_selection.{png,pdf}`, plus `checkpoint_selection.json` dan `convergence.json`.
+
+**UNet:** `policy.down_dims=[256,512,1024]` (arsitektur default `ConditionalUnet1D`).
 
 ### Hyperband (Li et al., 2018) singkat
 
@@ -388,9 +399,10 @@ Untuk fit **≤ ~2 hari** (asumsi ~8 jam/baseline run): **`--hyperband-s-max 2 -
 | Argumen | Default | Keterangan |
 |---------|---------|------------|
 | `--dataset-dir` | `FlowPolicy/data/kitchen/kitchen_demos_multitask` | Demo MJL (relatif ke `FlowPolicy/`). |
-| `--seeds` | `0 42 101` | Seed training baseline + rerun. |
+| `--seeds` | `0 42 101` | Seed training. Untuk Vast.ai baseline pakai **`42 43 44`**. |
 | `--profiles` | `standard minimal` | Profil preprocessing. |
-| `--cv-seed` | `12345` | Seed pembagian episode train/val/test. |
+| `--cv-seed` | `12345` | Seed pembagian episode train/val. |
+| `--train-frac` / `--val-frac` / `--test-frac` | `0.8` / `0.2` / `0.0` | Fraksi split demo MJL (tanpa test). |
 | `--n-infer-episodes` | `50` | Episode eval per eval-seed. |
 | `--output-dir` | `outputs/experiment` | Folder keluaran (relatif akar repo). |
 | `--max-batch-size` | `128` | Plafon batch train/val. |
@@ -409,9 +421,10 @@ Di `--output-dir`:
 
 - `configs.json` — baseline + meta eksperimen.
 - `hyperband_state.json` — state Hyperband (resume).
-- `cv_splits.json` — partisi episode.
+- `cv_splits.json` / `episode_split.json` — partisi episode train/val (tanpa test).
 - `results.csv` — metrik baseline (`cfg_idx=-1`) dan rerun Hyperband (`cfg_idx=-3`).
-- `runs/baseline_seed<seed>_<profile>/` — Hydra output, `checkpoints/`, `metrics.json`, `training_final.json`.
+- `seed_convergence.json` + `plots/seed_convergence/` — overlay 3 seed.
+- `runs/baseline_seed<seed>_<profile>/` — Hydra output, `checkpoints/best_val.ckpt` (eval) + `latest.ckpt` (resume), `loss_history.csv`, `plots/`, `checkpoint_selection.json`, `training_final.json`, `metrics.json`.
 - `runs/hb_best_seed<seed>_<profile>/` — rerun pemenang Hyperband.
 - `runs/hb_cfg<idx>/` — run Hyperband intermediate (folder ter-cull dihapus otomatis).
 
@@ -419,61 +432,120 @@ Di `--output-dir`:
 
 - Run dilewati jika **`metrics.json`** ada, atau baris **`status=ok`** di `results.csv`.
 - Training terputus (`latest.ckpt`, belum `training_final.json`) → **dilanjutkan** (`training.resume=true`).
-- Training selesai, infer belum → hanya **`infer_kitchen_lowdim.py`** dijalankan.
+- Training selesai, infer belum → hanya **`infer_kitchen_lowdim.py`** dijalankan (checkpoint = `best_val.ckpt` jika ada).
 - Hyperband intermediate → resume via **`hyperband_state.json`**.
 
 ---
 
 ## Menjalankan di [Vast.ai](https://vast.ai/)
 
+Copy-paste di bawah ini untuk **baseline yang sudah diperbaiki**, seed training **42, 43, 44**, di instance Vast.ai. Jangan jalankan Hyperband kecuali Anda memang mau.
+
 ### Pilih instance
 
 - Template **Ubuntu 22.04 + CUDA 12.x + PyTorch**, atau image minimal lalu install manual.
-- **VRAM ≥ 16 GB** disarankan untuk batch 64; **24 GB+** untuk batch 128 default.
+- Instance ini **VRAM 32 GB** → `--max-batch-size 128` dan `--dataloader-num-workers 4` (nilai baseline).
 
-### On-start script (contoh baseline only)
+### 1. Masuk ke folder repo
+
+Sesuaikan path jika clone Anda bukan `/workspace/kripsy12`:
 
 ```bash
-#!/bin/bash
-set -euo pipefail
-
-REPO=/workspace/kripsy12
-cd "$REPO"
-
-source ~/miniforge3/etc/profile.d/conda.sh  # sesuaikan path conda
+cd /workspace/kripsy12    # akar repo (ada folder scripts/ dan FlowPolicy/)
+source ~/miniforge3/etc/profile.d/conda.sh   # sesuaikan path conda
 conda activate flowpolicy-kitchen
+```
 
-cd FlowPolicy && pip install -q -r requirements-franka-kitchen.txt && pip install -q -e . && cd ..
+Kalau environment belum ada, install dulu (lihat [Cloud GPU — mulai di sini](#cloud-gpu--mulai-di-sini) langkah 1–2), lalu:
 
+```bash
+cd FlowPolicy
+pip install -U pip
+pip install -r requirements-franka-kitchen.txt
+pip install -e .
+cd ..
+ls FlowPolicy/data/kitchen/kitchen_demos_multitask/*.mjl | wc -l
+# harus ~605
+```
+
+### 2. Jalankan baseline (perintah utama)
+
+Tiga run berurutan: `baseline_seed42_standard` → `baseline_seed43_standard` → `baseline_seed44_standard`.
+
+```bash
+chmod +x scripts/*.sh
 export MUJOCO_GL=egl
-export WANDB_MODE=offline   # atau set WANDB_API_KEY
+export WANDB_MODE=offline
 
 ./scripts/run_baseline_only.sh \
+  --seeds 42 43 44 \
   --output-dir outputs/vast_baseline \
-  --max-batch-size 64 \
-  --dataloader-num-workers 2 \
+  --max-batch-size 128 \
+  --dataloader-num-workers 4 \
+  --skip-inference-videos \
   2>&1 | tee vast_baseline.log
 ```
 
-### Data di cloud
+Yang sudah aktif di perintah itu:
 
-1. **Termasuk di repo clone** — pastikan `FlowPolicy/data/kitchen/kitchen_demos_multitask/` ter-clone.
-2. **Volume terpisah** — mount ke `/data/kitchen/kitchen_demos_multitask` lalu:
+| Item | Nilai |
+|------|--------|
+| Mode | `--baseline-only` (tanpa Hyperband) |
+| Seed training | **42, 43, 44** |
+| Profil | `standard` |
+| Split demo | 80% train / 20% val / **tanpa test** |
+| UNet | `down_dims=[256,512,1024]` |
+| Batch | **128** (sama dengan baseline) |
+| Checkpoint eval | `best_val.ckpt` (`min val_loss`); `latest.ckpt` hanya resume |
+| Plot | kurva train/val, konvergensi, overlay 3 seed |
 
-   ```bash
-   export DATASET_DIR=/data/kitchen/kitchen_demos_multitask
-   ./scripts/run_baseline_only.sh --output-dir outputs/baseline_only
-   ```
+`--skip-inference-videos` menghemat disk/waktu eval (metrik p1–p7 tetap dihitung). Hapus flag itu jika Anda butuh MP4.
+
+**GPU 16 GB** (OOM): `--max-batch-size 64 --dataloader-num-workers 2`.
+
+Dataset di volume terpisah:
+
+```bash
+export DATASET_DIR=/data/kitchen/kitchen_demos_multitask
+./scripts/run_baseline_only.sh --seeds 42 43 44 --output-dir outputs/vast_baseline ...
+```
+
+### 3. Resume setelah instance mati
+
+Jalankan **langkah 2 yang sama** (path `--output-dir` sama). Jangan ganti seed atau output-dir.
+
+### 4. Cek hasil di instance
+
+```bash
+ls outputs/vast_baseline/runs/
+# baseline_seed42_standard  baseline_seed43_standard  baseline_seed44_standard
+
+ls outputs/vast_baseline/runs/baseline_seed42_standard/plots/
+# train_val_loss.png  convergence_analysis.png  checkpoint_selection.png
+
+ls outputs/vast_baseline/runs/baseline_seed42_standard/checkpoints/
+# best_val.ckpt  latest.ckpt
+```
+
+Plot overlay 3 seed (otomatis di akhir orkestrator; bisa diulang tanpa training):
+
+```bash
+python scripts/plot_training_convergence.py --output-dir outputs/vast_baseline
+python scripts/summarize.py --output-dir outputs/vast_baseline
+```
+
+### 5. Unduh ke laptop
+
+```bash
+scp -r vast_instance:/workspace/kripsy12/outputs/vast_baseline ./outputs/
+scp vast_instance:/workspace/kripsy12/vast_baseline.log .
+```
+
+Ganti `vast_instance` dengan host SSH Vast.ai Anda.
 
 ### Headless MuJoCo
 
 Eval memakai `MUJOCO_GL=egl`. Training **tidak** membutuhkan display (null runner).
-
-### Unduh hasil
-
-```bash
-scp -r vast_instance:/workspace/kripsy12/outputs/baseline_only ./outputs/
-```
 
 ---
 

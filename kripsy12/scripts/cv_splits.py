@@ -1,9 +1,9 @@
 """
-Partisi train/val/test pada level episode demo Kitchen (.mjl).
+Partisi train/val pada level episode demo Kitchen (.mjl).
 
-Default eksperimen: 70% train / 20% val / 10% test (~605 demo MJL).
-Evaluasi policy utama dilakukan via rollout simulasi MuJoCo
-(``infer_kitchen_lowdim.py``) — **bukan** replay episode test holdout.
+Default eksperimen: 80% train / 20% val / 0% test (~605 demo MJL).
+Tidak ada holdout test demo — evaluasi policy utama dilakukan via
+rollout simulasi MuJoCo (``infer_kitchen_lowdim.py``).
 
 Indeks episode = urutan sorted ``*/*.mjl`` di folder dataset (deterministik).
 """
@@ -32,33 +32,41 @@ def count_kitchen_mjl_episodes(dataset_dir: Path) -> int:
 def build_kitchen_demo_split(
     n_episodes: int,
     *,
-    train_frac: float = 0.7,
+    train_frac: float = 0.8,
     val_frac: float = 0.2,
-    test_frac: float = 0.1,
+    test_frac: float = 0.0,
     seed: int = 12345,
 ) -> Dict[str, Any]:
     """
-    Satu partisi train/val/test untuk episode demo Kitchen MJL.
+    Satu partisi train/val untuk episode demo Kitchen MJL (tanpa test).
 
     1. Acak ``n_episodes`` indeks dengan ``seed``.
-    2. Alokasi test → val → train (sisanya) agar total tepat ``n_episodes``.
-    3. Minimal 1 episode per split jika ``n_episodes >= 3``.
+    2. Alokasi val → train (sisanya) agar total tepat ``n_episodes``.
+    3. Train dan val minimal 1 episode. Test boleh 0 (default).
 
-    Contoh 605 episode, 70/20/10 → train≈424, val≈121, test≈60.
+    Contoh 605 episode, 80/20/0 → train≈484, val≈121, test=0.
     Inferensi simulasi (50 episode × eval-seed) terpisah dari split demo ini.
     """
-    if n_episodes < 3:
-        raise ValueError(f"n_episodes minimal 3, dapat {n_episodes}")
-    fracs = (float(train_frac), float(val_frac), float(test_frac))
-    if any(f <= 0.0 for f in fracs):
-        raise ValueError(f"Semua fraksi harus > 0, dapat {fracs}")
+    if n_episodes < 2:
+        raise ValueError(f"n_episodes minimal 2, dapat {n_episodes}")
+    train_frac = float(train_frac)
+    val_frac = float(val_frac)
+    test_frac = float(test_frac)
+    if train_frac <= 0.0 or val_frac <= 0.0:
+        raise ValueError(
+            f"train_frac dan val_frac harus > 0, dapat "
+            f"train={train_frac}, val={val_frac}"
+        )
+    if test_frac < 0.0:
+        raise ValueError(f"test_frac tidak boleh negatif, dapat {test_frac}")
+    fracs = (train_frac, val_frac, test_frac)
     if abs(sum(fracs) - 1.0) > 1e-6:
         raise ValueError(f"train+val+test fraksi harus = 1, dapat {sum(fracs)}")
 
     rng = np.random.RandomState(int(seed))
     perm = rng.permutation(n_episodes).tolist()
 
-    n_test = max(1, int(round(n_episodes * test_frac)))
+    n_test = 0 if test_frac == 0.0 else max(1, int(round(n_episodes * test_frac)))
     n_val = max(1, int(round(n_episodes * val_frac)))
     n_train = n_episodes - n_val - n_test
     if n_train < 1:

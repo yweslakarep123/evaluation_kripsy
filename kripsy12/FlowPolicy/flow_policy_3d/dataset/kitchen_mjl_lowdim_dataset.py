@@ -167,9 +167,11 @@ class KitchenMjlLowdimDataset(BaseDataset):
                     raise ValueError(
                         f"Indeks {name} di luar [0, {n_glob}): {bad[:5]}..."
                     )
-            overlap = (split["train"] & split["val"]) | (
-                split["train"] & split["test"]
-            ) | (split["val"] & split["test"])
+            overlap = split["train"] & split["val"]
+            if split["test"]:
+                overlap |= (split["train"] & split["test"]) | (
+                    split["val"] & split["test"]
+                )
             if overlap:
                 raise ValueError(f"Overlap train/val/test: {sorted(overlap)[:10]}")
 

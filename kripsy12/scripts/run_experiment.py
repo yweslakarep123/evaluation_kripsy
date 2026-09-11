@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Orkestrator eksperimen (tanpa k-fold, satu partisi train/val/test):
+Orkestrator eksperimen (tanpa k-fold, satu partisi train/val, tanpa test demo):
 
   1) Baseline — hyperparameter default × len(seeds) × len(profiles)
   2) Pencarian — **Hyperband** (Li et al., 2018, https://arxiv.org/pdf/1603.06560).
@@ -29,7 +29,8 @@ Resume:
   dilewati; juga dilewati jika baris ``results.csv`` yang sama sudah ``status=ok``.
 - Training terputus dilanjutkan (resume Hydra) jika ada ``latest.ckpt`` tanpa
   ``training_final.json``; infer saja jika ``training_final.json`` + ckpt sudah
-  ada tetapi belum ``metrics.json``.
+  ada tetapi belum ``metrics.json`` (infer memakai ``best_val.ckpt`` jika ada,
+  selain itu ``latest.ckpt``).
 - Hyperband: ``hyperband_state.json`` di ``--output-dir`` menyimpan state
   bracket + rung + ``val_loss`` per config — resume otomatis melewati rung yang
   sudah dievaluasi.
@@ -126,6 +127,24 @@ def load_or_create_config_bundle(
     return baseline
 
 
+def select_eval_checkpoint(run_dir: pathlib.Path) -> pathlib.Path:
+    """Checkpoint untuk infer: best_val (min val_loss), fallback latest."""
+    best_val = run_dir / "checkpoints" / "best_val.ckpt"
+    if best_val.is_file():
+        return best_val
+    return run_dir / "checkpoints" / "latest.ckpt"
+
+
+def _run_seed_convergence_plots(py: str, out_root: pathlib.Path) -> None:
+    conv_script = SCRIPT_DIR / "plot_training_convergence.py"
+    if not conv_script.is_file():
+        return
+    subprocess.run(
+        [py, str(conv_script), "--output-dir", str(out_root)],
+        check=False,
+    )
+
+
 def build_train_overrides(
     cfg: Dict[str, Any],
     *,
@@ -157,6 +176,9 @@ def build_train_overrides(
         f"training.seed={seed}",
         f"task.dataset.seed={seed}",
         "training.compute_val_loss=true",
+        "policy.down_dims=[256,512,1024]",
+        "checkpoint.topk.monitor_key=val_loss",
+        "checkpoint.topk.mode=min",
         "training.rollout_every=999999",
         f"training.resume={str(resume_training).lower()}",
         "checkpoint.save_ckpt=true",
@@ -363,7 +385,8 @@ def execute_one_job(
 ) -> None:
     run_dir = runs_root / run_name
     metrics_path = run_dir / "metrics.json"
-    ckpt_path = run_dir / "checkpoints" / "latest.ckpt"
+    latest_ckpt = run_dir / "checkpoints" / "latest.ckpt"
+    eval_ckpt = select_eval_checkpoint(run_dir)
     training_final_path = run_dir / "training_final.json"
     rk = (cfg_idx, seed, profile, fold_i)
 
@@ -378,7 +401,7 @@ def execute_one_job(
             profile,
             fold_i,
             run_dir,
-            ckpt_path,
+            eval_ckpt,
             metrics_path,
         )
         return
@@ -391,19 +414,22 @@ def execute_one_job(
     env.setdefault("WANDB_MODE", "offline")
 
     infer_only = (
-        ckpt_path.is_file()
+        eval_ckpt.is_file()
         and training_final_path.is_file()
         and not metrics_path.is_file()
     )
 
     if infer_only:
-        print(f"[infer-only] {run_name}: training_final.json + ckpt ada, lanjut inferensi")
+        print(
+            f"[infer-only] {run_name}: training_final.json + {eval_ckpt.name} "
+            "ada, lanjut inferensi"
+        )
         rc = run_infer_subprocess(
             py,
             infer_py,
             cwd_train,
             env,
-            ckpt_path,
+            eval_ckpt,
             metrics_path,
             n_infer_episodes,
             seed,
@@ -424,7 +450,7 @@ def execute_one_job(
                     "train_loss_final": tr_l,
                     "val_loss_final": va_l,
                     "n_infer_episodes": n_infer_episodes,
-                    "checkpoint_path": str(ckpt_path),
+                    "checkpoint_path": str(eval_ckpt),
                     "status": f"infer_failed_{rc}",
                 },
                 hp_cols,
@@ -448,7 +474,7 @@ def execute_one_job(
                     "test_n_infer_episodes",
                     met.get("n_infer_episodes", n_infer_episodes),
                 ),
-                "checkpoint_path": str(ckpt_path),
+                "checkpoint_path": str(eval_ckpt),
                 "status": "ok",
             },
             hp_cols,
@@ -457,7 +483,7 @@ def execute_one_job(
 
     run_dir.mkdir(parents=True, exist_ok=True)
     resume_training = bool(
-        ckpt_path.is_file() and not training_final_path.is_file()
+        latest_ckpt.is_file() and not training_final_path.is_file()
     )
     if resume_training:
         print(f"[resume] {run_name}: melanjutkan training dari checkpoints/latest.ckpt")
@@ -502,14 +528,15 @@ def execute_one_job(
                 "train_loss_final": "",
                 "val_loss_final": "",
                 "n_infer_episodes": "",
-                "checkpoint_path": str(ckpt_path),
+                "checkpoint_path": str(latest_ckpt),
                 "status": f"train_failed_{r.returncode}",
             },
             hp_cols,
         )
         return
 
-    if not ckpt_path.is_file():
+    eval_ckpt = select_eval_checkpoint(run_dir)
+    if not eval_ckpt.is_file():
         append_results_csv(
             results_csv,
             {
@@ -522,7 +549,7 @@ def execute_one_job(
                 "train_loss_final": "",
                 "val_loss_final": "",
                 "n_infer_episodes": "",
-                "checkpoint_path": str(ckpt_path),
+                "checkpoint_path": str(eval_ckpt),
                 "status": "no_checkpoint",
             },
             hp_cols,
@@ -533,7 +560,7 @@ def execute_one_job(
         f"[infer] {run_name}",
         cfg,
         [
-            f"checkpoint={ckpt_path}",
+            f"checkpoint={eval_ckpt}",
             f"metrics_json={metrics_path}",
             f"n_infer_episodes={n_infer_episodes}",
             f"seed={seed}",
@@ -545,7 +572,7 @@ def execute_one_job(
         infer_py,
         cwd_train,
         env,
-        ckpt_path,
+        eval_ckpt,
         metrics_path,
         n_infer_episodes,
         seed,
@@ -566,7 +593,7 @@ def execute_one_job(
                 "train_loss_final": tr_l,
                 "val_loss_final": va_l,
                 "n_infer_episodes": n_infer_episodes,
-                "checkpoint_path": str(ckpt_path),
+                "checkpoint_path": str(eval_ckpt),
                 "status": f"infer_failed_{r2}",
             },
             hp_cols,
@@ -591,7 +618,7 @@ def execute_one_job(
                 "test_n_infer_episodes",
                 met.get("n_infer_episodes", n_infer_episodes),
             ),
-            "checkpoint_path": str(ckpt_path),
+            "checkpoint_path": str(eval_ckpt),
             "status": "ok",
         },
         hp_cols,
@@ -631,8 +658,8 @@ def main():
     ap.add_argument(
         "--train-frac",
         type=float,
-        default=0.7,
-        help="Fraksi train demo MJL. Default 0.7 (dengan val 0.2, test 0.1).",
+        default=0.8,
+        help="Fraksi train demo MJL. Default 0.8 (dengan val 0.2, tanpa test).",
     )
     ap.add_argument(
         "--val-frac",
@@ -643,8 +670,8 @@ def main():
     ap.add_argument(
         "--test-frac",
         type=float,
-        default=0.1,
-        help="Fraksi test demo MJL (holdout; tidak dipakai infer MuJoCo). Default 0.1.",
+        default=0.0,
+        help="Fraksi test demo MJL. Default 0.0 (tidak ada holdout test; eval = MuJoCo).",
     )
     ap.add_argument(
         "--max-batch-size",
@@ -781,8 +808,8 @@ def main():
         "val_frac": float(args.val_frac),
         "test_frac": float(args.test_frac),
         "cv_seed": int(args.cv_seed),
-        "split_mode": "kitchen_demo_train_val_test",
-        "note": "Split demo MJL train/val/test; eval policy via simulasi MuJoCo (infer_kitchen_lowdim.py)",
+        "split_mode": "kitchen_demo_train_val",
+        "note": "Split demo MJL train/val (tanpa test); eval policy via simulasi MuJoCo (infer_kitchen_lowdim.py)",
         "max_batch_size": args.max_batch_size,
         "hyperparam_search": "hyperband",
         "hyperband_max_epochs": int(args.hyperband_max_epochs),
@@ -801,7 +828,8 @@ def main():
         f"    train={fold_entry['n_train']}  val={fold_entry['n_val']}  "
         f"test={fold_entry['n_test']}  "
         f"({args.train_frac:.0%}/{args.val_frac:.0%}/{args.test_frac:.0%})\n"
-        f"    infer policy = simulasi MuJoCo (infer_kitchen_lowdim.py), bukan replay demo test\n"
+        f"    tidak ada holdout test demo; eval policy = simulasi MuJoCo "
+        f"(infer_kitchen_lowdim.py)\n"
         f"    episode_split.json → {episode_split_path}\n"
     )
 
@@ -927,17 +955,21 @@ def main():
             f"@ training.num_epochs={int(args.hyperband_max_epochs)}.\n"
         )
         run_grid_for_configs([winner_cfg])
+        _run_seed_convergence_plots(py, out_root)
 
     if args.baseline_only:
         run_grid_for_configs([baseline_cfg])
+        _run_seed_convergence_plots(py, out_root)
     elif args.hyperband_only:
         run_hyperband_phase()
     else:
         run_grid_for_configs([baseline_cfg])
+        _run_seed_convergence_plots(py, out_root)
         run_hyperband_phase()
 
     summarize_script = SCRIPT_DIR / "summarize.py"
     plot_script = SCRIPT_DIR / "plot_results.py"
+    conv_script = SCRIPT_DIR / "plot_training_convergence.py"
     _csv_args: List[str] = (
         ["--results-csv", str(results_csv)] if args.results_csv else []
     )
@@ -947,6 +979,10 @@ def main():
     )
     subprocess.run(
         [py, str(plot_script), "--output-dir", str(out_root)] + _csv_args,
+        check=False,
+    )
+    subprocess.run(
+        [py, str(conv_script), "--output-dir", str(out_root)],
         check=False,
     )
 
