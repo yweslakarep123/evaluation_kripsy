@@ -8,8 +8,8 @@ Data roots:
 Outputs:
   data/kitchen_eval_plots/nfe100/general/   — per-task SR, p_k, timing, deltas
   data/kitchen_eval_plots/nfe100/why/       — completion-order WHY (FP@8 vs DP@100)
-  data/kitchen_eval_plots/nfe100/why_nfe8/  — WHY at equal NFE=8
   data/kitchen_eval_plots/nfe100/why_nfe100/— WHY at equal NFE=100
+  (DP is not compared at NFE<100.)
 
 Usage:
   python scripts/plot_kitchen_nfe100_why_and_general.py
@@ -33,13 +33,20 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 
 import analyze_kitchen_completion_order as why  # noqa: E402
+from kitchen_eval_paths import (  # noqa: E402
+    PLOT_ROOT,
+    dp_seed_dirs,
+    fp_seed_dirs,
+    resolve_dp_root,
+    resolve_fp_root,
+)
+from kitchen_eval_stats import (  # noqa: E402
+    K_MAX,
+    clip_episode_record,
+    clipped_per_task_stats,
+)
 
-OUT_BASE = ROOT / "data/kitchen_eval_plots/nfe100"
-FP_ROOT = ROOT / "kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy"
-DP_CANDIDATES = [
-    ROOT / "diffusion_policy/data/kitchen_eval_nfe100_diffusion",
-    ROOT / "diffusion_policy/data/kitchen_eval_nfe100",
-]
+OUT_BASE = PLOT_ROOT
 
 TASKS = [
     "bottom burner",
@@ -66,29 +73,34 @@ COLORS = {
     "DP-Transformer": "#ff7f0e",
 }
 SHORT = {"FlowPolicy": "FP", "DP-CNN": "CNN", "DP-Transformer": "Trans"}
-NFES = (1, 8, 32, 100)
+FP_NFES = (1, 8, 32, 100)
+DP_NFES = (100,)
+NFES = FP_NFES  # panels that iterate NFE still cover FP grid
+
+
+def models_for_nfe(nfe: int) -> List[str]:
+    if int(nfe) == 100:
+        return list(MODEL_ORDER)
+    return ["FlowPolicy"]
 
 
 def find_dp_root() -> Path:
-    for p in DP_CANDIDATES:
-        if p.is_dir() and any(p.rglob("eval_metrics.json")):
-            return p
-    raise FileNotFoundError(f"No DP nfe100 root in {DP_CANDIDATES}")
+    return resolve_dp_root()
 
 
 def seed_dirs(model_key: str, nfe: int, dp_root: Path) -> List[Path]:
     if model_key == "FlowPolicy":
-        return [
-            FP_ROOT / f"seed_baseline_{s}_nfe{nfe}_sseed0" for s in (42, 43, 44)
-        ]
+        found = fp_seed_dirs(nfe, fp_root=resolve_fp_root())
+        if found:
+            return found
+        root = resolve_fp_root()
+        return [root / f"seed_seed{s}_nfe{nfe}_sseed0" for s in (42, 43, 44)]
     mid = (
         "diffusion_policy_cnn"
         if model_key == "DP-CNN"
         else "diffusion_policy_transformer"
     )
-    return [
-        dp_root / mid / f"seed_train{s}_nfe{nfe}_sseed0" for s in (0, 1, 2)
-    ]
+    return dp_seed_dirs(mid, nfe, dp_root=dp_root)
 
 
 def _mean_std(vals: List[float]) -> Tuple[float, float]:
@@ -117,10 +129,25 @@ def load_summary(model_key: str, nfe: int, dp_root: Path) -> Dict[str, Any]:
         "n_episodes_per_checkpoint": metrics_list[0].get("n_episodes", 100),
         "n_seeds": len(metrics_list),
     }
-    for t in TASKS + ["all_7_tasks"]:
-        means = [m["success_rate"][t]["mean"] for m in metrics_list]
+    seed_task_stats = [
+        clipped_per_task_stats(m.get("episodes") or [], TASKS) for m in metrics_list
+    ]
+    for t in TASKS:
+        means = [per_task[t]["mean"] for per_task, _ in seed_task_stats]
+        ns = [per_task[t]["n_samples"] for per_task, _ in seed_task_stats]
         mu, sd = _mean_std(means)
-        out["success_rate"][t] = {"mean": mu, "std": sd, "n_samples": len(means)}
+        out["success_rate"][t] = {
+            "mean": mu,
+            "std": sd,
+            "n_samples": int(round(float(np.mean(ns)))) if ns else 0,
+        }
+    p4_means = [p4["mean"] for _, p4 in seed_task_stats]
+    mu, sd = _mean_std(p4_means)
+    out["success_rate"]["p4_success"] = {
+        "mean": mu,
+        "std": sd,
+        "n_samples": len(p4_means),
+    }
 
     for key in ("inference_latency", "episode_duration"):
         means = [m["timing_ms"][key]["mean"] for m in metrics_list]
@@ -149,7 +176,7 @@ def load_summary(model_key: str, nfe: int, dp_root: Path) -> Dict[str, Any]:
             "n_samples": len(means),
         }
 
-    for k in range(1, 8):
+    for k in range(1, K_MAX + 1):
         pk = f"p{k}"
         means = []
         for m in metrics_list:
@@ -162,14 +189,16 @@ def load_summary(model_key: str, nfe: int, dp_root: Path) -> Dict[str, Any]:
             "n_samples": len(means),
         }
 
-    # completion counts across all episodes
+    # completion counts from scored (clipped) flags, not raw task_success
     completions = {t: 0 for t in TASKS}
     n_ep_total = 0
     for m in metrics_list:
         for ep in m["episodes"]:
             n_ep_total += 1
+            _, _, flags = clip_episode_record(ep, TASKS)
             for t in TASKS:
-                completions[t] += int(ep["task_success"].get(t, 0))
+                if flags[t] == 1:
+                    completions[t] += 1
     out["_completions"] = completions
     out["_n_ep_total"] = n_ep_total
     return out
@@ -212,7 +241,7 @@ def plot_general_panel(
     ax.set_xticklabels([TASK_LABELS[t] for t in TASKS])
     ax.set_ylabel("Success rate (%)")
     ax.set_ylim(0, 115)
-    ax.set_title(f"Per-task success {title_suffix}")
+    ax.set_title(f"Per-task success {title_suffix} (p4 clip; leftover excluded)")
     ax.legend()
     ax.grid(True, axis="y", alpha=0.3)
     fig.tight_layout()
@@ -240,7 +269,7 @@ def plot_general_panel(
 
     # 3 multistage pk
     fig, ax = plt.subplots(figsize=(9, 4.5))
-    pks = [f"p{k}" for k in range(1, 8)]
+    pks = [f"p{k}" for k in range(1, K_MAX + 1)]
     x = np.arange(len(pks))
     w = 0.25
     for i, name in enumerate(MODEL_ORDER):
@@ -266,7 +295,7 @@ def plot_general_panel(
     ax.set_xticklabels(pks)
     ax.set_ylabel("Rate (%)")
     ax.set_ylim(0, 115)
-    ax.set_title(f"Multi-stage p_k {title_suffix}")
+    ax.set_title(f"Multi-stage p_k (p1–p4) {title_suffix}")
     ax.legend()
     ax.grid(True, axis="y", alpha=0.3)
     fig.tight_layout()
@@ -351,13 +380,16 @@ def write_general_report(
             p3 = s["multistage_metrics"]["all_7_tasks"]["px"]["p3"]
             p4 = s["multistage_metrics"]["all_7_tasks"]["px"]["p4"]
             lat = s["timing_ms"]["inference_latency"]
+            p4s = s["success_rate"].get("p4_success", p4)
             lines.append(
                 f"  {name}: p3={p3['mean']:.3f}±{p3['std']:.3f}  "
                 f"p4={p4['mean']:.3f}±{p4['std']:.3f}  "
+                f"p4_success={p4s['mean']:.3f}±{p4s['std']:.3f}  "
                 f"lat={lat['mean']:.1f}±{lat['std']:.1f} ms"
             )
             sr = ", ".join(
                 f"{t.split()[0]}={s['success_rate'][t]['mean']*100:.0f}%"
+                f"(n={s['success_rate'][t]['n_samples']})"
                 for t in TASKS
             )
             lines.append(f"    SR: {sr}")
@@ -413,7 +445,7 @@ def run_why(
 def main() -> None:
     dp_root = find_dp_root()
     print(f"DP root: {dp_root}")
-    print(f"FP root: {FP_ROOT}")
+    print(f"FP root: {resolve_fp_root()}")
 
     general_dir = OUT_BASE / "general"
     general_dir.mkdir(parents=True, exist_ok=True)
@@ -431,10 +463,11 @@ def main() -> None:
     print("\nGeneral: operating point FP@8 vs DP@100")
     plot_general_panel(op, "(FP@8 vs DP@100)", general_dir, "op_")
 
-    # Equal-NFE panels
+    # Equal-NFE panels (DP only participates at NFE=100)
     for nfe in NFES:
-        print(f"\nGeneral: equal NFE={nfe}")
-        summ = {name: load_summary(name, nfe, dp_root) for name in MODEL_ORDER}
+        models = models_for_nfe(nfe)
+        print(f"\nGeneral: equal NFE={nfe} models={models}")
+        summ = {name: load_summary(name, nfe, dp_root) for name in models}
         panels[f"equal NFE={nfe}"] = summ
         plot_general_panel(summ, f"(all @NFE={nfe})", general_dir, f"nfe{nfe}_")
 
@@ -448,12 +481,6 @@ def main() -> None:
         "operating point FP@8 vs DP@100",
     )
     run_why(
-        {"FlowPolicy": 8, "DP-CNN": 8, "DP-Transformer": 8},
-        dp_root,
-        OUT_BASE / "why_nfe8",
-        "equal NFE=8",
-    )
-    run_why(
         {"FlowPolicy": 100, "DP-CNN": 100, "DP-Transformer": 100},
         dp_root,
         OUT_BASE / "why_nfe100",
@@ -464,7 +491,7 @@ def main() -> None:
     print("\nRefreshing NFE curve plots via analyze_kitchen_nfe100.py ...")
     import analyze_kitchen_nfe100 as nfe100
 
-    runs = nfe100.discover(dp_root, FP_ROOT)
+    runs = nfe100.discover(dp_root, resolve_fp_root())
     agg = nfe100.aggregate(runs)
     nfe100.write_csv(OUT_BASE / "summary.csv", agg)
     nfe100.plot_all(agg, OUT_BASE)

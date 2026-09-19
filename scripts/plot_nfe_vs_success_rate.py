@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Plot success rate vs NFE for seven Franka Kitchen sub-tasks.
 
-Compares FlowPolicy, DP-CNN, and DP-Transformer across NFE={1, 8, 32, 100}
-(mean ± min–max band over 3 seeds).
+Compares FlowPolicy across NFE={1, 8, 32, 100} and DP-CNN / DP-Transformer at
+NFE=100 only (low-NFE DP is excluded from fair comparison).
 
 Microwave / Slide Cabinet / Hinge Cabinet: hardcode dari Tabel 4.1, 4.3, 4.5
 (+ Lampiran 4-21). Kettle / Top Burner / Bottom Burner / Light Switch: dari
@@ -23,6 +23,11 @@ from matplotlib.ticker import FixedFormatter, FixedLocator
 ROOT = Path(__file__).resolve().parents[1]
 
 NFE = [1, 8, 32, 100]
+MODEL_NFE = {
+    "FlowPolicy": [1, 8, 32, 100],
+    "DP-CNN": [100],
+    "DP-Transformer": [100],
+}
 TASKS = [
     "Microwave",
     "Slide Cabinet",
@@ -188,8 +193,10 @@ data = {
 }
 
 
-def _stats_for_task(model: str, task: str) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
-    values = np.array([data[model][task][n] for n in NFE], dtype=float)
+def _stats_for_task(
+    model: str, task: str, nfes: list[int]
+) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+    values = np.array([data[model][task][n] for n in nfes], dtype=float)
     return values.mean(axis=1), values.min(axis=1), values.max(axis=1)
 
 
@@ -237,9 +244,11 @@ def main() -> None:
         ax = axes_flat[idx]
         for model in MODELS:
             style = MODEL_STYLE[model]
-            mean, lo, hi = _stats_for_task(model, task)
+            nfes = MODEL_NFE[model]
+            mean, lo, hi = _stats_for_task(model, task, nfes)
+            xs = np.array(nfes, dtype=float)
             ax.plot(
-                x,
+                xs,
                 mean,
                 color=style["color"],
                 linestyle=style["linestyle"],
@@ -248,7 +257,20 @@ def main() -> None:
                 linewidth=1.8,
                 label=model,
             )
-            ax.fill_between(x, lo, hi, color=style["color"], alpha=0.18, linewidth=0)
+            if len(xs) > 1:
+                ax.fill_between(
+                    xs, lo, hi, color=style["color"], alpha=0.18, linewidth=0
+                )
+            else:
+                ax.errorbar(
+                    xs,
+                    mean,
+                    yerr=[mean - lo, hi - mean],
+                    color=style["color"],
+                    fmt="none",
+                    capsize=3,
+                    alpha=0.8,
+                )
 
         _style_axis(ax)
         ax.set_title(task, fontweight="bold", fontsize=12)

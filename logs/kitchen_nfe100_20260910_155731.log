@@ -1,0 +1,57 @@
+[2026-09-10 15:57:31] Kitchen NFE100 full eval start. log=/home/daffa/Documents/experiment/logs/kitchen_nfe100_20260910_155731.log
+[2026-09-10 15:57:31] episodes=100 device=cuda:0 sampling_seed=0 dry_run=0 model=behavior_transformer
+[2026-09-10 15:57:31] nfe_list=1 8 32 100
+[2026-09-10 15:57:31] BET train0: /home/daffa/Documents/experiment/diffusion_policy/data/behavior_transformer/train0/epoch=1750-test_mean_score=0.403.ckpt
+[2026-09-10 15:57:31] BET train1: /home/daffa/Documents/experiment/diffusion_policy/data/behavior_transformer/train1/epoch=1650-test_mean_score=0.400.ckpt
+[2026-09-10 15:57:31] BET train2: /home/daffa/Documents/experiment/diffusion_policy/data/behavior_transformer/train2/epoch=5950-test_mean_score=0.414.ckpt
+[2026-09-10 15:57:31] RUN behavior_transformer seed=train0 nfe=1 eps=100
+Model: behavior_transformer
+Checkpoints: ['/home/daffa/Documents/experiment/diffusion_policy/data/behavior_transformer/train0/epoch=1750-test_mean_score=0.403.ckpt']
+Output: /home/daffa/Documents/experiment/diffusion_policy/data/kitchen_eval_nfe100/behavior_transformer
+Episodes per checkpoint: 100
+num_inference_steps override: 1
+sampling_seed: 0
+
+--- Evaluating seed_train0_nfe1_sseed0 ---
+Checkpoint: /home/daffa/Documents/experiment/diffusion_policy/data/behavior_transformer/train0/epoch=1750-test_mean_score=0.403.ckpt
+/home/daffa/miniforge3/envs/robodiff/lib/python3.9/site-packages/wandb/apis/public.py:2997: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import parse_version
+Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+/home/daffa/miniforge3/envs/robodiff/lib/python3.9/site-packages/gym/spaces/box.py:73: UserWarning: [33mWARN: Box bound precision lowered by casting to float32[0m
+  logger.warn(
+Ep 1/100:   0%|          | 0/280 [00:00<?, ?it/s]Task microwave completed!
+Task kettle completed!
+Ep 1/100:  91%|█████████ | 255/280 [00:05<00:00, 50.93it/s]                                                           Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 2/100:   0%|          | 0/280 [00:00<?, ?it/s]Task kettle completed!
+Task bottom burner completed!
+                                                 Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+Ep 3/100:   0%|          | 0/280 [00:00<?, ?it/s]                                                 Traceback (most recent call last):
+  File "/home/daffa/Documents/experiment/diffusion_policy/eval_kitchen.py", line 545, in <module>
+    main()
+  File "/home/daffa/miniforge3/envs/robodiff/lib/python3.9/site-packages/click/core.py", line 1128, in __call__
+    return self.main(*args, **kwargs)
+  File "/home/daffa/miniforge3/envs/robodiff/lib/python3.9/site-packages/click/core.py", line 1053, in main
+    rv = self.invoke(ctx)
+  File "/home/daffa/miniforge3/envs/robodiff/lib/python3.9/site-packages/click/core.py", line 1395, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+  File "/home/daffa/miniforge3/envs/robodiff/lib/python3.9/site-packages/click/core.py", line 754, in invoke
+    return __callback(*args, **kwargs)
+  File "/home/daffa/Documents/experiment/diffusion_policy/eval_kitchen.py", line 515, in main
+    metrics = runner.run(policy)
+  File "/home/daffa/Documents/experiment/diffusion_policy/diffusion_policy/env_runner/kitchen_lowdim_eval_runner.py", line 1051, in run
+    trajectory_log_path = self._save_trajectory_log(
+  File "/home/daffa/Documents/experiment/diffusion_policy/diffusion_policy/env_runner/kitchen_lowdim_eval_runner.py", line 525, in _save_trajectory_log
+    np.savez_compressed(npz_path, **npz_data)
+  File "<__array_function__ internals>", line 180, in savez_compressed
+  File "/home/daffa/miniforge3/envs/robodiff/lib/python3.9/site-packages/numpy/lib/npyio.py", line 666, in savez_compressed
+    _savez(file, args, kwds, True)
+  File "/home/daffa/miniforge3/envs/robodiff/lib/python3.9/site-packages/numpy/lib/npyio.py", line 692, in _savez
+    zipf = zipfile_factory(file, mode="w", compression=compression)
+  File "/home/daffa/miniforge3/envs/robodiff/lib/python3.9/site-packages/numpy/lib/npyio.py", line 103, in zipfile_factory
+    return zipfile.ZipFile(file, *args, **kwargs)
+  File "/home/daffa/miniforge3/envs/robodiff/lib/python3.9/zipfile.py", line 1248, in __init__
+    self.fp = io.open(file, filemode)
+FileNotFoundError: [Errno 2] No such file or directory: '/home/daffa/Documents/experiment/diffusion_policy/data/kitchen_eval_nfe100/behavior_transformer/seed_train0_nfe1_sseed0/trajectory_logs/ep_0002.npz'

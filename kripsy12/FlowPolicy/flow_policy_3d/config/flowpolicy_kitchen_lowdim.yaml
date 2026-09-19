@@ -16,9 +16,9 @@ policy:
   use_up_condition: true
   diffusion_step_embed_dim: 128
   down_dims:
-    - 256
     - 512
     - 1024
+    - 2048
   encoder_output_dim: 64
   horizon: ${horizon}
   kernel_size: 5

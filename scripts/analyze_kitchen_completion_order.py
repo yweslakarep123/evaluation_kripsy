@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from collections import Counter, defaultdict
 from pathlib import Path
 from typing import Any
@@ -24,6 +25,9 @@ import matplotlib.pyplot as plt  # noqa: E402
 import numpy as np  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "scripts"))
+
+from kitchen_eval_stats import K_MAX, clip_episode_record  # noqa: E402
 
 MODEL_SPECS = {
     "FlowPolicy": {
@@ -121,6 +125,7 @@ def load_model_stats(name: str) -> dict[str, Any]:
     n_tasks_hist: Counter = Counter()
     path_n: Counter = Counter()
     path_success: dict[str, Counter] = defaultdict(Counter)
+    path_denom: dict[str, Counter] = defaultdict(Counter)
     full_orders: Counter = Counter()
     prefix2: Counter = Counter()
 
@@ -142,16 +147,17 @@ def load_model_stats(name: str) -> dict[str, Any]:
 
         for ep in em["episodes"]:
             n_episodes += 1
-            order = list(ep.get("completion_order") or [])
-            ts = ep["task_success"]
-            n_done = int(ep["num_tasks_completed"])
+            scored, n_done, flags = clip_episode_record(ep, TASKS)
+            order = scored
+            scored_set = set(order)
             n_tasks_hist[n_done] += 1
             lat = float(ep["mean_inference_latency_ms"])
             dur = float(ep["episode_duration_ms"])
             latencies.append(lat)
             ep_durs.append(dur)
             for t, d in (ep.get("task_durations_ms") or {}).items():
-                task_durs[t].append(float(d))
+                if t in scored_set:
+                    task_durs[t].append(float(d))
 
             if order:
                 first_task[order[0]] += 1
@@ -169,7 +175,10 @@ def load_model_stats(name: str) -> dict[str, Any]:
             bucket = path_bucket(order)
             path_n[bucket] += 1
             for t in TASKS:
-                path_success[bucket][t] += int(ts.get(t, 0))
+                if flags[t] is None:
+                    continue
+                path_success[bucket][t] += int(flags[t])
+                path_denom[bucket][t] += 1
 
             # NPZ control-step stats
             npz_path = seed_dir / "trajectory_logs" / f"ep_{ep['episode_idx']:04d}.npz"
@@ -203,7 +212,10 @@ def load_model_stats(name: str) -> dict[str, Any]:
             path_sr[key] = {t: 0.0 for t in TASKS}
             path_sr[key]["_n"] = 0
         else:
-            path_sr[key] = {t: path_success[key][t] / n for t in TASKS}
+            path_sr[key] = {}
+            for t in TASKS:
+                nt = path_denom[key][t]
+                path_sr[key][t] = (path_success[key][t] / nt) if nt else 0.0
             path_sr[key]["_n"] = n
 
     return {
@@ -392,7 +404,7 @@ def plot_stop_multistage(stats: dict[str, dict], out_dir: Path) -> None:
 
     # Left: num_tasks_completed hist
     ax = axes[0]
-    ks = list(range(0, 8))
+    ks = list(range(0, K_MAX + 1))
     x = np.arange(len(ks))
     width = 0.25
     offsets = np.linspace(-1, 1, len(MODEL_ORDER)) * width
@@ -409,9 +421,9 @@ def plot_stop_multistage(stats: dict[str, dict], out_dir: Path) -> None:
         )
     ax.set_xticks(x)
     ax.set_xticklabels([str(k) for k in ks])
-    ax.set_xlabel("# tasks completed in episode")
+    ax.set_xlabel("# scored tasks (capped at p4)")
     ax.set_ylabel("% of episodes")
-    ax.set_title("Multi-stage: how many tasks per episode")
+    ax.set_title("Multi-stage: how many scored tasks per episode")
     ax.legend(fontsize=8)
     ax.grid(True, axis="y", alpha=0.3)
 
@@ -432,12 +444,12 @@ def plot_stop_multistage(stats: dict[str, dict], out_dir: Path) -> None:
     ax.set_xticks(x)
     ax.set_xticklabels([SHORT[t] for t in TASKS], rotation=45, ha="right")
     ax.set_ylabel("% of episodes")
-    ax.set_title("Last completed task (where the chain stops)")
+    ax.set_title("Last scored task (4th completion, or earlier stop)")
     ax.legend(fontsize=8)
     ax.grid(True, axis="y", alpha=0.3)
 
     fig.suptitle(
-        "FP often stops at slide; DP more often reaches hinge (5th task)",
+        "Last scored task under the p4 ceiling (k capped at 4)",
         fontsize=12,
     )
     fig.tight_layout()
@@ -609,7 +621,11 @@ def write_report(stats: dict[str, dict], out_dir: Path) -> str:
     for m in MODEL_ORDER:
         total = stats[m]["n_episodes"]
         hist = stats[m]["n_tasks_hist"]
-        parts = ", ".join(f"{k}:{hist.get(k, 0)/total*100:.0f}%" for k in range(0, 8) if hist.get(k, 0))
+        parts = ", ".join(
+            f"{k}:{hist.get(k, 0)/total*100:.0f}%"
+            for k in range(0, K_MAX + 1)
+            if hist.get(k, 0)
+        )
         w(f"  {m} num_tasks_completed: {parts}")
         last = stats[m]["last_task"]
         last_parts = ", ".join(
@@ -619,8 +635,8 @@ def write_report(stats: dict[str, dict], out_dir: Path) -> str:
         )
         w(f"    last task: {last_parts}")
     w("")
-    w("FP mass at 3–4 tasks, last task often Slide. DP mass at 4–5 tasks, last")
-    w("task often Hinge — hence higher p3/p4 and hinge/light/top success.")
+    w("FP mass at 3–4 scored tasks, last task often Slide. DP mass at 4 scored")
+    w("tasks (k≥4 all map to k=4) — hence higher p3/p4 among scored completions.")
     w("")
 
     # Speed
@@ -664,8 +680,8 @@ def write_report(stats: dict[str, dict], out_dir: Path) -> str:
     w("   total inference budget and episode wall-clock stay much lower.")
     w("")
     w("Q: Why is Diffusion Policy better at multi-stage?")
-    w("A: DP finishes 4–5 tasks in nearly every episode and often ends on hinge.")
-    w("   FP frequently ends the chain at slide after 3–4 tasks, so p3/p4 drop.")
+    w("A: DP reaches the p4 ceiling in nearly every episode. FP frequently ends")
+    w("   the scored chain at slide after 3–4 tasks, so p3/p4 drop.")
     w("")
     w("=" * 78)
 

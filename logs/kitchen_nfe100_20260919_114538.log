@@ -1,0 +1,9 @@
+[2026-09-19 11:45:38] Kitchen NFE100 full eval start. log=/home/daffa/Documents/experiment/logs/kitchen_nfe100_20260919_114538.log
+[2026-09-19 11:45:38] episodes=100 device=cuda:0 sampling_seed=0 dry_run=1 model=all
+[2026-09-19 11:45:38] DP-CNN train0: /home/daffa/Documents/experiment/diffusion_policy/data/diffusion_policy_cnn/train0/epoch=1700-test_mean_score=0.580.ckpt
+[2026-09-19 11:45:38] DP-CNN train1: /home/daffa/Documents/experiment/diffusion_policy/data/diffusion_policy_cnn/train1/epoch=3400-test_mean_score=0.589.ckpt
+[2026-09-19 11:45:38] DP-CNN train2: /home/daffa/Documents/experiment/diffusion_policy/data/diffusion_policy_cnn/train2/epoch=4600-test_mean_score=0.580.ckpt
+[2026-09-19 11:45:38] DP-Transformer train0: /home/daffa/Documents/experiment/diffusion_policy/data/diffusion_policy_transformer/train0/epoch=3000-test_mean_score=0.574.ckpt
+[2026-09-19 11:45:38] DP-Transformer train1: /home/daffa/Documents/experiment/diffusion_policy/data/diffusion_policy_transformer/train1/epoch=2700-test_mean_score=0.574.ckpt
+[2026-09-19 11:45:38] DP-Transformer train2: /home/daffa/Documents/experiment/diffusion_policy/data/diffusion_policy_transformer/train2/epoch=1750-test_mean_score=0.574.ckpt
+[2026-09-19 11:45:38] ERROR: missing FlowPolicy ckpt for baseline_42

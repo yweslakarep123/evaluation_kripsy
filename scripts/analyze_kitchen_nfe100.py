@@ -1,9 +1,13 @@
 #!/usr/bin/env python3
-"""Analyze full Kitchen NFE100 eval (3 seeds × NFE grid × 3 models).
+"""Analyze Kitchen NFE eval for fair FP vs DP comparison.
 
 Reads:
-  diffusion_policy/data/kitchen_eval_nfe100/<model>/seed_*_nfe*_sseed*/
-  kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_*_nfe*_sseed*/
+  data/kitchen_eval_nfe100/<model>/seed_*_nfe*_sseed*/   (DP, FP)
+  data/kitchen_eval_nfe100/<model>/seed_*_sseed*/        (LSTM/IBC/BeT default)
+
+Diffusion Policy is kept at NFE=100 only (low-NFE DP is not a fair regime).
+FlowPolicy keeps the full NFE trade-off grid.
+LSTM-GMM / IBC / BeT appear on summary + pareto, not on the NFE curve.
 
 Writes under data/kitchen_eval_plots/nfe100/:
   report.txt, summary.csv, success_vs_nfe.png, latency_vs_nfe.png,
@@ -17,6 +21,7 @@ import argparse
 import csv
 import json
 import re
+import sys
 from collections import defaultdict
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
@@ -24,7 +29,19 @@ from typing import Any, Dict, List, Optional, Tuple
 import numpy as np
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT / "scripts") not in sys.path:
+    sys.path.insert(0, str(ROOT / "scripts"))
+
+from kitchen_eval_paths import (  # noqa: E402
+    PLOT_ROOT,
+    resolve_dp_root,
+    resolve_fp_root,
+)
+from kitchen_eval_stats import episode_k_capped  # noqa: E402
+
 DIR_RE = re.compile(r"^seed_(?P<seed>.+)_nfe(?P<nfe>\d+)_sseed(?P<sseed>\d+)$")
+DIR_RE_COMPACT = re.compile(r"^seed(?P<seed>\d+)_NFE(?P<nfe>\d+)$", re.IGNORECASE)
+DIR_RE_NATIVE = re.compile(r"^seed_(?P<seed>.+)_sseed(?P<sseed>\d+)$")
 TASKS = [
     "bottom burner",
     "top burner",
@@ -38,24 +55,46 @@ LABEL = {
     "diffusion_policy_cnn": "DP-CNN",
     "diffusion_policy_transformer": "DP-Transformer",
     "flowpolicy": "FlowPolicy",
+    "LSTM_GMM": "LSTM-GMM",
+    "implicit_behavior_cloning": "IBC",
+    "behavior_transformer": "BeT",
 }
 COLOR = {
     "diffusion_policy_cnn": "#1f77b4",
     "diffusion_policy_transformer": "#ff7f0e",
     "flowpolicy": "#2ca02c",
+    "LSTM_GMM": "#d62728",
+    "implicit_behavior_cloning": "#9467bd",
+    "behavior_transformer": "#8c564b",
 }
 MARKER = {
     "diffusion_policy_cnn": "o",
     "diffusion_policy_transformer": "s",
     "flowpolicy": "D",
+    "LSTM_GMM": "v",
+    "implicit_behavior_cloning": "P",
+    "behavior_transformer": "X",
 }
 NFE_MARKER = {1: "o", 8: "s", 32: "^", 100: "D"}
 MODEL_ORDER = (
     "flowpolicy",
     "diffusion_policy_cnn",
     "diffusion_policy_transformer",
+    "LSTM_GMM",
+    "implicit_behavior_cloning",
+    "behavior_transformer",
 )
-# Operating points shown on focused Pareto / degradation plots
+NFE_AXIS_MODELS = (
+    "flowpolicy",
+    "diffusion_policy_cnn",
+    "diffusion_policy_transformer",
+)
+BASELINE_MODELS = (
+    "LSTM_GMM",
+    "implicit_behavior_cloning",
+    "behavior_transformer",
+)
+# Operating points shown on focused trade-off / degradation plots
 HIGHLIGHT_OPS = {
     ("flowpolicy", 1),
     ("flowpolicy", 8),
@@ -63,6 +102,25 @@ HIGHLIGHT_OPS = {
     ("diffusion_policy_transformer", 100),
 }
 HIGHLIGHT_NFES = (1, 8, 100)
+DP_MODELS = ("diffusion_policy_cnn", "diffusion_policy_transformer")
+DP_ALLOWED_NFE = 100
+
+
+def _keep_run(model: str, nfe: int) -> bool:
+    """Drop DP-CNN/Transformer runs below NFE=100 (not used for fair comparison)."""
+    if model in DP_MODELS and int(nfe) != DP_ALLOWED_NFE:
+        return False
+    return True
+
+
+def _nfe_from_metrics(metrics: Dict[str, Any]) -> int:
+    raw = metrics.get("num_inference_steps")
+    if raw is None:
+        raw = metrics.get("pred_n_iter")
+    try:
+        return int(raw)
+    except (TypeError, ValueError):
+        return 0
 
 
 def _is_highlight(model: str, nfe: int) -> bool:
@@ -100,15 +158,19 @@ def _lat(m: Dict[str, Any]) -> Optional[float]:
     return m.get("timing_ms", {}).get("inference_latency", {}).get("mean")
 
 
-def _lat_std(m: Dict[str, Any]) -> Optional[float]:
-    return m.get("timing_ms", {}).get("inference_latency", {}).get("std")
+def _lat_p95(m: Dict[str, Any]) -> Optional[float]:
+    return m.get("timing_ms", {}).get("inference_latency", {}).get("p95")
+
+
+def _lat_per_action(m: Dict[str, Any]) -> Optional[float]:
+    return m.get("timing_ms", {}).get("latency_per_executed_action", {}).get("mean")
 
 
 def _mean_tasks(m: Dict[str, Any]) -> float:
     eps = m.get("episodes") or []
     if not eps:
         return float("nan")
-    return float(np.mean([e.get("num_tasks_completed", 0) for e in eps]))
+    return float(np.mean([episode_k_capped(e) for e in eps]))
 
 
 def _mean_tasks_std(m: Dict[str, Any]) -> float:
@@ -117,7 +179,7 @@ def _mean_tasks_std(m: Dict[str, Any]) -> float:
         return 0.0
     return float(
         np.std(
-            [e.get("num_tasks_completed", 0) for e in eps],
+            [episode_k_capped(e) for e in eps],
             ddof=1,
         )
     )
@@ -131,58 +193,41 @@ def _success_rate_p14(run: Dict[str, Any]) -> Optional[float]:
     return float(sum(vals) / 4.0)
 
 
-def pareto_front(
-    points: List[Dict[str, Any]],
-    *,
-    x_key: str = "latency_ms",
-    y_key: str = "success_rate_p14",
-) -> List[Dict[str, Any]]:
-    """Non-dominated set: minimize x (latency), maximize y (success rate)."""
-    valid = [
-        p
-        for p in points
-        if p.get(x_key) is not None
-        and p.get(y_key) is not None
-        and np.isfinite(p[x_key])
-        and np.isfinite(p[y_key])
-    ]
-    front: List[Dict[str, Any]] = []
-    for a in valid:
-        dominated = False
-        for b in valid:
-            if a is b:
-                continue
-            # b dominates a if b is no worse on both and better on at least one
-            if (
-                b[x_key] <= a[x_key]
-                and b[y_key] >= a[y_key]
-                and (b[x_key] < a[x_key] or b[y_key] > a[y_key])
-            ):
-                dominated = True
-                break
-        if not dominated:
-            front.append(a)
-    front.sort(key=lambda p: (p[x_key], -p[y_key]))
-    return front
-
-
 def discover(root_dp: Path, root_fp: Path) -> List[Dict[str, Any]]:
     runs: List[Dict[str, Any]] = []
 
     def add(model: str, d: Path) -> None:
+        metrics_path = d / "eval_metrics.json"
+        if not metrics_path.is_file():
+            return
+        metrics = json.loads(metrics_path.read_text())
         m = DIR_RE.match(d.name)
-        if not m:
+        sseed = None
+        if m:
+            seed = m.group("seed")
+            nfe = int(m.group("nfe"))
+            sseed = int(m.group("sseed"))
+        else:
+            m2 = DIR_RE_COMPACT.match(d.name)
+            if m2:
+                seed = m2.group("seed")
+                nfe = int(m2.group("nfe"))
+                sseed = 0
+            else:
+                m3 = DIR_RE_NATIVE.match(d.name)
+                if not m3:
+                    return
+                seed = m3.group("seed")
+                nfe = _nfe_from_metrics(metrics)
+                sseed = int(m3.group("sseed"))
+        if not _keep_run(model, nfe):
             return
-        path = d / "eval_metrics.json"
-        if not path.is_file():
-            return
-        metrics = json.loads(path.read_text())
         runs.append(
             {
                 "model": model,
-                "train_seed": m.group("seed"),
-                "nfe": int(m.group("nfe")),
-                "sseed": int(m.group("sseed")),
+                "train_seed": seed,
+                "nfe": nfe,
+                "sseed": sseed,
                 "mean_tasks": _mean_tasks(metrics),
                 "mean_tasks_episode_std": _mean_tasks_std(metrics),
                 "p1": _px(metrics, 1),
@@ -194,19 +239,22 @@ def discover(root_dp: Path, root_fp: Path) -> List[Dict[str, Any]]:
                 "p4": _px(metrics, 4),
                 "p4_episode_std": _px_std(metrics, 4),
                 "latency_ms": _lat(metrics),
-                "latency_episode_std": _lat_std(metrics),
+                "latency_p95": _lat_p95(metrics),
+                "latency_per_action_ms": _lat_per_action(metrics),
                 "n_episodes": metrics.get("n_episodes"),
                 "success_rate": {
                     t: metrics.get("success_rate", {}).get(t, {}).get("mean")
                     for t in TASKS
                 },
-                "path": str(path),
+                "path": str(metrics_path),
             }
         )
 
     if root_dp.exists():
         for model_dir in sorted(root_dp.iterdir()):
             if not model_dir.is_dir():
+                continue
+            if model_dir.name == "flowpolicy":
                 continue
             for d in sorted(model_dir.iterdir()):
                 if d.is_dir():
@@ -239,6 +287,13 @@ def aggregate(runs: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
         lat_m, lat_s = _mean_std(
             [g["latency_ms"] for g in group if g["latency_ms"] is not None]
         )
+        lat_pa_m, _ = _mean_std(
+            [
+                g["latency_per_action_ms"]
+                for g in group
+                if g.get("latency_per_action_ms") is not None
+            ]
+        )
         sr_vals = [
             v
             for g in group
@@ -265,6 +320,10 @@ def aggregate(runs: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
             "success_rate_p14_std": sr_s,
             "latency_ms": lat_m,
             "latency_ms_std": lat_s,
+            "latency_p95": _mean_std(
+                [g["latency_p95"] for g in group if g.get("latency_p95") is not None]
+            )[0],
+            "latency_per_action_ms": lat_pa_m,
         }
         for t in TASKS:
             vals = [
@@ -293,29 +352,35 @@ def write_csv(path: Path, rows: List[Dict[str, Any]]) -> None:
 def compute_utopia_distances(
     points: List[Dict[str, Any]],
 ) -> Tuple[float, List[Dict[str, Any]]]:
-    """Normalize latency by L_max; distance to ideal (0, 1) in normalized space.
+    """Normalize per-action latency by L_max; distance to ideal (0, 1).
 
-    x_tilde = L / L_max,  y = success_rate_p14,
+    L = latency_per_executed_action = L_call / H_exec
+    x_tilde = L / L_max,  y = p4,
     d = sqrt(x_tilde^2 + (1 - y)^2)
     """
-    lats = [float(p["latency_ms"]) for p in points]
+    valid = [
+        p
+        for p in points
+        if p.get("latency_per_action_ms") is not None and p.get("p4") is not None
+    ]
+    lats = [float(p["latency_per_action_ms"]) for p in valid]
     l_max = float(max(lats)) if lats else 1.0
     if l_max <= 0:
         l_max = 1.0
     rows: List[Dict[str, Any]] = []
-    for p in points:
-        lat = float(p["latency_ms"])
-        y = float(p["success_rate_p14"])
+    for p in valid:
+        lat = float(p["latency_per_action_ms"])
+        y = float(p["p4"])
         x_tilde = lat / l_max
         d = float(np.sqrt(x_tilde**2 + (1.0 - y) ** 2))
         rows.append(
             {
                 "model": p["model"],
-                "train_seed": p["train_seed"],
+                "train_seed": p.get("train_seed"),
                 "nfe": int(p["nfe"]),
                 "sseed": p.get("sseed", 0),
-                "latency_ms": lat,
-                "success_rate_p14": y,
+                "latency_per_action_ms": lat,
+                "p4": y,
                 "x_tilde": x_tilde,
                 "y": y,
                 "distance": d,
@@ -331,21 +396,21 @@ def write_utopia_logs(
     out_dir.mkdir(parents=True, exist_ok=True)
     write_csv(out_dir / "utopia_distance.csv", dist_rows)
 
-    # Mean distance per (model, NFE) using mean latency/SR (same formula)
+    # Mean distance per (model, NFE) using mean per-action latency and p4
     mean_rows: List[Dict[str, Any]] = []
     for r in agg:
-        if r.get("latency_ms") is None or r.get("success_rate_p14") is None:
+        if r.get("latency_per_action_ms") is None or r.get("p4") is None:
             continue
-        lat = float(r["latency_ms"])
-        y = float(r["success_rate_p14"])
+        lat = float(r["latency_per_action_ms"])
+        y = float(r["p4"])
         x_tilde = lat / l_max
         d = float(np.sqrt(x_tilde**2 + (1.0 - y) ** 2))
         mean_rows.append(
             {
                 "model": r["model"],
                 "nfe": int(r["nfe"]),
-                "latency_ms": lat,
-                "success_rate_p14": y,
+                "latency_per_action_ms": lat,
+                "p4": y,
                 "x_tilde": x_tilde,
                 "distance": d,
             }
@@ -357,37 +422,39 @@ def write_utopia_logs(
         "=" * 72,
         "",
         "Ideal point: (x*, y*) = (0, 1)",
+        "  L_i       = latency per executed action = L_call / H_exec",
         "  x_tilde_i = L_i / L_max",
-        "  y_i       = (p1 + p2 + p3 + p4) / 4",
+        "  y_i       = p4  (mean of 3 training seeds for aggregate rows)",
         "  d_i       = sqrt( x_tilde_i^2 + (1 - y_i)^2 )",
         "",
-        f"L_max (ms) = {l_max:.6f}   (max latency among {len(dist_rows)} seed points)",
+        f"L_max (ms) = {l_max:.6f}   (max per-action latency among {len(dist_rows)} seed points)",
         "",
         "Mean distance per (model, NFE), sorted ascending:",
-        f"{'model':<18} {'NFE':>4} {'lat_ms':>10} {'SR':>8} {'x_tilde':>8} {'d':>8}",
+        f"{'model':<18} {'NFE':>4} {'lat_pa':>10} {'p4':>8} {'x_tilde':>8} {'d':>8}",
         "-" * 72,
     ]
     for r in mean_rows:
         lines.append(
             f"{LABEL.get(r['model'], r['model']):<18} {r['nfe']:>4} "
-            f"{r['latency_ms']:10.2f} {r['success_rate_p14']:8.4f} "
+            f"{r['latency_per_action_ms']:10.2f} {r['p4']:8.4f} "
             f"{r['x_tilde']:8.4f} {r['distance']:8.4f}"
         )
-    lines.extend(
-        [
-            "",
-            "Per-seed distances (see utopia_distance.csv for full table).",
-            f"Closest seed point: "
-            f"{LABEL.get(dist_rows[0]['model'], dist_rows[0]['model'])} "
-            f"seed={dist_rows[0]['train_seed']} NFE={dist_rows[0]['nfe']} "
-            f"d={dist_rows[0]['distance']:.4f}",
-            f"Farthest seed point: "
-            f"{LABEL.get(dist_rows[-1]['model'], dist_rows[-1]['model'])} "
-            f"seed={dist_rows[-1]['train_seed']} NFE={dist_rows[-1]['nfe']} "
-            f"d={dist_rows[-1]['distance']:.4f}",
-            "",
-        ]
-    )
+    extra = ["", "Per-seed distances (see utopia_distance.csv for full table)."]
+    if dist_rows:
+        extra.extend(
+            [
+                f"Closest seed point: "
+                f"{LABEL.get(dist_rows[0]['model'], dist_rows[0]['model'])} "
+                f"seed={dist_rows[0]['train_seed']} NFE={dist_rows[0]['nfe']} "
+                f"d={dist_rows[0]['distance']:.4f}",
+                f"Farthest seed point: "
+                f"{LABEL.get(dist_rows[-1]['model'], dist_rows[-1]['model'])} "
+                f"seed={dist_rows[-1]['train_seed']} NFE={dist_rows[-1]['nfe']} "
+                f"d={dist_rows[-1]['distance']:.4f}",
+            ]
+        )
+    extra.append("")
+    lines.extend(extra)
     (out_dir / "utopia_distance.txt").write_text("\n".join(lines) + "\n")
 
 
@@ -406,10 +473,9 @@ def plot_pareto_per_seed(
     # Full set for utopia log; focused set for the figure
     all_points: List[Dict[str, Any]] = []
     for r in runs:
-        sr = _success_rate_p14(r)
-        if sr is None or r.get("latency_ms") is None:
+        if r.get("p4") is None or r.get("latency_per_action_ms") is None:
             continue
-        all_points.append({**r, "success_rate_p14": sr})
+        all_points.append(r)
     if not all_points:
         return
 
@@ -424,17 +490,17 @@ def plot_pareto_per_seed(
     # Mean-point distances (annotate on plot); same L_max as full log
     mean_dist: Dict[Tuple[str, int], float] = {}
     for r in agg_h:
-        if r.get("latency_ms") is None or r.get("success_rate_p14") is None:
+        if r.get("latency_per_action_ms") is None or r.get("p4") is None:
             continue
-        x_tilde = float(r["latency_ms"]) / l_max
-        y = float(r["success_rate_p14"])
+        x_tilde = float(r["latency_per_action_ms"]) / l_max
+        y = float(r["p4"])
         mean_dist[(r["model"], int(r["nfe"]))] = float(
             np.sqrt(x_tilde**2 + (1.0 - y) ** 2)
         )
 
     fig, ax = plt.subplots(figsize=(9.0, 5.8))
 
-    lats = [float(p["latency_ms"]) for p in points]
+    lats = [float(p["latency_per_action_ms"]) for p in points]
     l_min = float(min(lats))
     # Visual utopia slightly left of min latency (log scale cannot show L=0)
     utopia_x = l_min / 1.6
@@ -445,14 +511,16 @@ def plot_pareto_per_seed(
         [
             r
             for r in agg_h
-            if r["model"] == "flowpolicy" and r.get("success_rate_p14") is not None
+            if r["model"] == "flowpolicy"
+            and r.get("p4") is not None
+            and r.get("latency_per_action_ms") is not None
         ],
         key=lambda x: x["nfe"],
     )
     if len(fp_pts) >= 2:
         ax.plot(
-            [p["latency_ms"] for p in fp_pts],
-            [p["success_rate_p14"] for p in fp_pts],
+            [p["latency_per_action_ms"] for p in fp_pts],
+            [p["p4"] for p in fp_pts],
             color=COLOR["flowpolicy"],
             lw=1.5,
             alpha=0.55,
@@ -461,11 +529,11 @@ def plot_pareto_per_seed(
 
     # Thin dashed lines from utopia to each highlight mean
     for r in agg_h:
-        if r.get("latency_ms") is None or r.get("success_rate_p14") is None:
+        if r.get("latency_per_action_ms") is None or r.get("p4") is None:
             continue
         ax.plot(
-            [utopia_x, r["latency_ms"]],
-            [utopia_y, r["success_rate_p14"]],
+            [utopia_x, r["latency_per_action_ms"]],
+            [utopia_y, r["p4"]],
             color=COLOR[r["model"]],
             linestyle=":",
             lw=0.8,
@@ -477,8 +545,8 @@ def plot_pareto_per_seed(
     for r in points:
         mk = NFE_MARKER.get(int(r["nfe"]), "o")
         ax.scatter(
-            r["latency_ms"],
-            r["success_rate_p14"],
+            r["latency_per_action_ms"],
+            r["p4"],
             c=COLOR[r["model"]],
             marker=mk,
             s=48,
@@ -489,12 +557,12 @@ def plot_pareto_per_seed(
 
     # Mean points + NFE label + distance annotation
     for r in agg_h:
-        if r.get("latency_ms") is None or r.get("success_rate_p14") is None:
+        if r.get("latency_per_action_ms") is None or r.get("p4") is None:
             continue
         model, nfe = r["model"], int(r["nfe"])
         ax.scatter(
-            r["latency_ms"],
-            r["success_rate_p14"],
+            r["latency_per_action_ms"],
+            r["p4"],
             c=COLOR[model],
             marker=NFE_MARKER.get(nfe, "o"),
             s=90,
@@ -506,7 +574,7 @@ def plot_pareto_per_seed(
         d = mean_dist.get((model, nfe), float("nan"))
         ax.annotate(
             f"NFE={nfe}\nd={d:.3f}",
-            (r["latency_ms"], r["success_rate_p14"]),
+            (r["latency_per_action_ms"], r["p4"]),
             textcoords="offset points",
             xytext=(6, 4),
             fontsize=6.5,
@@ -535,9 +603,9 @@ def plot_pareto_per_seed(
     )
 
     ax.set_xscale("log")
-    ax.set_xlabel("Inference latency (ms)")
-    ax.set_ylabel("Success rate  (p1+p2+p3+p4) / 4")
-    ax.set_title("Quality–latency with utopia distance (FP@1/8, DP@100)")
+    ax.set_xlabel("Latency per executed action (ms)")
+    ax.set_ylabel("p4")
+    ax.set_title("Quality–speed with utopia distance (FP@1/8, DP@100)")
     ax.set_ylim(-0.05, 1.08)
     ax.grid(True, alpha=0.3)
     ax.spines["top"].set_visible(False)
@@ -779,11 +847,12 @@ def plot_all(
     if not agg:
         return
 
-    models = sorted({r["model"] for r in agg})
+    models = [m for m in MODEL_ORDER if m in {r["model"] for r in agg}]
+    nfe_models = [m for m in models if m in NFE_AXIS_MODELS]
 
     # 1) mean_tasks / p3 / p4 vs NFE
     fig, axes = plt.subplots(1, 3, figsize=(13, 4.2))
-    for model in models:
+    for model in nfe_models:
         pts = sorted([r for r in agg if r["model"] == model], key=lambda x: x["nfe"])
         xs = [p["nfe"] for p in pts]
         c, mk, lb = COLOR[model], MARKER[model], LABEL.get(model, model)
@@ -838,17 +907,15 @@ def plot_all(
 
     # 2) latency
     fig, ax = plt.subplots(figsize=(7, 4.2))
-    for model in models:
+    for model in nfe_models:
         pts = sorted([r for r in agg if r["model"] == model], key=lambda x: x["nfe"])
-        ax.errorbar(
+        ax.plot(
             [p["nfe"] for p in pts],
             [p["latency_ms"] for p in pts],
-            yerr=[p["latency_ms_std"] or 0 for p in pts],
             marker=MARKER[model],
             color=COLOR[model],
             label=LABEL.get(model, model),
             lw=2,
-            capsize=3,
         )
     ax.set_xscale("log", base=2)
     ax.set_yscale("log")
@@ -862,12 +929,21 @@ def plot_all(
     fig.savefig(out_dir / "latency_vs_nfe.pdf", bbox_inches="tight")
     plt.close(fig)
 
-    # 3) pareto
+    # 3) quality–speed trade-off (p4 vs latency per executed action)
     fig, ax = plt.subplots(figsize=(7.5, 4.5))
     for model in models:
-        pts = sorted([r for r in agg if r["model"] == model], key=lambda x: x["nfe"])
-        xs = [p["latency_ms"] for p in pts]
-        ys = [p["mean_tasks"] for p in pts]
+        pts = sorted(
+            [
+                r
+                for r in agg
+                if r["model"] == model
+                and r.get("latency_per_action_ms") is not None
+                and r.get("p4") is not None
+            ],
+            key=lambda x: x["nfe"],
+        )
+        xs = [p["latency_per_action_ms"] for p in pts]
+        ys = [p["p4"] for p in pts]
         ax.plot(
             xs,
             ys,
@@ -887,9 +963,9 @@ def plot_all(
                     color=COLOR[model],
                 )
     ax.set_xscale("log")
-    ax.set_xlabel("Inference latency (ms)")
-    ax.set_ylabel("Mean tasks completed")
-    ax.set_title("Quality–latency trade-off (labels = NFE)")
+    ax.set_xlabel("Latency per executed action (ms)")
+    ax.set_ylabel("p4")
+    ax.set_title("Quality–speed trade-off (labels = NFE)")
     ax.grid(True, alpha=0.3)
     ax.legend()
     fig.tight_layout()
@@ -908,7 +984,8 @@ def write_report(
     lines = [
         "=" * 78,
         "Kitchen NFE100 full eval report",
-        "DP-CNN / DP-Transformer / FlowPolicy × NFE {1,8,32,100} × 3 seeds × 100 ep",
+        "FlowPolicy × NFE {1,8,32,100}; DP-CNN/DP-Transformer × NFE=100 only "
+        "(× 3 seeds × 100 ep)",
         "=" * 78,
         "",
         f"Discovered runs: {len(runs)}",
@@ -926,7 +1003,7 @@ def write_report(
             f"{(r['p2'] or 0):5.3f}±{(r['p2_std'] or 0):.3f}  "
             f"{(r['p3'] or 0):5.3f}±{(r['p3_std'] or 0):.3f}  "
             f"{(r['p4'] or 0):5.3f}±{(r['p4_std'] or 0):.3f}  "
-            f"{(r['latency_ms'] or 0):7.1f}±{(r['latency_ms_std'] or 0):.1f}"
+            f"{(r['latency_ms'] or 0):7.1f}"
         )
 
     lines.extend(
@@ -949,42 +1026,75 @@ def write_report(
                 f"{(r['p2'] or 0):5.3f}±{(r['p2_episode_std'] or 0):.3f}  "
                 f"{(r['p3'] or 0):5.3f}±{(r['p3_episode_std'] or 0):.3f}  "
                 f"{(r['p4'] or 0):5.3f}±{(r['p4_episode_std'] or 0):.3f}  "
-                f"{(r['latency_ms'] or 0):7.1f}±"
-                f"{(r['latency_episode_std'] or 0):.1f}"
+                f"{(r['latency_ms'] or 0):7.1f}"
+                + (
+                    f" (P95={r['latency_p95']:.1f})"
+                    if r.get("latency_p95") is not None
+                    else ""
+                )
             )
 
-    # Highlight equal-NFE comparisons at 1,8,32,100
-    lines.extend(["", "Equal-NFE snapshots (mean_tasks / p1–p4):"])
+    # Snapshots: FP across NFE grid; DP only at NFE=100
+    lines.extend(["", "Operating / NFE snapshots (mean_tasks / p1–p4):"])
     by_mn: Dict[Tuple[str, int], Dict[str, Any]] = {
         (r["model"], r["nfe"]): r for r in agg
     }
     for nfe in (1, 8, 32, 100):
         lines.append(f"  NFE={nfe}:")
-        for model in (
-            "flowpolicy",
-            "diffusion_policy_cnn",
-            "diffusion_policy_transformer",
-        ):
+        models = ["flowpolicy"]
+        if nfe == DP_ALLOWED_NFE:
+            models.extend(
+                ["diffusion_policy_cnn", "diffusion_policy_transformer"]
+            )
+        for model in models:
             r = by_mn.get((model, nfe))
             if not r:
                 lines.append(f"    {LABEL.get(model, model)}: (missing)")
                 continue
+            lat_bits = []
+            if r.get("latency_ms") is not None:
+                lat_bits.append(f"lat_call={r['latency_ms']:.1f}ms")
+            if r.get("latency_per_action_ms") is not None:
+                lat_bits.append(f"lat_per_action={r['latency_per_action_ms']:.1f}ms")
+            lat_txt = ("  " + "  ".join(lat_bits)) if lat_bits else ""
             lines.append(
                 f"    {LABEL.get(model, model)}: "
                 f"tasks={r['mean_tasks']:.3f}±{(r['mean_tasks_std'] or 0):.3f}  "
                 f"p1={(r['p1'] or 0):.3f}±{(r['p1_std'] or 0):.3f}  "
                 f"p2={(r['p2'] or 0):.3f}±{(r['p2_std'] or 0):.3f}  "
                 f"p3={(r['p3'] or 0):.3f}±{(r['p3_std'] or 0):.3f}  "
-                f"p4={(r['p4'] or 0):.3f}±{(r['p4_std'] or 0):.3f}  "
-                f"lat={r['latency_ms']:.1f}ms"
+                f"p4={(r['p4'] or 0):.3f}±{(r['p4_std'] or 0):.3f}"
+                f"{lat_txt}"
             )
 
-    expected = 3 * 3 * 4  # models × seeds × nfe
+    n_fp = sum(1 for r in runs if r["model"] == "flowpolicy")
+    n_dp = sum(1 for r in runs if r["model"] in DP_MODELS)
+    n_bl = sum(1 for r in runs if r["model"] in BASELINE_MODELS)
+    lines.extend(["", "Native / default-config baselines (not on the NFE axis):"])
+    for model in BASELINE_MODELS:
+        rows = [r for r in agg if r["model"] == model]
+        if not rows:
+            lines.append(f"  {LABEL.get(model, model)}: (missing)")
+            continue
+        for r in rows:
+            lat_bits = []
+            if r.get("latency_ms") is not None:
+                lat_bits.append(f"lat_call={r['latency_ms']:.1f}ms")
+            if r.get("latency_per_action_ms") is not None:
+                lat_bits.append(f"lat_per_action={r['latency_per_action_ms']:.1f}ms")
+            lat_txt = ("  " + "  ".join(lat_bits)) if lat_bits else ""
+            nfe_label = "default" if int(r["nfe"]) == 0 else str(r["nfe"])
+            lines.append(
+                f"  {LABEL.get(model, model)} (nfe={nfe_label}): "
+                f"tasks={r['mean_tasks']:.3f}±{(r['mean_tasks_std'] or 0):.3f}  "
+                f"p4={(r['p4'] or 0):.3f}±{(r['p4_std'] or 0):.3f}"
+                f"{lat_txt}"
+            )
     lines.extend(
         [
             "",
-            f"Completeness: {len(runs)}/{expected} runs "
-            f"({'COMPLETE' if len(runs) >= expected else 'INCOMPLETE — resume orchestrator'})",
+            f"Run counts: FlowPolicy={n_fp}, DP(NFE={DP_ALLOWED_NFE} only)={n_dp}, "
+            f"LSTM/IBC/BeT={n_bl}, total={len(runs)}",
             "",
             "=" * 78,
         ]
@@ -1000,28 +1110,24 @@ def main() -> None:
         "--input_root_dp",
         type=Path,
         default=None,
-        help="Default: kitchen_eval_nfe100_diffusion if present, else kitchen_eval_nfe100",
+        help="Default: data/kitchen_eval_nfe100 (new tree) with legacy fallbacks",
     )
     ap.add_argument(
         "--input_root_fp",
         type=Path,
-        default=ROOT / "kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy",
+        default=None,
+        help="Default: data/kitchen_eval_nfe100/flowpolicy with legacy fallback",
     )
     ap.add_argument(
         "--output_dir",
         type=Path,
-        default=ROOT / "data/kitchen_eval_plots/nfe100",
+        default=PLOT_ROOT,
     )
     args = ap.parse_args()
     if args.input_root_dp is None:
-        cand = [
-            ROOT / "diffusion_policy/data/kitchen_eval_nfe100_diffusion",
-            ROOT / "diffusion_policy/data/kitchen_eval_nfe100",
-        ]
-        args.input_root_dp = next(
-            (p for p in cand if p.is_dir() and any(p.rglob("eval_metrics.json"))),
-            cand[0],
-        )
+        args.input_root_dp = resolve_dp_root()
+    if args.input_root_fp is None:
+        args.input_root_fp = resolve_fp_root()
     args.output_dir.mkdir(parents=True, exist_ok=True)
 
     runs = discover(args.input_root_dp, args.input_root_fp)
@@ -1048,7 +1154,8 @@ def main() -> None:
                 "p4_episode_std": r["p4_episode_std"],
                 "success_rate_p14": _success_rate_p14(r),
                 "latency_ms": r["latency_ms"],
-                "latency_episode_std": r["latency_episode_std"],
+                "latency_p95": r.get("latency_p95"),
+                "latency_per_action_ms": r.get("latency_per_action_ms"),
                 "n_episodes": r["n_episodes"],
                 "path": r["path"],
             }

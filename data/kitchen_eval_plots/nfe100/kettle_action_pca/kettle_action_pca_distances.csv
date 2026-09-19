@@ -1,0 +1,6 @@
+group,n_action_vectors,mean_euclidean_dist_to_demo_centroid
+demonstration,14027,0.0
+NFE=1,12273,4.226176
+NFE=8,5226,4.096034
+NFE=32,5688,4.069586
+NFE=100,5169,4.078541

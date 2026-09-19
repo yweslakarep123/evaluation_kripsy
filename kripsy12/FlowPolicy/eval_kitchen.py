@@ -15,13 +15,15 @@ import glob
 import json
 import os
 import pathlib
+import re
+import shutil
 from typing import Any, Dict, List, Optional, Tuple
 
 import click
 import numpy as np
 import torch
 
-from flow_policy_3d.common.multistage_metrics import compute_multistage_metrics
+from flow_policy_3d.common.multistage_metrics import K_MAX, compute_multistage_metrics
 from flow_policy_3d.env_runner.kitchen_lowdim_eval_runner import (
     ALL_TASKS,
     KitchenLowdimEvalRunner,
@@ -59,11 +61,37 @@ def _metric_mean(value: Any) -> Optional[float]:
     return float(value)
 
 
-def _metric_std(value: Any) -> Optional[float]:
-    if isinstance(value, dict):
-        s = value.get("std")
-        return float(s) if s is not None else None
-    return None
+def _format_rate(stat: Any, with_interval: bool = True) -> str:
+    """Format mean ± std, plus [ci_low, ci_high] when Wilson fields exist."""
+    if stat is None:
+        return "n/a"
+    if not isinstance(stat, dict):
+        return f"{float(stat):.3f}"
+    mean = stat.get("mean")
+    std = stat.get("std")
+    if mean is None:
+        return "n/a"
+    if std is None:
+        return f"{float(mean):.3f}"
+    line = f"{float(mean):.3f} ± {float(std):.3f}"
+    lo = stat.get("ci_low")
+    hi = stat.get("ci_high")
+    if with_interval and lo is not None and hi is not None:
+        line += f"  [{float(lo):.3f}, {float(hi):.3f}]"
+    return line
+
+
+def _format_latency(stat: Any, label: str) -> Optional[str]:
+    if not isinstance(stat, dict):
+        return None
+    mean = stat.get("mean")
+    if mean is None:
+        return None
+    p95 = stat.get("p95")
+    n = stat.get("n_samples")
+    if p95 is not None and n:
+        return f"  {label}: {float(mean):.1f}  (P95={float(p95):.1f}, n={int(n)})"
+    return f"  {label}: {float(mean):.1f}"
 
 
 def resolve_checkpoint(pattern: str) -> str:
@@ -81,7 +109,53 @@ def resolve_checkpoint(pattern: str) -> str:
 
 
 def seed_name_from_checkpoint(checkpoint_path: str) -> str:
-    return pathlib.Path(checkpoint_path).parent.name
+    path = pathlib.Path(checkpoint_path)
+    for parent in path.parents:
+        if re.fullmatch(r"seed\d+", parent.name):
+            return parent.name
+    return path.parent.name
+
+
+def load_complete_metrics(
+    metrics_path: pathlib.Path, expected_n_episodes: int
+) -> Optional[Dict[str, Any]]:
+    if not metrics_path.is_file():
+        return None
+    try:
+        with open(metrics_path, "r") as f:
+            metrics = json.load(f)
+    except (OSError, json.JSONDecodeError):
+        return None
+    n = metrics.get("n_episodes")
+    if n is None:
+        n = len(metrics.get("episodes") or [])
+    try:
+        if int(n) != int(expected_n_episodes):
+            return None
+    except (TypeError, ValueError):
+        return None
+    return metrics
+
+
+def prepare_seed_output_dir(
+    seed_output_dir: pathlib.Path,
+    overwrite: bool,
+    n_episodes: int,
+) -> Optional[Dict[str, Any]]:
+    """Return existing metrics to skip, else None (run). Incomplete dirs are removed."""
+    metrics_path = seed_output_dir / "eval_metrics.json"
+    if overwrite:
+        if seed_output_dir.exists():
+            shutil.rmtree(seed_output_dir)
+        return None
+    if not seed_output_dir.exists():
+        return None
+    existing = load_complete_metrics(metrics_path, n_episodes)
+    if existing is not None:
+        return existing
+    click.echo(f"Removing incomplete {seed_output_dir}")
+    shutil.rmtree(seed_output_dir)
+    return None
 
 
 def load_policy(checkpoint_path: str, device: torch.device):
@@ -103,6 +177,7 @@ def build_runner(
     n_episodes: int,
     save_trajectory_logs: bool = True,
     n_episodes_vis: Optional[int] = None,
+    inference_warmup_calls: int = 10,
 ) -> KitchenLowdimEvalRunner:
     task_cfg = cfg.task
     env_runner_cfg = task_cfg.get("eval_runner") or task_cfg.env_runner
@@ -127,12 +202,15 @@ def build_runner(
         tqdm_interval_sec=env_runner_cfg.get("tqdm_interval_sec", 5.0),
         dataset_dir=dataset_dir,
         save_trajectory_logs=save_trajectory_logs,
+        inference_warmup_calls=inference_warmup_calls,
     )
 
 
 def format_eval_report(metrics: Dict[str, Any], seed_name: str) -> str:
     if not metrics.get("multistage_metrics") and metrics.get("episodes"):
-        ms = compute_multistage_metrics(metrics["episodes"], sub_goals=ALL_TASKS)
+        ms = compute_multistage_metrics(
+            metrics["episodes"], sub_goals=ALL_TASKS, num_sub_goals=K_MAX
+        )
         metrics.setdefault("multistage_metrics", {})["all_7_tasks"] = {
             "px": ms["px"],
             "cumulative_order_success_rate": ms["cumulative_order_success_rate"],
@@ -144,53 +222,82 @@ def format_eval_report(metrics: Dict[str, Any], seed_name: str) -> str:
         f"Kitchen Eval Report | seed={seed_name} | {metrics.get('n_episodes')} episodes",
         "=" * 72,
         "",
-        "Per-task success rate (fraction of episodes)",
+        "Per-task success rate (p4 ceiling; n may be < episodes because "
+        "leftover tasks after k>=4 are excluded; "
+        "± is Wilson 95% half-width when CI is present)",
         "-" * 72,
     ]
     sr = metrics.get("success_rate", {})
     for task in ALL_TASKS:
         stat = sr.get(task, {})
-        mean = stat.get("mean")
-        std = stat.get("std")
-        if mean is not None:
-            lines.append(f"  {task:<16}  {mean:.3f} ± {std:.3f}")
+        if stat.get("mean") is not None:
+            n = stat.get("n_samples")
+            extra = f"  n={int(n)}" if n is not None else ""
+            lines.append(f"  {task:<16}  {_format_rate(stat)}{extra}")
 
-    cum = sr.get("all_7_tasks", {})
+    cum = sr.get("p4_success") or sr.get("all_7_tasks") or {}
     if cum.get("mean") is not None:
         lines.extend([
             "",
-            "Cumulative episode success (all 7 tasks completed)",
+            "Episode success (p4: >= 4 of 7 tasks completed)",
             "-" * 72,
-            f"  success rate: {cum['mean']:.3f} ± {cum['std']:.3f}",
+            f"  success rate: {_format_rate(cum)}",
         ])
 
     ms7 = metrics.get("multistage_metrics", {}).get("all_7_tasks", {})
     px7 = ms7.get("px", {})
     if px7:
-        lines.extend(["", "Multi-stage p_k (>= k of 7 tasks completed)", "-" * 72])
+        lines.extend(["", "Multi-stage p_k (>= k of 7 tasks; scored through p4)", "-" * 72])
         parts = []
-        for k in range(1, len(ALL_TASKS) + 1):
+        for k in range(1, K_MAX + 1):
             pk = f"p{k}"
             if pk not in px7:
                 continue
             mean = _metric_mean(px7[pk])
-            std = _metric_std(px7[pk])
             if mean is None:
                 continue
-            if std is not None:
-                parts.append(f"p{k}={mean:.3f} ± {std:.3f}")
-            else:
-                parts.append(f"p{k}={mean:.3f}")
+            parts.append(f"p{k}={_format_rate(px7[pk], with_interval=False)}")
         lines.append(f"  {'  '.join(parts)}")
 
     inf = metrics.get("timing_ms", {}).get("inference_latency", {})
-    if inf.get("mean") is not None:
-        lines.extend([
-            "",
-            "Timing",
-            "-" * 72,
-            f"  Inference latency (ms): {inf['mean']:.2f} ± {inf['std']:.2f}",
-        ])
+    per_act = metrics.get("timing_ms", {}).get("latency_per_executed_action", {})
+    total_inf = metrics.get("timing_ms", {}).get("total_inference_compute", {})
+    f_ctrl = metrics.get("timing_ms", {}).get("f_control_hz", {})
+    method = metrics.get("timing_methodology") or {}
+    latency_lines = [
+        _format_latency(inf, "Inference latency per call (ms)"),
+        _format_latency(per_act, "Latency per executed action (ms)"),
+        _format_latency(total_inf, "Total inference compute / episode (ms)"),
+    ]
+    if any(
+        d.get("mean") is not None for d in (inf, per_act, total_inf, f_ctrl)
+    ) or method:
+        lines.extend(["", "Timing", "-" * 72])
+        if method:
+            lines.append(
+                "  methodology: "
+                f"clock={method.get('clock', 'n/a')}; "
+                f"cuda_sync={method.get('cuda_synchronize_before')} / "
+                f"{method.get('cuda_synchronize_after')}; "
+                f"warmup_discarded={method.get('warmup_calls_discarded')}; "
+                f"batch_size={method.get('batch_size')}; "
+                f"timed={method.get('timed_region')}; "
+                f"H2D={method.get('h2d_transfer_in_timed_region')}; "
+                f"D2H={method.get('d2h_transfer_in_timed_region')}; "
+                f"env_step={method.get('env_step_in_timed_region')}; "
+                f"n_timed_calls={method.get('n_timed_calls')}"
+            )
+        for line in latency_lines:
+            if line is not None:
+                lines.append(line)
+        if f_ctrl.get("mean") is not None:
+            std = f_ctrl.get("std")
+            if std is not None:
+                lines.append(
+                    f"  f_control (Hz): {f_ctrl['mean']:.3f} ± {std:.3f}"
+                )
+            else:
+                lines.append(f"  f_control (Hz): {f_ctrl['mean']:.3f}")
 
     lines.append("")
     return "\n".join(lines)
@@ -213,6 +320,9 @@ def aggregate_checkpoint_metrics(
         "success_rate": {},
         "timing_ms": {
             "inference_latency": {},
+            "latency_per_executed_action": {},
+            "total_inference_compute": {},
+            "f_control_hz": {},
             "episode_duration": {},
             "task_duration": {"overall": {}},
         },
@@ -228,20 +338,55 @@ def aggregate_checkpoint_metrics(
             "eval_metrics_path": metric.get("_metrics_path"),
         }
 
-    success_keys = ALL_TASKS + ["all_7_tasks"]
+    success_keys = ALL_TASKS + ["p4_success"]
     for key in success_keys:
         means = [
             m["success_rate"][key]["mean"]
             for m in checkpoint_metrics
-            if m["success_rate"][key]["mean"] is not None
+            if isinstance(m.get("success_rate", {}).get(key), dict)
+            and m["success_rate"][key].get("mean") is not None
         ]
         summary["success_rate"][key] = _compute_mean_std(means)
 
-    for timing_key in ["inference_latency", "episode_duration"]:
+    for timing_key in [
+        "inference_latency",
+        "latency_per_executed_action",
+        "total_inference_compute",
+    ]:
         means = [
             m["timing_ms"][timing_key]["mean"]
             for m in checkpoint_metrics
-            if m["timing_ms"][timing_key]["mean"] is not None
+            if m.get("timing_ms", {}).get(timing_key, {}).get("mean") is not None
+        ]
+        p95s = [
+            m["timing_ms"][timing_key]["p95"]
+            for m in checkpoint_metrics
+            if m.get("timing_ms", {}).get(timing_key, {}).get("p95") is not None
+        ]
+        n_calls = [
+            m["timing_ms"][timing_key].get("n_samples")
+            for m in checkpoint_metrics
+            if m.get("timing_ms", {}).get(timing_key, {}).get("n_samples")
+        ]
+        timed_n = int(np.sum(n_calls)) if n_calls else 0
+        agg: Dict[str, Any] = {
+            "mean": float(np.mean(means)) if means else None,
+            "n_samples": timed_n if timed_n else len(means),
+        }
+        if p95s:
+            agg["p95"] = float(np.mean(p95s))
+        if timed_n:
+            agg["n_timed_calls"] = timed_n
+        summary["timing_ms"][timing_key] = agg
+
+    for timing_key in [
+        "f_control_hz",
+        "episode_duration",
+    ]:
+        means = [
+            m["timing_ms"][timing_key]["mean"]
+            for m in checkpoint_metrics
+            if m.get("timing_ms", {}).get(timing_key, {}).get("mean") is not None
         ]
         summary["timing_ms"][timing_key] = _compute_mean_std(means)
 
@@ -298,6 +443,11 @@ def aggregate_checkpoint_metrics(
             "cumulative_order_success_rate": _compute_mean_std(cum_vals),
         }
 
+    if checkpoint_metrics:
+        summary["timing_methodology"] = checkpoint_metrics[0].get(
+            "timing_methodology"
+        )
+
     return summary
 
 
@@ -340,6 +490,18 @@ def aggregate_checkpoint_metrics(
     default=False,
     help="Skip MP4 rendering (n_episodes_vis=0). Faster for sweeps.",
 )
+@click.option(
+    "--inference_warmup_calls",
+    default=10,
+    type=int,
+    help="Dummy predict_action calls discarded before episode 0 (GPU warmup).",
+)
+@click.option(
+    "--run_name",
+    default=None,
+    type=str,
+    help="Override seed folder name (e.g. seed42). Default: inferred from checkpoint path.",
+)
 def main(
     checkpoints: Tuple[str, ...],
     output_root: str,
@@ -352,6 +514,8 @@ def main(
     num_inference_steps: Optional[int],
     sampling_seed: Optional[int],
     no_video: bool,
+    inference_warmup_calls: int,
+    run_name: Optional[str],
 ):
     os.environ.setdefault("MUJOCO_GL", "egl")
 
@@ -377,6 +541,7 @@ def main(
         click.echo(f"num_inference_steps override: {num_inference_steps}")
     if sampling_seed is not None:
         click.echo(f"sampling_seed: {sampling_seed}")
+    click.echo(f"inference_warmup_calls: {inference_warmup_calls}")
     if smoke:
         click.echo("SMOKE TEST mode")
     if no_video:
@@ -385,7 +550,7 @@ def main(
     checkpoint_metrics: List[Dict[str, Any]] = []
 
     for ckpt_path in ckpt_paths:
-        seed_name = seed_name_from_checkpoint(ckpt_path)
+        seed_name = run_name or seed_name_from_checkpoint(ckpt_path)
         dir_name = f"seed_{seed_name}"
         if num_inference_steps is not None:
             dir_name += f"_nfe{num_inference_steps}"
@@ -393,16 +558,15 @@ def main(
             dir_name += f"_sseed{sampling_seed}"
         seed_output_dir = output_root_path / dir_name
 
-        if seed_output_dir.exists() and not overwrite:
-            existing_metrics = seed_output_dir / "eval_metrics.json"
-            if existing_metrics.is_file():
-                click.echo(f"Skipping {dir_name}: {existing_metrics} exists")
-                with open(existing_metrics, "r") as f:
-                    metrics = json.load(f)
-                metrics["model_seed"] = seed_name
-                metrics["_metrics_path"] = str(existing_metrics)
-                checkpoint_metrics.append(metrics)
-                continue
+        existing = prepare_seed_output_dir(
+            seed_output_dir, overwrite=overwrite, n_episodes=n_episodes
+        )
+        if existing is not None:
+            click.echo(f"Skipping {dir_name}: eval_metrics.json complete")
+            existing["model_seed"] = seed_name
+            existing["_metrics_path"] = str(seed_output_dir / "eval_metrics.json")
+            checkpoint_metrics.append(existing)
+            continue
 
         click.echo(f"\n--- Evaluating {dir_name} ---")
         click.echo(f"Checkpoint: {ckpt_path}")
@@ -431,6 +595,7 @@ def main(
             n_episodes=n_episodes,
             save_trajectory_logs=save_trajectory_logs,
             n_episodes_vis=0 if no_video else None,
+            inference_warmup_calls=inference_warmup_calls,
         )
         metrics = runner.run(policy)
         metrics["model_seed"] = seed_name

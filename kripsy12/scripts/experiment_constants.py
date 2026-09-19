@@ -142,8 +142,6 @@ RESULTS_CSV_METRIC_COLUMNS = [
     "training_sim_std_inference_latency_ms",
     "training_sim_mean_episode_mean_inference_latency_ms",
     "training_sim_std_episode_mean_inference_latency_ms",
-    "training_sim_trade_off",
-    "training_sim_trade_off_episode_latency",
     "training_sim_n_infer_episodes",
     "train_val_success_rate_total",
     "train_val_success_rate_k1",
@@ -154,8 +152,6 @@ RESULTS_CSV_METRIC_COLUMNS = [
     "train_val_std_inference_latency_ms",
     "train_val_mean_episode_mean_inference_latency_ms",
     "train_val_std_episode_mean_inference_latency_ms",
-    "train_val_trade_off",
-    "train_val_trade_off_episode_latency",
     "train_val_n_infer_episodes",
     "test_success_rate_total",
     "test_std_success_rate_total",
@@ -183,8 +179,6 @@ RESULTS_CSV_METRIC_COLUMNS = [
     "test_std_task_execution_time_ms_k3",
     "test_mean_task_execution_time_ms_k4",
     "test_std_task_execution_time_ms_k4",
-    "test_trade_off",
-    "test_trade_off_episode_latency",
     "test_n_infer_episodes",
     "test_all_7_success",
     "test_std_all_7_success",
@@ -232,8 +226,6 @@ RESULTS_CSV_METRIC_COLUMNS = [
     "std_task_execution_time_ms_k3",
     "mean_task_execution_time_ms_k4",
     "std_task_execution_time_ms_k4",
-    "trade_off",
-    "trade_off_episode_latency",
 ]
 
 
@@ -271,10 +263,6 @@ def metrics_row_from_infer_json(met: Dict[str, Any]) -> Dict[str, Any]:
         row["training_sim_std_episode_mean_inference_latency_ms"] = pick(
             "training_sim_std_episode_mean_inference_latency_ms"
         )
-        row["training_sim_trade_off"] = pick("training_sim_trade_off")
-        row["training_sim_trade_off_episode_latency"] = pick(
-            "training_sim_trade_off_episode_latency"
-        )
         row["training_sim_n_infer_episodes"] = pick("training_sim_n_infer_episodes")
     else:
         for c in (
@@ -287,8 +275,6 @@ def metrics_row_from_infer_json(met: Dict[str, Any]) -> Dict[str, Any]:
             "training_sim_std_inference_latency_ms",
             "training_sim_mean_episode_mean_inference_latency_ms",
             "training_sim_std_episode_mean_inference_latency_ms",
-            "training_sim_trade_off",
-            "training_sim_trade_off_episode_latency",
             "training_sim_n_infer_episodes",
         ):
             row[c] = ""
@@ -311,10 +297,6 @@ def metrics_row_from_infer_json(met: Dict[str, Any]) -> Dict[str, Any]:
         row["train_val_std_episode_mean_inference_latency_ms"] = pick(
             "train_val_std_episode_mean_inference_latency_ms"
         )
-        row["train_val_trade_off"] = pick("train_val_trade_off")
-        row["train_val_trade_off_episode_latency"] = pick(
-            "train_val_trade_off_episode_latency"
-        )
         row["train_val_n_infer_episodes"] = pick("train_val_n_infer_episodes")
     else:
         for c in (
@@ -327,8 +309,6 @@ def metrics_row_from_infer_json(met: Dict[str, Any]) -> Dict[str, Any]:
             "train_val_std_inference_latency_ms",
             "train_val_mean_episode_mean_inference_latency_ms",
             "train_val_std_episode_mean_inference_latency_ms",
-            "train_val_trade_off",
-            "train_val_trade_off_episode_latency",
             "train_val_n_infer_episodes",
         ):
             row[c] = ""
@@ -390,10 +370,6 @@ def metrics_row_from_infer_json(met: Dict[str, Any]) -> Dict[str, Any]:
             f"test_std_task_execution_time_ms_k{ki}",
             f"std_task_execution_time_ms_k{ki}",
         )
-    row["test_trade_off"] = pick("test_trade_off", "trade_off")
-    row["test_trade_off_episode_latency"] = pick(
-        "test_trade_off_episode_latency", "trade_off_episode_latency"
-    )
     row["test_n_infer_episodes"] = pick(
         "test_n_infer_episodes", "n_infer_episodes"
     )
@@ -472,10 +448,6 @@ def metrics_row_from_infer_json(met: Dict[str, Any]) -> Dict[str, Any]:
             f"std_task_execution_time_ms_k{ki}",
             f"test_std_task_execution_time_ms_k{ki}",
         )
-    row["trade_off"] = pick("trade_off", "test_trade_off")
-    row["trade_off_episode_latency"] = pick(
-        "trade_off_episode_latency", "test_trade_off_episode_latency"
-    )
 
     return row
 

@@ -155,8 +155,8 @@ Penelitian ini menggunakan **Random Search** (Bergstra & Bengio, 2012) karena:
 3. Jalankan inferensi pada lingkungan Franka Kitchen
    └── 50 episode × 3 random seed berbeda
 4. Hitung metrik:
-   └── success_rate, inference_latency, trade_off = success_rate / latency
-5. Catat konfigurasi dan nilai trade_off
+   └── success_rate, inference_latency
+5. Catat konfigurasi dan metrik
 6. Ulangi hingga konfigurasi optimal ditemukan
 ```
 
@@ -225,14 +225,6 @@ Lat = Σ (t_akhir_forward_pass_i - t_awal_forward_pass_i), i = 1..K
 | `total_execution_time_ms` | Total wall-clock 50 episode (ms) |
 | `mean_task_execution_time_ms_k1`…`k4` | Mean waktu sampai task selesai (hanya episode sukses task itu) |
 | `std_task_execution_time_ms_k1`…`k4` | Std waktu sampai task selesai |
-
-### 5.4 Trade-Off Score
-
-```
-trade_off = success_rate_total / Lat
-```
-
-Nilai trade-off **lebih tinggi** = keseimbangan performa dan efisiensi komputasi **lebih baik**.
 
 ---
 

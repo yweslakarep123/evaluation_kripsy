@@ -1,0 +1,8 @@
+after,after_short,n_completions,n_MW,n_Kettle,n_Bottom,n_Top,n_Light,n_Slide,n_Hinge,n_END
+microwave,MW,369,0,154,99,95,21,0,0,0
+kettle,Kettle,333,0,0,124,126,59,0,24,0
+bottom burner,Bottom,419,0,0,0,0,189,75,155,0
+top burner,Top,278,0,0,196,0,62,0,20,0
+light switch,Light,331,0,0,0,0,0,163,104,64
+slide cabinet,Slide,387,0,0,0,0,0,0,0,387
+hinge cabinet,Hinge,303,0,0,0,0,0,149,0,154

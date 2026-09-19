@@ -1,0 +1,113 @@
+==============================================================================
+Pola kettle — laporan observasional (bukan bukti kausal)
+==============================================================================
+
+Bahasa: temuan di bawah **consistent with** / **diduga berkaitan** dengan
+seleksi jalur, frekuensi urutan, atau kesulitan eksekusi. Tidak ada
+rebalancing dataset, tidak ada intervensi posisi kettle, tidak ada retrain.
+Kettle scored memakai plafon p4 (completion_order[:4]; leftover = exclude).
+P(kettle in first 4) = flag==1 atas semua episode (None dihitung 0, n=300):
+ini yang dibanding untuk klaim tesis. Eligible SR membuang leftover dari
+penyebut dan bisa menaikkan angka pada model yang sering selesai 4 task
+tanpa kettle — jangan dipakai sebagai 'overall kettle SR'.
+Attempt = displacement kettle di policy_obs_obj_qp > 0.05, atau raw success
+jika NPZ valid. Tanpa NPZ valid, dekomposisi attempt dilewati (bukan
+fallback ke completion_order).
+
+------------------------------------------------------------------------------
+1) Ringkasan per konfigurasi
+------------------------------------------------------------------------------
+  FP NFE=1
+    P(kettle in first 4): 0.677±0.053 n=300
+    eligible SR (leftover excluded): 0.728±0.052 n=279
+    P(attempt):    0.710±0.051 n=300
+    SR | attempt:  0.953±0.029 n=213
+    P(kettle|MW):  0.765 (n_after_MW=196)
+    H(next|MW)=0.772  H(next|kettle)=0.754  KL(MW||demo)=0.994  KL(kettle||demo)=1.055
+    demo_kettle_rank counts: {0: 90, 2: 210}
+
+  FP NFE=8
+    P(kettle in first 4): 0.343±0.053 n=300
+    eligible SR (leftover excluded): 0.701±0.073 n=147
+    P(attempt):    0.353±0.054 n=300
+    SR | attempt:  0.972±0.035 n=106
+    P(kettle|MW):  0.315 (n_after_MW=216)
+    H(next|MW)=0.958  H(next|kettle)=1.152  KL(MW||demo)=0.873  KL(kettle||demo)=0.667
+    demo_kettle_rank counts: {0: 90, 2: 210}
+
+  FP NFE=100
+    P(kettle in first 4): 0.343±0.053 n=300
+    eligible SR (leftover excluded): 0.780±0.070 n=132
+    P(attempt):    0.343±0.053 n=300
+    SR | attempt:  1.000±0.018 n=103
+    P(kettle|MW):  0.267 (n_after_MW=210)
+    H(next|MW)=0.948  H(next|kettle)=1.288  KL(MW||demo)=0.890  KL(kettle||demo)=0.563
+    demo_kettle_rank counts: {0: 90, 2: 210}
+
+  CNN NFE=100
+    P(kettle in first 4): 0.430±0.056 n=300
+    eligible SR (leftover excluded): 0.977±0.028 n=132
+    P(attempt):    0.430±0.056 n=300
+    SR | attempt:  1.000±0.014 n=129
+    P(kettle|MW):  0.401 (n_after_MW=207)
+    H(next|MW)=1.147  H(next|kettle)=1.236  KL(MW||demo)=0.687  KL(kettle||demo)=0.594
+    demo_kettle_rank counts: {0: 90, 2: 210}
+
+  Trans NFE=100
+    P(kettle in first 4): 0.557±0.056 n=300
+    eligible SR (leftover excluded): 0.965±0.029 n=173
+    P(attempt):    0.560±0.056 n=300
+    SR | attempt:  0.994±0.016 n=168
+    P(kettle|MW):  0.599 (n_after_MW=207)
+    H(next|MW)=1.083  H(next|kettle)=1.224  KL(MW||demo)=0.707  KL(kettle||demo)=0.641
+    demo_kettle_rank counts: {0: 90, 2: 210}
+
+------------------------------------------------------------------------------
+2) NFE (hanya FlowPolicy, init_idx sama antar NFE dalam seed)
+------------------------------------------------------------------------------
+  P(kettle in first 4) FP NFE1=0.677 → NFE8=0.343 → NFE100=0.343.
+  Attempt 0.710 → 0.343; SR|attempt 0.953 → 1.000.
+  **Consistent with** seleksi jalur (lebih jarang mencoba kettle), bukan kettle menjadi lebih sulit dieksekusi. Rank demo konstan antar NFE sehingga mix posisi demo **tidak** menjelaskan drop NFE.
+
+------------------------------------------------------------------------------
+3) Frekuensi urutan (distribusi init, bukan pasangan episode FP↔DP)
+------------------------------------------------------------------------------
+  Rank yang muncul (FP NFE1): {0: 90, 2: 210}. Jika rank 1 tidak ada, strata hanya rank yang teramati.
+  Distribusi rank DP-CNN@100: {0: 90, 2: 210}
+  Distribusi rank DP-Trans@100: {0: 90, 2: 210}
+  rank 0: FP1 p4=0.567 att=0.589 n=90 | FP100 p4=0.289 att=0.289 n=90 | CNN p4=0.311 att=0.311 n=90 | Trans p4=0.300 att=0.300 n=90
+  rank 2: FP1 p4=0.724 att=0.762 n=210 | FP100 p4=0.367 att=0.367 n=210 | CNN p4=0.481 att=0.481 n=210 | Trans p4=0.667 att=0.671 n=210
+  Jika gap FP@1 vs DP@100 tetap di setiap strata, mix rank demo **diduga tidak** menjelaskan gap antarmodel (mix harus dibandingkan di atas).
+  Rank 0 = demo init tanpa kettle: tetap mengambil kettle = bukan menyalin urutan demo.
+  P(kettle|MW) demo=0.417; FP1=0.765; FP100=0.267; CNN=0.401; Trans=0.599.
+  Jangan memakai angka WHY FP@8 sebagai bukti klaim NFE1: transisi dihitung per NFE.
+  KL(policy||demo) deskriptif (Laplace); bukan uji hipotesis.
+
+------------------------------------------------------------------------------
+4) Kesulitan eksekusi (SR | attempt)
+------------------------------------------------------------------------------
+  Kettle SR|attempt FP1=0.953, FP100=1.000, CNN=1.000, Trans=0.994.
+  Conditional tinggi di FP (dan DP jika NPZ valid) **consistent with** gap overall yang diduga attempt/path, bukan kettle intrinsik sulit disentuh.
+  Hinge SR|attempt (analog displacement) FP1=0.390 CNN=0.986; light FP1=0.868 CNN=0.995.
+
+PCA aksi kettle yang sudah ada (hanya episode sukses; data/kitchen_eval_plots/nfe100/kettle_action_pca/README.txt): jarak mean ke centroid demo NFE1=4.23, NFE8=4.10, NFE100=4.08 — tren tidak naik. Ini melemahkan hipotesis drift ruang aksi pada episode yang berhasil kettle; kegagalan path-selection memang dikecualikan dari PCA.
+
+------------------------------------------------------------------------------
+5) Head-to-head
+------------------------------------------------------------------------------
+  Klaim tesis (NFE tidak tertanding): FP@1 P(kettle in first 4)=0.677 vs CNN@100=0.430 vs Trans@100=0.557.
+  NFE tertanding: FP@100=0.343 vs CNN@100=0.430 vs Trans@100=0.557.
+  DP tidak dieval pada NFE rendah (protokol existing).
+
+------------------------------------------------------------------------------
+6) Apa yang tidak bisa disimpulkan
+------------------------------------------------------------------------------
+  - Mekanisme kausal NFE → diversity → drop kettle tidak terbukti.
+  - Tidak ada eksperimen rebalance posisi kettle atau equalize transisi.
+  - Tidak mengontrol 'jika kettle dipaksa posisi 3/4'.
+  - Sample eval ini mungkin tidak memuat demo kettle-rank=1; itu bukan
+    klaim bahwa seluruh dataset demo tidak punya kettle di posisi 1.
+  - FP vs DP bukan pasangan init_idx per episode.
+  - LSTM-GMM / IBC / BeT tidak dianalisis di sini.
+
+==============================================================================

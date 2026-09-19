@@ -45,6 +45,12 @@ LEGEND = {
 NFES = (1, 8, 32, 100)
 
 
+def nfes_for_model(model: str) -> Tuple[int, ...]:
+    if model in ("DP-CNN", "DP-Transformer"):
+        return (100,)
+    return NFES
+
+
 def find_dp_root() -> Path:
     for p in DP_CANDIDATES:
         if p.is_dir() and any(p.rglob("eval_metrics.json")):
@@ -152,7 +158,7 @@ def load_smoothness(model_key: str, nfe: int, dp_root: Path) -> Dict[str, Any]:
 def collect_all(dp_root: Path) -> Dict[Tuple[str, int], Dict[str, Any]]:
     rows: Dict[Tuple[str, int], Dict[str, Any]] = {}
     for model in MODEL_ORDER:
-        for nfe in NFES:
+        for nfe in nfes_for_model(model):
             dur = load_task_duration(model, nfe, dp_root)
             sm = load_smoothness(model, nfe, dp_root)
             rows[(model, nfe)] = {**dur, **sm}
@@ -165,13 +171,18 @@ def collect_all(dp_root: Path) -> Dict[Tuple[str, int], Dict[str, Any]]:
     return rows
 
 
+def models_for_nfe(nfe: int) -> List[str]:
+    return [m for m in MODEL_ORDER if nfe in nfes_for_model(m)]
+
+
 def plot_task_duration(rows: Dict[Tuple[str, int], Dict[str, Any]], out_dir: Path) -> None:
     fig, axes = plt.subplots(2, 2, figsize=(10, 8), sharey=True)
-    x = np.arange(len(MODEL_ORDER))
     for ax, nfe in zip(axes.ravel(), NFES):
-        means = [rows[(m, nfe)]["mean"] for m in MODEL_ORDER]
-        stds = [rows[(m, nfe)]["std"] for m in MODEL_ORDER]
-        colors = [COLORS[m] for m in MODEL_ORDER]
+        models = models_for_nfe(nfe)
+        x = np.arange(len(models))
+        means = [rows[(m, nfe)]["mean"] for m in models]
+        stds = [rows[(m, nfe)]["std"] for m in models]
+        colors = [COLORS[m] for m in models]
         ax.bar(
             x,
             means,
@@ -183,7 +194,7 @@ def plot_task_duration(rows: Dict[Tuple[str, int], Dict[str, Any]], out_dir: Pat
             width=0.7,
         )
         ax.set_xticks(x)
-        ax.set_xticklabels(MODEL_ORDER, rotation=15, ha="right")
+        ax.set_xticklabels(models, rotation=15, ha="right")
         ax.set_title(f"NFE = {nfe}")
         ax.set_ylabel("Mean task duration (ms)")
         ax.grid(True, axis="y", linestyle="--", alpha=0.35)
@@ -197,16 +208,17 @@ def plot_action_smoothness(
     rows: Dict[Tuple[str, int], Dict[str, Any]], out_dir: Path
 ) -> None:
     categories = ["Within-chunk steps\n(mid trajectory)", "Boundary steps\n(chunk transition)"]
-    x = np.arange(len(categories))
-    width = 0.25
-    # Per-panel y-scale: DP collapses at low NFE (L2 ~4–5) vs ~0.07 when healthy.
+    # Per-panel y-scale: DP only appears at NFE=100.
     fig, axes = plt.subplots(2, 2, figsize=(11, 8), sharey=False)
     for ax, nfe in zip(axes.ravel(), NFES):
-        for i, model in enumerate(MODEL_ORDER):
+        models = models_for_nfe(nfe)
+        x = np.arange(len(categories))
+        width = 0.8 / max(len(models), 1)
+        for i, model in enumerate(models):
             r = rows[(model, nfe)]
             vals = [r["within_mean"], r["boundary_mean"]]
             errs = [r["within_std"], r["boundary_std"]]
-            offset = (i - 1) * width
+            offset = (i - (len(models) - 1) / 2) * width
             ax.bar(
                 x + offset,
                 vals,
@@ -252,7 +264,7 @@ def write_csv(rows: Dict[Tuple[str, int], Dict[str, Any]], out_dir: Path) -> Non
         w = csv.DictWriter(f, fieldnames=fields)
         w.writeheader()
         for nfe in NFES:
-            for model in MODEL_ORDER:
+            for model in models_for_nfe(nfe):
                 r = rows[(model, nfe)]
                 w.writerow(
                     {

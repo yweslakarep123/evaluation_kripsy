@@ -1,0 +1,9 @@
+role,task,short,n_demos,pct_of_demos
+first,microwave,MW,369,60.99
+first,kettle,Kettle,179,29.59
+first,top burner,Top,57,9.42
+last,light switch,Light,64,10.58
+last,slide cabinet,Slide,387,63.97
+last,hinge cabinet,Hinge,154,25.45
+source,friday,friday,417,68.93
+source,postcorl,postcorl,188,31.07

@@ -1,0 +1,4 @@
+[2026-09-10 15:54:44] Kitchen NFE100 full eval start. log=/home/daffa/Documents/experiment/logs/kitchen_nfe100_20260910_155444.log
+[2026-09-10 15:54:44] episodes=100 device=cuda:0 sampling_seed=0 dry_run=1 model=baselines
+[2026-09-10 15:54:44] nfe_list=1 8 32 100
+[2026-09-10 15:54:44] ERROR: missing BET ckpt for train0

@@ -6,7 +6,6 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 
-import numpy as np
 import pandas as pd
 
 
@@ -27,24 +26,21 @@ def summarize(output_dir: Path, *, results_csv: Path | None = None) -> None:
 
     k7 = _col("test_p7", "test_all_7_success")
     k4 = _col("test_p4_paper", "test_success_rate_k4")
-    k_total = _col("test_all_7_success", "test_success_rate_total", "success_rate_total")
+    k_total = (
+        "test_all_7_success"
+        if "test_all_7_success" in df.columns
+        else _col("test_success_rate_total", "success_rate_total")
+    )
     lat = _col("test_mean_inference_latency_ms", "mean_inference_latency_ms")
-    exec_ms = _col("test_mean_episode_duration_ms", "test_mean_execution_time_ms", "mean_execution_time_ms")
-    to = _col("test_trade_off", "trade_off")
+    exec_ms = (
+        "test_mean_episode_duration_ms"
+        if "test_mean_episode_duration_ms" in df.columns
+        else _col("test_mean_execution_time_ms", "mean_execution_time_ms")
+    )
 
     metrics = [k_total, k7, k4, lat, exec_ms]
     for m in metrics:
         df[m] = pd.to_numeric(df[m], errors="coerce")
-
-    df["trade_off_computed"] = np.where(
-        df[lat] > 1e-9,
-        df[k_total] / df[lat],
-        np.where(
-            pd.to_numeric(df[to], errors="coerce").notna(),
-            pd.to_numeric(df[to], errors="coerce"),
-            np.nan,
-        ),
-    )
 
     gcols = ["cfg_idx", "profile", "fold"]
     agg_rows = []
@@ -56,12 +52,10 @@ def summarize(output_dir: Path, *, results_csv: Path | None = None) -> None:
         for m in metrics:
             row[f"{m}_mean"] = float(sub[m].mean())
             row[f"{m}_std"] = float(sub[m].std(ddof=0))
-        row["trade_off_mean"] = float(sub["trade_off_computed"].mean())
-        row["trade_off_std"] = float(sub["trade_off_computed"].std(ddof=0))
         agg_rows.append(row)
 
     out = pd.DataFrame(agg_rows)
-    out = out.sort_values("trade_off_mean", ascending=False)
+    out = out.sort_values(f"{k7}_mean", ascending=False)
     out_path = output_dir / "summary.csv"
     out.to_csv(out_path, index=False)
     print(f"Ditulis {out_path} ({len(out)} baris)")

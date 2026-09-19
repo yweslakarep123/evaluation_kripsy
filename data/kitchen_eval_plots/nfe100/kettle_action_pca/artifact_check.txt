@@ -1,0 +1,56 @@
+Artifact check: is 'not attempted' just prior-task duration?
+======================================================================
+
+1) Assigned order / kettle position
+----------------------------------------
+KitchenAllV0 assigns ALL 7 tasks with COMPLETE_IN_ANY_ORDER=True.
+There is NO fixed per-episode position of kettle in an env-assigned order.
+Proxy used: kettle rank in the paired demo completion order (0 = kettle never completed in that demo).
+
+init_idx lists identical across NFE for each seed?
+  seed 42: True
+  seed 43: True
+  seed 44: True
+
+Demo kettle-rank distribution (NFE1, all seeds): {0: 90, 2: 210}
+Because init_idx lists match, this distribution is identical for NFE 8/32/100.
+
+P(not-attempted | demo_kettle_rank) by NFE:
+  NFE=1: rank0: 37/90=0.41, rank2: 50/210=0.24
+  NFE=2: rank0: 51/90=0.57, rank2: 73/210=0.35
+  NFE=3: rank0: 52/90=0.58, rank2: 93/210=0.44
+  NFE=4: rank0: 53/90=0.59, rank2: 110/210=0.52
+  NFE=8: rank0: 66/90=0.73, rank2: 128/210=0.61
+  NFE=32: rank0: 61/90=0.68, rank2: 120/210=0.57
+  NFE=100: rank0: 64/90=0.71, rank2: 133/210=0.63
+
+2) Condition (b) — other tasks completed & env steps
+----------------------------------------
+  NFE=1: not-attempted=87 (29.0%), other_tasks mean=2.64±1.16, counts={0: 7, 1: 6, 2: 19, 3: 34, 4: 21}, mean n_env_steps=282.0
+  NFE=2: not-attempted=124 (41.3%), other_tasks mean=3.70±0.56, counts={1: 1, 2: 3, 3: 28, 4: 92}, mean n_env_steps=282.0
+  NFE=3: not-attempted=145 (48.3%), other_tasks mean=3.74±0.53, counts={1: 1, 2: 3, 3: 29, 4: 112}, mean n_env_steps=282.0
+  NFE=4: not-attempted=163 (54.3%), other_tasks mean=3.72±0.50, counts={2: 4, 3: 37, 4: 122}, mean n_env_steps=282.0
+  NFE=8: not-attempted=194 (64.7%), other_tasks mean=3.77±0.46, counts={2: 3, 3: 38, 4: 153}, mean n_env_steps=282.0
+  NFE=32: not-attempted=181 (60.3%), other_tasks mean=3.86±0.36, counts={2: 1, 3: 23, 4: 157}, mean n_env_steps=282.0
+  NFE=100: not-attempted=197 (65.7%), other_tasks mean=3.82±0.51, counts={0: 1, 1: 1, 2: 2, 3: 25, 4: 168}, mean n_env_steps=282.0
+
+3) Paired flips NFE1 → NFE8 (same seed, same init_idx)
+----------------------------------------
+  seed42: both_att=26 both_not=22 att→not=40 not→att=12
+    on att→not: other_tasks NFE1=2.58 → NFE8=3.80
+  seed43: both_att=25 both_not=13 att→not=52 not→att=10
+    on att→not: other_tasks NFE1=2.52 → NFE8=3.81
+  seed44: both_att=26 both_not=23 att→not=44 not→att=7
+    on att→not: other_tasks NFE1=2.45 → NFE8=3.84
+
+Conclusion
+----------------------------------------
+- Demo/seed-linked kettle position is CONSTANT across NFE, so it cannot
+  explain the rise in not-attempted rate from NFE1 to NFE8.
+- Not-attempted episodes at higher NFE complete MORE other tasks
+  (mean 2.64 → 3.77)
+  and always use the full horizon (n_env_steps≈282), so this is NOT
+  'ran out of time before kettle's fixed turn'.
+- Paired att→not flips show the same pattern: more other tasks at NFE8.
+- Dominant account: path selection away from kettle, not prior-task
+  duration starving a fixed kettle slot.

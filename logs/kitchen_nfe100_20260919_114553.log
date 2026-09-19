@@ -1,0 +1,16 @@
+[2026-09-19 11:45:53] Kitchen NFE100 full eval start. log=/home/daffa/Documents/experiment/logs/kitchen_nfe100_20260919_114553.log
+[2026-09-19 11:45:53] episodes=100 device=cuda:0 sampling_seed=0 dry_run=1 model=cnn
+[2026-09-19 11:45:53] DP-CNN train0: /home/daffa/Documents/experiment/diffusion_policy/data/diffusion_policy_cnn/train0/epoch=1700-test_mean_score=0.580.ckpt
+[2026-09-19 11:45:53] DP-CNN train1: /home/daffa/Documents/experiment/diffusion_policy/data/diffusion_policy_cnn/train1/epoch=3400-test_mean_score=0.589.ckpt
+[2026-09-19 11:45:53] DP-CNN train2: /home/daffa/Documents/experiment/diffusion_policy/data/diffusion_policy_cnn/train2/epoch=4600-test_mean_score=0.580.ckpt
+[2026-09-19 11:45:53] WARN: DP NFE<100 is disabled for fairness; ignoring --nfe 8
+[2026-09-19 11:45:53] RUN diffusion_policy_cnn seed=train0 nfe=[2026-09-19 11:45:53] WARN: DP NFE<100 is disabled for fairness; ignoring --nfe 8 eps=100
+[2026-09-19 11:45:53]   DRY-RUN ckpt=/home/daffa/Documents/experiment/diffusion_policy/data/diffusion_policy_cnn/train0/epoch=1700-test_mean_score=0.580.ckpt
+[2026-09-19 11:45:53]   DRY-RUN out=/home/daffa/Documents/experiment/diffusion_policy/data/kitchen_eval_nfe100/diffusion_policy_cnn/seed_train0_nfe[2026-09-19 11:45:53] WARN: DP NFE<100 is disabled for fairness; ignoring --nfe 8_sseed0
+[2026-09-19 11:45:53] RUN diffusion_policy_cnn seed=train1 nfe=[2026-09-19 11:45:53] WARN: DP NFE<100 is disabled for fairness; ignoring --nfe 8 eps=100
+[2026-09-19 11:45:53]   DRY-RUN ckpt=/home/daffa/Documents/experiment/diffusion_policy/data/diffusion_policy_cnn/train1/epoch=3400-test_mean_score=0.589.ckpt
+[2026-09-19 11:45:53]   DRY-RUN out=/home/daffa/Documents/experiment/diffusion_policy/data/kitchen_eval_nfe100/diffusion_policy_cnn/seed_train1_nfe[2026-09-19 11:45:53] WARN: DP NFE<100 is disabled for fairness; ignoring --nfe 8_sseed0
+[2026-09-19 11:45:53] RUN diffusion_policy_cnn seed=train2 nfe=[2026-09-19 11:45:53] WARN: DP NFE<100 is disabled for fairness; ignoring --nfe 8 eps=100
+[2026-09-19 11:45:53]   DRY-RUN ckpt=/home/daffa/Documents/experiment/diffusion_policy/data/diffusion_policy_cnn/train2/epoch=4600-test_mean_score=0.580.ckpt
+[2026-09-19 11:45:53]   DRY-RUN out=/home/daffa/Documents/experiment/diffusion_policy/data/kitchen_eval_nfe100/diffusion_policy_cnn/seed_train2_nfe[2026-09-19 11:45:53] WARN: DP NFE<100 is disabled for fairness; ignoring --nfe 8_sseed0
+[2026-09-19 11:45:53] DRY-RUN complete (no eval / no analyze).

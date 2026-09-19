@@ -9,12 +9,17 @@ from __future__ import annotations
 
 import json
 import re
+import sys
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 import numpy as np
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "scripts"))
+
+from kitchen_eval_stats import episode_k_capped  # noqa: E402
+
 OUT = ROOT / "data/kitchen_eval_plots/nfe_variance"
 FP_ROOT = ROOT / "kripsy12/FlowPolicy/data/kitchen_eval_nfe/flowpolicy"
 DP_ROOT = ROOT / "diffusion_policy/data/kitchen_eval_nfe"
@@ -36,7 +41,7 @@ def _mean_tasks(m: Dict[str, Any]) -> float:
     eps = m.get("episodes") or []
     if not eps:
         return float("nan")
-    return float(np.mean([e.get("num_tasks_completed", 0) for e in eps]))
+    return float(np.mean([episode_k_capped(e) for e in eps]))
 
 
 def load_fp_points() -> List[Dict[str, Any]]:

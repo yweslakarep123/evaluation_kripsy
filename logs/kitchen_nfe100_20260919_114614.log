@@ -1,0 +1,6 @@
+[2026-09-19 11:46:14] Kitchen NFE100 full eval start. log=/home/daffa/Documents/experiment/logs/kitchen_nfe100_20260919_114614.log
+[2026-09-19 11:46:14] episodes=100 device=cuda:0 sampling_seed=0 dry_run=1 model=cnn
+[2026-09-19 11:46:14] DP-CNN train0: /home/daffa/Documents/experiment/diffusion_policy/data/diffusion_policy_cnn/train0/epoch=1700-test_mean_score=0.580.ckpt
+[2026-09-19 11:46:14] DP-CNN train1: /home/daffa/Documents/experiment/diffusion_policy/data/diffusion_policy_cnn/train1/epoch=3400-test_mean_score=0.589.ckpt
+[2026-09-19 11:46:15] DP-CNN train2: /home/daffa/Documents/experiment/diffusion_policy/data/diffusion_policy_cnn/train2/epoch=4600-test_mean_score=0.580.ckpt
+[2026-09-19 11:46:15] DRY-RUN complete (no eval / no analyze).

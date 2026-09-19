@@ -1,8 +1,12 @@
 #!/usr/bin/env python3
 """Transition heatmaps P(next=B | completed=A) per NFE / operating point.
 
-1) Equal-NFE panels: NFE in {1, 8, 32, 100}, all three models at the same NFE.
-2) Operating-point panels:
+Completion order is clipped to p4 via analyze_kitchen_completion_order
+(after the 4th scored task the next state is STOP, not a 5th task).
+
+1) FlowPolicy across NFE in {1, 8, 32, 100}.
+2) DP-CNN / DP-Transformer at NFE=100 only.
+3) Operating-point panels:
    - FlowPolicy@8 vs DP-CNN@100 vs DP-Transformer@100
    - FlowPolicy@1 vs DP-CNN@100 vs DP-Transformer@100
 
@@ -27,13 +31,15 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 
 import analyze_kitchen_completion_order as why  # noqa: E402
+from kitchen_eval_paths import (  # noqa: E402
+    PLOT_ROOT,
+    dp_seed_dirs,
+    fp_seed_dirs,
+    resolve_dp_root,
+    resolve_fp_root,
+)
 
-OUT_DIR = ROOT / "data/kitchen_eval_plots/nfe100/why_transition_by_nfe"
-FP_ROOT = ROOT / "kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy"
-DP_CANDIDATES = [
-    ROOT / "diffusion_policy/data/kitchen_eval_nfe100_diffusion",
-    ROOT / "diffusion_policy/data/kitchen_eval_nfe100",
-]
+OUT_DIR = PLOT_ROOT / "why_transition_by_nfe"
 
 MODEL_ORDER = ["FlowPolicy", "DP-CNN", "DP-Transformer"]
 COLORS = {
@@ -42,28 +48,26 @@ COLORS = {
     "DP-Transformer": "#ff7f0e",
 }
 NFES = (1, 8, 32, 100)
+DP_NFES = (100,)
 
 
 def find_dp_root() -> Path:
-    for p in DP_CANDIDATES:
-        if p.is_dir() and any(p.rglob("eval_metrics.json")):
-            return p
-    raise FileNotFoundError(f"No DP nfe100 root in {DP_CANDIDATES}")
+    return resolve_dp_root()
 
 
 def seed_dirs(model_key: str, nfe: int, dp_root: Path) -> list[Path]:
     if model_key == "FlowPolicy":
-        return [
-            FP_ROOT / f"seed_baseline_{s}_nfe{nfe}_sseed0" for s in (42, 43, 44)
-        ]
+        found = fp_seed_dirs(nfe, fp_root=resolve_fp_root())
+        if found:
+            return found
+        root = resolve_fp_root()
+        return [root / f"seed_seed{s}_nfe{nfe}_sseed0" for s in (42, 43, 44)]
     mid = (
         "diffusion_policy_cnn"
         if model_key == "DP-CNN"
         else "diffusion_policy_transformer"
     )
-    return [
-        dp_root / mid / f"seed_train{s}_nfe{nfe}_sseed0" for s in (0, 1, 2)
-    ]
+    return dp_seed_dirs(mid, nfe, dp_root=dp_root)
 
 
 def plot_transition_heatmaps(
@@ -153,25 +157,24 @@ def load_stats_for_nfe_map(
 def main() -> None:
     dp_root = find_dp_root()
     OUT_DIR.mkdir(parents=True, exist_ok=True)
-    print(f"FP root: {FP_ROOT}")
+    print(f"FP root: {resolve_fp_root()}")
     print(f"DP root: {dp_root}")
     print(f"Output: {OUT_DIR}")
 
-    # Equal-NFE panels (3 models)
-    for nfe in NFES:
-        print(f"\nEqual NFE={nfe}")
-        nfe_map = {name: nfe for name in MODEL_ORDER}
-        stats = load_stats_for_nfe_map(nfe_map, dp_root)
-        plot_transition_heatmaps(
-            stats,
-            MODEL_ORDER,
-            OUT_DIR,
-            out_stem=f"02_transition_heatmap_nfe{nfe}",
-            title=(
-                f"P(next = B | completed = A) @ NFE={nfe} — "
-                "chaining is the main FP vs DP difference"
-            ),
-        )
+    # Equal-NFE=100 only (DP does not participate below NFE=100)
+    print("\nEqual NFE=100")
+    nfe_map = {name: 100 for name in MODEL_ORDER}
+    stats = load_stats_for_nfe_map(nfe_map, dp_root)
+    plot_transition_heatmaps(
+        stats,
+        MODEL_ORDER,
+        OUT_DIR,
+        out_stem="02_transition_heatmap_nfe100",
+        title=(
+            "P(next = B | completed = A) @ NFE=100 — "
+            "chaining is the main FP vs DP difference"
+        ),
+    )
 
     # Operating-point panels (FP low-NFE vs DP@100)
     operating = [

@@ -1,0 +1,57 @@
+[2026-09-10 16:15:59] Kitchen NFE100 full eval start. log=/home/daffa/Documents/experiment/logs/kitchen_nfe100_20260910_161559.log
+[2026-09-10 16:15:59] episodes=100 device=cuda:0 sampling_seed=0 dry_run=0 model=baselines
+[2026-09-10 16:15:59] nfe_list=1 8 32 100
+[2026-09-10 16:15:59] BET train0: /home/daffa/Documents/experiment/diffusion_policy/data/behavior_transformer/train0/epoch=1750-test_mean_score=0.403.ckpt
+[2026-09-10 16:15:59] BET train1: /home/daffa/Documents/experiment/diffusion_policy/data/behavior_transformer/train1/epoch=1650-test_mean_score=0.400.ckpt
+[2026-09-10 16:15:59] BET train2: /home/daffa/Documents/experiment/diffusion_policy/data/behavior_transformer/train2/epoch=5950-test_mean_score=0.414.ckpt
+[2026-09-10 16:15:59] IBC train0: /home/daffa/Documents/experiment/diffusion_policy/data/implicit_behavior_cloning/train0/epoch=2200-test_mean_score=0.049.ckpt
+[2026-09-10 16:15:59] IBC train1: /home/daffa/Documents/experiment/diffusion_policy/data/implicit_behavior_cloning/train1/epoch=0700-test_mean_score=0.043.ckpt
+[2026-09-10 16:15:59] IBC train2: /home/daffa/Documents/experiment/diffusion_policy/data/implicit_behavior_cloning/train2/epoch=2000-test_mean_score=0.023.ckpt
+[2026-09-10 16:15:59] LSTM_GMM train0: /home/daffa/Documents/experiment/diffusion_policy/data/LSTM_GMM/train0/epoch=4800-test_mean_score=0.466.ckpt
+[2026-09-10 16:15:59] LSTM_GMM train1: /home/daffa/Documents/experiment/diffusion_policy/data/LSTM_GMM/train1/epoch=3800-test_mean_score=0.466.ckpt
+[2026-09-10 16:15:59] LSTM_GMM train2: /home/daffa/Documents/experiment/diffusion_policy/data/LSTM_GMM/train2/epoch=2100-test_mean_score=0.500.ckpt
+[2026-09-10 16:15:59] SKIP behavior_transformer train0 nfe=1 (exists)
+[2026-09-10 16:15:59] SKIP behavior_transformer train1 nfe=1 (exists)
+[2026-09-10 16:15:59] SKIP behavior_transformer train2 nfe=1 (exists)
+[2026-09-10 16:15:59] RUN LSTM_GMM seed=train0 nfe=1 eps=100
+Model: LSTM_GMM
+Checkpoints: ['/home/daffa/Documents/experiment/diffusion_policy/data/LSTM_GMM/train0/epoch=4800-test_mean_score=0.466.ckpt']
+Output: /home/daffa/Documents/experiment/diffusion_policy/data/kitchen_eval_nfe100/LSTM_GMM
+Episodes per checkpoint: 100
+num_inference_steps override: 1
+sampling_seed: 0
+
+--- Evaluating seed_train0_nfe1_sseed0 ---
+Checkpoint: /home/daffa/Documents/experiment/diffusion_policy/data/LSTM_GMM/train0/epoch=4800-test_mean_score=0.466.ckpt
+/home/daffa/miniforge3/envs/robodiff/lib/python3.9/site-packages/wandb/apis/public.py:2997: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import parse_version
+
+============= Initialized Observation Utils with Obs Spec =============
+
+using obs modality: low_dim with keys: ['obs']
+using obs modality: rgb with keys: []
+using obs modality: depth with keys: []
+using obs modality: scan with keys: []
+Reading configurations for Franka
+[40m[37mInitializing Franka sim[0m
+/home/daffa/miniforge3/envs/robodiff/lib/python3.9/site-packages/gym/spaces/box.py:73: UserWarning: [33mWARN: Box bound precision lowered by casting to float32[0m
+  logger.warn(
+Ep 1/100:   0%|          | 0/280 [00:00<?, ?it/s]Traceback (most recent call last):
+  File "/home/daffa/Documents/experiment/diffusion_policy/eval_kitchen.py", line 545, in <module>
+    main()
+  File "/home/daffa/miniforge3/envs/robodiff/lib/python3.9/site-packages/click/core.py", line 1128, in __call__
+    return self.main(*args, **kwargs)
+  File "/home/daffa/miniforge3/envs/robodiff/lib/python3.9/site-packages/click/core.py", line 1053, in main
+    rv = self.invoke(ctx)
+  File "/home/daffa/miniforge3/envs/robodiff/lib/python3.9/site-packages/click/core.py", line 1395, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+  File "/home/daffa/miniforge3/envs/robodiff/lib/python3.9/site-packages/click/core.py", line 754, in invoke
+    return __callback(*args, **kwargs)
+  File "/home/daffa/Documents/experiment/diffusion_policy/eval_kitchen.py", line 515, in main
+    metrics = runner.run(policy)
+  File "/home/daffa/Documents/experiment/diffusion_policy/diffusion_policy/env_runner/kitchen_lowdim_eval_runner.py", line 1042, in run
+    record = self._run_single_episode(policy, episode_idx, enable_render)
+  File "/home/daffa/Documents/experiment/diffusion_policy/diffusion_policy/env_runner/kitchen_lowdim_eval_runner.py", line 885, in _run_single_episode
+    traj["action_pred"].append(np_action_dict["action_pred"][0].copy())
+KeyError: 'action_pred'
+                                                 

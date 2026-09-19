@@ -15,11 +15,17 @@ import argparse
 import csv
 import json
 import re
+import sys
 from collections import defaultdict
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
 import numpy as np
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "scripts"))
+
+from kitchen_eval_stats import episode_k_capped  # noqa: E402
 
 DIR_RE = re.compile(r"^seed_(?P<seed>.+)_nfe(?P<nfe>\d+)_sseed(?P<sseed>\d+)$")
 TASKS = [
@@ -50,14 +56,14 @@ def _mean_std(vals: List[float]) -> Tuple[Optional[float], Optional[float]]:
 def _mean_tasks(metrics: Dict[str, Any]) -> float:
     episodes = metrics.get("episodes") or []
     if episodes:
-        return float(np.mean([float(e.get("num_tasks_completed", 0)) for e in episodes]))
-    # fallback from success rates
+        return float(np.mean([float(episode_k_capped(e)) for e in episodes]))
+    # fallback from success rates (uncapped JSON); still clip at p4
     srs = []
     for t in TASKS:
         m = metrics.get("success_rate", {}).get(t, {}).get("mean")
         if m is not None:
             srs.append(float(m))
-    return float(sum(srs)) if srs else 0.0
+    return min(float(sum(srs)), 4.0) if srs else 0.0
 
 
 def _px(metrics: Dict[str, Any], k: int) -> Optional[float]:

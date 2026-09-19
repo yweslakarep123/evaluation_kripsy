@@ -9,7 +9,16 @@ import numpy as np
 import torch
 import tqdm
 
-from flow_policy_3d.common.multistage_metrics import compute_multistage_metrics
+from flow_policy_3d.common.multistage_metrics import (
+    K_MAX,
+    build_timing_methodology,
+    clip_episode_to_p4,
+    compute_multistage_metrics,
+    proportion_stats,
+    restore_rng_state,
+    save_rng_state,
+    timing_sample_stats,
+)
 from flow_policy_3d.common.pytorch_util import dict_apply
 from flow_policy_3d.env.kitchen.base import KitchenBase
 from flow_policy_3d.env.kitchen.kitchen_lowdim_wrapper import KitchenLowdimWrapper
@@ -162,10 +171,16 @@ def _close_env(env: MultiStepWrapper):
 ALL_TASKS = list(KitchenBase.ALL_TASKS)
 KITCHEN_4_SUBGOALS = ["microwave", "kettle", "bottom burner", "light switch"]
 TASK_NOTE = (
-    "Tasks can complete in any order; all 7 must finish for full episode success. "
+    "Tasks can complete in any order. Scoring ceiling is p4 "
+    "(first 4 completions); leftover incomplete tasks after k>=4 "
+    "are excluded from per-task rates. "
     "Task/episode duration is simulation/video time: (env_steps / fps) * 1000 ms, "
     "from the previous task completion (or episode start) until that task completes. "
-    "Inference latency remains wall-clock GPU time per predict_action."
+    "Raw inference_latency is wall-clock GPU time per predict_action. "
+    "Fair FP vs DP timing uses latency_per_executed_action_ms = L / H_exec "
+    "(H_exec = executed action chunk length), "
+    "total_inference_compute_ms = sum(L_i) per episode, "
+    "and f_control_hz = fps_eff / H_exec."
 )
 
 
@@ -392,6 +407,7 @@ class KitchenLowdimEvalRunner(BaseLowdimRunner):
         tqdm_interval_sec: float = 5.0,
         dataset_dir: Optional[str] = None,
         save_trajectory_logs: bool = True,
+        inference_warmup_calls: int = 10,
     ):
         super().__init__(output_dir)
         self.n_episodes = n_episodes
@@ -406,6 +422,7 @@ class KitchenLowdimEvalRunner(BaseLowdimRunner):
         self.crf = crf
         self.render_hw = render_hw
         self.save_trajectory_logs = save_trajectory_logs
+        self.inference_warmup_calls = int(inference_warmup_calls)
 
         self.init_qpos = None
         self.init_qvel = None
@@ -510,12 +527,28 @@ class KitchenLowdimEvalRunner(BaseLowdimRunner):
 
         return env, video_path
 
-    def _make_env(self, episode_idx: int, enable_render: bool):
-        return self._configure_env(self._create_env(), episode_idx, enable_render)
-
     def _sync_device(self, device: torch.device):
         if device.type == "cuda":
             torch.cuda.synchronize(device)
+
+    def _warmup_policy(self, policy: BaseLowdimPolicy, env: MultiStepWrapper) -> None:
+        n_warmup = max(int(self.inference_warmup_calls), 0)
+        if n_warmup <= 0:
+            return
+        rng_state = save_rng_state()
+        obs = env.reset()
+        device = policy.device
+        for _ in range(n_warmup):
+            np_obs_dict = {"obs": obs.astype(np.float32)[None, ...]}
+            obs_dict = dict_apply(
+                np_obs_dict, lambda x: torch.from_numpy(x).to(device=device)
+            )
+            self._sync_device(device)
+            with torch.no_grad():
+                policy.predict_action(obs_dict)
+            self._sync_device(device)
+        restore_rng_state(rng_state)
+        policy.reset()
 
     def _save_trajectory_log(
         self,
@@ -851,6 +884,8 @@ class KitchenLowdimEvalRunner(BaseLowdimRunner):
         policy.reset()
 
         inference_latencies_ms: List[float] = []
+        latency_per_executed_action_ms: List[float] = []
+        executed_horizons: List[int] = []
         completion_order: List[str] = []
         task_durations_ms: Dict[str, float] = {}
         prev_completed: Set[str] = set()
@@ -884,12 +919,21 @@ class KitchenLowdimEvalRunner(BaseLowdimRunner):
             with torch.no_grad():
                 action_dict = policy.predict_action(obs_dict)
             self._sync_device(device)
-            inference_latencies_ms.append((time.perf_counter() - t0) * 1000.0)
+            latency_ms = (time.perf_counter() - t0) * 1000.0
+            inference_latencies_ms.append(latency_ms)
 
             np_action_dict = dict_apply(
                 action_dict, lambda x: x.detach().to("cpu").numpy()
             )
             action = np_action_dict["action"][0]
+            h_exec = int(action.shape[0])
+            if h_exec <= 0:
+                raise RuntimeError(
+                    "predict_action returned an empty executed action chunk "
+                    f"(shape={getattr(action, 'shape', None)})"
+                )
+            executed_horizons.append(h_exec)
+            latency_per_executed_action_ms.append(float(latency_ms / h_exec))
 
             if traj is not None:
                 traj["policy_obs"].append(np_obs_dict["obs"][0].copy())
@@ -908,7 +952,7 @@ class KitchenLowdimEvalRunner(BaseLowdimRunner):
             obs, reward, done, info = env.step(action)
             done = bool(done)
             past_action = np_action_dict["action"]
-            steps_advanced = int(action.shape[0])
+            steps_advanced = h_exec
             env_step = prev_env_step + steps_advanced
             pbar.update(steps_advanced)
 
@@ -984,6 +1028,16 @@ class KitchenLowdimEvalRunner(BaseLowdimRunner):
         completed_tasks = sorted(prev_completed)
         all_7_success = len(prev_completed) == len(ALL_TASKS)
 
+        n_replans = len(inference_latencies_ms)
+        total_inference_compute_ms = float(np.sum(inference_latencies_ms)) if n_replans else 0.0
+        # H_exec is constant per policy; use the mode of observed chunk lengths.
+        if executed_horizons:
+            h_exec_ep = int(max(set(executed_horizons), key=executed_horizons.count))
+            f_control_hz = float(video_fps / h_exec_ep) if h_exec_ep > 0 else None
+        else:
+            h_exec_ep = 0
+            f_control_hz = None
+
         result: Dict[str, Any] = {
             "episode_idx": episode_idx,
             "init_idx": init_idx,
@@ -994,6 +1048,11 @@ class KitchenLowdimEvalRunner(BaseLowdimRunner):
             if video_path is not None
             else None,
             "inference_latencies_ms": inference_latencies_ms,
+            "latency_per_executed_action_ms": latency_per_executed_action_ms,
+            "n_replans": n_replans,
+            "h_exec": h_exec_ep,
+            "total_inference_compute_ms": total_inference_compute_ms,
+            "f_control_hz": f_control_hz,
             "episode_duration_ms": episode_duration_ms,
             "task_durations_ms": task_durations_ms,
         }
@@ -1037,11 +1096,14 @@ class KitchenLowdimEvalRunner(BaseLowdimRunner):
     def run(self, policy: BaseLowdimPolicy) -> Dict[str, Any]:
         episode_records: List[Dict[str, Any]] = []
         all_inference_latencies_ms: List[float] = []
+        all_latency_per_executed_action_ms: List[float] = []
+        all_total_inference_compute_ms: List[float] = []
+        all_f_control_hz: List[float] = []
         all_episode_durations_ms: List[float] = []
         all_task_durations_ms: List[float] = []
         task_duration_by_name: Dict[str, List[float]] = {t: [] for t in ALL_TASKS}
         per_task_success: Dict[str, List[int]] = {t: [] for t in ALL_TASKS}
-        all_7_success_flags: List[int] = []
+        p4_success_flags: List[int] = []
         completion_positions: Dict[str, List[int]] = {t: [] for t in ALL_TASKS}
 
         env = self._create_env()
@@ -1050,6 +1112,8 @@ class KitchenLowdimEvalRunner(BaseLowdimRunner):
         open('/home/daffa/Documents/experiment/.cursor/debug-374ef1.log','a').write(_json.dumps({"sessionId":"374ef1","runId":"post-fix","hypothesisId":"C","location":"kitchen_lowdim_eval_runner.py:run","message":"shared env created","data":{"fd_count":len(_os.listdir('/proc/self/fd'))},"timestamp":int(_time.time()*1000)})+'\n')
         #endregion
         try:
+            env, _ = self._configure_env(env, 0, enable_render=False)
+            self._warmup_policy(policy, env)
             for episode_idx in range(self.n_episodes):
                 enable_render = episode_idx < self.n_episodes_vis
                 record = self._run_single_episode(
@@ -1074,6 +1138,16 @@ class KitchenLowdimEvalRunner(BaseLowdimRunner):
                         },
                     )
 
+                mean_latency = (
+                    float(np.mean(record["inference_latencies_ms"]))
+                    if record["inference_latencies_ms"]
+                    else None
+                )
+                mean_latency_per_action = (
+                    float(np.mean(record["latency_per_executed_action_ms"]))
+                    if record["latency_per_executed_action_ms"]
+                    else None
+                )
                 episode_records.append(
                     {
                         "episode_idx": record["episode_idx"],
@@ -1087,25 +1161,44 @@ class KitchenLowdimEvalRunner(BaseLowdimRunner):
                         "trajectory_log_path": trajectory_log_path,
                         "episode_duration_ms": record["episode_duration_ms"],
                         "task_durations_ms": record["task_durations_ms"],
-                        "mean_inference_latency_ms": float(
-                            np.mean(record["inference_latencies_ms"])
-                        )
-                        if record["inference_latencies_ms"]
-                        else None,
+                        "mean_inference_latency_ms": mean_latency,
+                        "mean_latency_per_executed_action_ms": mean_latency_per_action,
+                        "n_replans": record["n_replans"],
+                        "h_exec": record["h_exec"],
+                        "total_inference_compute_ms": record[
+                            "total_inference_compute_ms"
+                        ],
+                        "f_control_hz": record["f_control_hz"],
                     }
                 )
 
                 all_inference_latencies_ms.extend(record["inference_latencies_ms"])
+                all_latency_per_executed_action_ms.extend(
+                    record["latency_per_executed_action_ms"]
+                )
+                all_total_inference_compute_ms.append(
+                    record["total_inference_compute_ms"]
+                )
+                if record["f_control_hz"] is not None:
+                    all_f_control_hz.append(float(record["f_control_hz"]))
                 all_episode_durations_ms.append(record["episode_duration_ms"])
-                all_7_success_flags.append(1 if record["all_7_success"] else 0)
+                scored, k4, flags = clip_episode_to_p4(
+                    record["completion_order"], ALL_TASKS, k_max=K_MAX
+                )
+                p4_success_flags.append(1 if k4 >= K_MAX else 0)
 
                 for task_name in ALL_TASKS:
-                    per_task_success[task_name].append(task_success[task_name])
+                    flag = flags[task_name]
+                    if flag is not None:
+                        per_task_success[task_name].append(int(flag))
 
-                for pos, task_name in enumerate(record["completion_order"]):
+                for pos, task_name in enumerate(scored):
                     completion_positions[task_name].append(pos)
 
+                scored_set = set(scored)
                 for task_name, duration_ms in record["task_durations_ms"].items():
+                    if task_name not in scored_set:
+                        continue
                     all_task_durations_ms.append(duration_ms)
                     task_duration_by_name[task_name].append(duration_ms)
         finally:
@@ -1116,11 +1209,11 @@ class KitchenLowdimEvalRunner(BaseLowdimRunner):
 
         success_rate = {}
         for task_name in ALL_TASKS:
-            success_rate[task_name] = _compute_mean_std(
+            success_rate[task_name] = proportion_stats(
                 [float(x) for x in per_task_success[task_name]]
             )
-        success_rate["all_7_tasks"] = _compute_mean_std(
-            [float(x) for x in all_7_success_flags]
+        success_rate["p4_success"] = proportion_stats(
+            [float(x) for x in p4_success_flags]
         )
 
         task_duration_stats = {"overall": _compute_mean_std(all_task_durations_ms)}
@@ -1138,7 +1231,7 @@ class KitchenLowdimEvalRunner(BaseLowdimRunner):
             }
 
         multistage_all_7 = compute_multistage_metrics(
-            episode_records, sub_goals=ALL_TASKS
+            episode_records, sub_goals=ALL_TASKS, num_sub_goals=K_MAX
         )
         multistage_4 = compute_multistage_metrics(
             episode_records, sub_goals=KITCHEN_4_SUBGOALS, num_sub_goals=4
@@ -1166,10 +1259,21 @@ class KitchenLowdimEvalRunner(BaseLowdimRunner):
                 },
             },
             "timing_ms": {
-                "inference_latency": _compute_mean_std(all_inference_latencies_ms),
+                "inference_latency": timing_sample_stats(all_inference_latencies_ms),
+                "latency_per_executed_action": timing_sample_stats(
+                    all_latency_per_executed_action_ms
+                ),
+                "total_inference_compute": timing_sample_stats(
+                    all_total_inference_compute_ms
+                ),
+                "f_control_hz": _compute_mean_std(all_f_control_hz),
                 "episode_duration": _compute_mean_std(all_episode_durations_ms),
                 "task_duration": task_duration_stats,
             },
+            "timing_methodology": build_timing_methodology(
+                warmup_calls_discarded=max(int(self.inference_warmup_calls), 0),
+                n_timed_calls=len(all_inference_latencies_ms),
+            ),
             "completion_order_stats": completion_order_stats,
             "episodes": episode_records,
         }

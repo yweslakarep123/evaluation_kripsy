@@ -1,0 +1,4 @@
+[2026-09-19 14:53:10] Kitchen NFE100 best_val eval start. log=/home/daffa/Documents/experiment/logs/kitchen_nfe100_20260919_145310.log
+[2026-09-19 14:53:10] episodes=100 device=cuda:0 sampling_seed=0 warmup=10 video=0 dry_run=1 model=all
+[2026-09-19 14:53:10] output=/home/daffa/Documents/experiment/data/kitchen_eval_nfe100
+[2026-09-19 14:53:10] ERROR: missing DP-CNN ckpt for train0

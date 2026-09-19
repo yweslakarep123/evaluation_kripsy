@@ -1,0 +1,26 @@
+folder,source,n_demos,sequence,task1,task2,task3,task4
+postcorl_microwave_bottomknob_switch_slide,postcorl,42,MW → Bottom → Light → Slide,microwave,bottom burner,light switch,slide cabinet
+friday_microwave_topknob_bottomknob_hinge,friday,31,MW → Top → Bottom → Hinge,microwave,top burner,bottom burner,hinge cabinet
+friday_topknob_bottomknob_hinge_slide,friday,30,Top → Bottom → Hinge → Slide,top burner,bottom burner,hinge cabinet,slide cabinet
+friday_microwave_bottomknob_switch_slide,friday,29,MW → Bottom → Light → Slide,microwave,bottom burner,light switch,slide cabinet
+friday_microwave_kettle_bottomknob_slide,friday,29,MW → Kettle → Bottom → Slide,microwave,kettle,bottom burner,slide cabinet
+friday_microwave_bottomknob_hinge_slide,friday,28,MW → Bottom → Hinge → Slide,microwave,bottom burner,hinge cabinet,slide cabinet
+friday_kettle_bottomknob_switch_slide,friday,27,Kettle → Bottom → Light → Slide,kettle,bottom burner,light switch,slide cabinet
+friday_topknob_bottomknob_switch_slide,friday,27,Top → Bottom → Light → Slide,top burner,bottom burner,light switch,slide cabinet
+friday_kettle_bottomknob_hinge_slide,friday,26,Kettle → Bottom → Hinge → Slide,kettle,bottom burner,hinge cabinet,slide cabinet
+friday_kettle_topknob_bottomknob_slide,friday,25,Kettle → Top → Bottom → Slide,kettle,top burner,bottom burner,slide cabinet
+friday_microwave_kettle_hinge_slide,friday,24,MW → Kettle → Hinge → Slide,microwave,kettle,hinge cabinet,slide cabinet
+friday_microwave_kettle_topknob_switch,friday,22,MW → Kettle → Top → Light,microwave,kettle,top burner,light switch
+postcorl_kettle_bottomknob_switch_hinge,postcorl,22,Kettle → Bottom → Light → Hinge,kettle,bottom burner,light switch,hinge cabinet
+postcorl_microwave_topknob_bottomknob_switch,postcorl,22,MW → Top → Bottom → Light,microwave,top burner,bottom burner,light switch
+friday_microwave_topknob_bottomknob_slide,friday,21,MW → Top → Bottom → Slide,microwave,top burner,bottom burner,slide cabinet
+postcorl_microwave_switch_hinge_slide,postcorl,21,MW → Light → Hinge → Slide,microwave,light switch,hinge cabinet,slide cabinet
+postcorl_microwave_topknob_switch_hinge,postcorl,21,MW → Top → Light → Hinge,microwave,top burner,light switch,hinge cabinet
+friday_kettle_switch_hinge_slide,friday,20,Kettle → Light → Hinge → Slide,kettle,light switch,hinge cabinet,slide cabinet
+friday_microwave_kettle_bottomknob_hinge,friday,20,MW → Kettle → Bottom → Hinge,microwave,kettle,bottom burner,hinge cabinet
+friday_microwave_kettle_topknob_hinge,friday,20,MW → Kettle → Top → Hinge,microwave,kettle,top burner,hinge cabinet
+postcorl_kettle_topknob_bottomknob_hinge,postcorl,20,Kettle → Top → Bottom → Hinge,kettle,top burner,bottom burner,hinge cabinet
+postcorl_kettle_topknob_bottomknob_switch,postcorl,20,Kettle → Top → Bottom → Light,kettle,top burner,bottom burner,light switch
+postcorl_microwave_kettle_switch_hinge,postcorl,20,MW → Kettle → Light → Hinge,microwave,kettle,light switch,hinge cabinet
+friday_kettle_topknob_switch_slide,friday,19,Kettle → Top → Light → Slide,kettle,top burner,light switch,slide cabinet
+friday_microwave_kettle_switch_slide,friday,19,MW → Kettle → Light → Slide,microwave,kettle,light switch,slide cabinet

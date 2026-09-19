@@ -16,6 +16,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from pathlib import Path
 
 import matplotlib
@@ -25,6 +26,13 @@ import matplotlib.pyplot as plt  # noqa: E402
 import numpy as np  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "scripts"))
+
+from kitchen_eval_stats import (  # noqa: E402
+    K_MAX,
+    clip_episode_record,
+    clipped_per_task_stats,
+)
 
 MODEL_SPECS = {
     "FlowPolicy": {
@@ -97,6 +105,15 @@ def _save(fig, path_base: Path) -> None:
     print(f"  wrote {path_base.with_suffix('.pdf')}")
 
 
+def _mean_std(vals: list[float]) -> tuple[float, float]:
+    arr = np.asarray(vals, dtype=np.float64)
+    if len(arr) == 0:
+        return float("nan"), float("nan")
+    if len(arr) == 1:
+        return float(arr[0]), 0.0
+    return float(np.mean(arr)), float(np.std(arr, ddof=1))
+
+
 def load_summaries() -> dict[str, dict]:
     out = {}
     for name, spec in MODEL_SPECS.items():
@@ -104,22 +121,60 @@ def load_summaries() -> dict[str, dict]:
         if not path.is_file():
             raise FileNotFoundError(f"Missing summary for {name}: {path}")
         out[name] = json.loads(path.read_text())
+        apply_p4_clip_to_summary(out[name], spec["seed_dirs"])
     return out
 
 
-def load_completion_counts() -> dict[str, dict[str, int]]:
-    """Total completion_count across seeds per model/task."""
-    counts: dict[str, dict[str, int]] = {m: {t: 0 for t in TASKS} for m in MODEL_ORDER}
-    for name, spec in MODEL_SPECS.items():
-        for seed_dir in spec["seed_dirs"]:
-            metrics_path = seed_dir / "eval_metrics.json"
-            if not metrics_path.is_file():
-                raise FileNotFoundError(metrics_path)
-            em = json.loads(metrics_path.read_text())
-            stats = em.get("completion_order_stats", {})
-            for task in TASKS:
-                counts[name][task] += int(stats.get(task, {}).get("completion_count", 0))
-    return counts
+def apply_p4_clip_to_summary(summary: dict, seed_dirs: list[Path]) -> None:
+    """Overwrite per-task SR from clipped flags; keep p1–p4 only."""
+    seed_means = {t: [] for t in TASKS}
+    seed_ns = {t: [] for t in TASKS}
+    p4_means: list[float] = []
+    completions = {t: 0 for t in TASKS}
+    for seed_dir in seed_dirs:
+        metrics_path = seed_dir / "eval_metrics.json"
+        if not metrics_path.is_file():
+            raise FileNotFoundError(metrics_path)
+        em = json.loads(metrics_path.read_text())
+        episodes = em.get("episodes") or []
+        per_task, p4 = clipped_per_task_stats(episodes, TASKS)
+        p4_means.append(p4["mean"])
+        for t in TASKS:
+            seed_means[t].append(per_task[t]["mean"])
+            seed_ns[t].append(per_task[t]["n_samples"])
+        for ep in episodes:
+            _, _, flags = clip_episode_record(ep, TASKS)
+            for t in TASKS:
+                if flags[t] == 1:
+                    completions[t] += 1
+    n_seeds = len(seed_dirs)
+    for t in TASKS:
+        mu, sd = _mean_std(seed_means[t])
+        summary.setdefault("success_rate", {})[t] = {
+            "mean": mu,
+            "std": sd,
+            "n_samples": n_seeds,
+            "n_scored": int(round(float(np.mean(seed_ns[t])))) if seed_ns[t] else 0,
+        }
+    mu, sd = _mean_std(p4_means)
+    summary["success_rate"]["p4_success"] = {
+        "mean": mu,
+        "std": sd,
+        "n_samples": n_seeds,
+    }
+    ms = summary.setdefault("multistage_metrics", {}).setdefault("all_7_tasks", {})
+    px = ms.setdefault("px", {})
+    for k in range(K_MAX + 1, 8):
+        px.pop(f"p{k}", None)
+    summary["_completions"] = completions
+
+
+def load_completion_counts(summaries: dict[str, dict]) -> dict[str, dict[str, int]]:
+    """Scored completions under the p4 ceiling (leftover tasks excluded)."""
+    return {
+        m: dict(summaries[m].get("_completions") or {t: 0 for t in TASKS})
+        for m in MODEL_ORDER
+    }
 
 
 def episode_n(summaries: dict[str, dict]) -> int:
@@ -137,7 +192,7 @@ def print_text_summary(
     print(f"Kitchen eval comparison | {n_ep} episodes per model (3 seeds × 100)")
     print("=" * 72)
 
-    print("\nPer-task success rate (mean % across seeds) and total completions:")
+    print("\nPer-task success rate (p4 clip; leftover excluded) and scored completions:")
     header = f"{'task':<16}" + "".join(f"{m:>16}" for m in MODEL_ORDER)
     print(header)
     for task in TASKS:
@@ -207,7 +262,7 @@ def plot_grouped_success(
     ax.set_ylim(0, 105)
     ax.set_title(
         f"Per-task success rate (mean ± std across 3 seeds)\n"
-        f"Denominator: n={n_ep} episodes per model (fair comparison)"
+        f"p4 ceiling: leftover tasks excluded (n can be < {n_ep})"
     )
     ax.legend(loc="upper right")
     ax.grid(True, axis="y", alpha=0.3)
@@ -243,7 +298,7 @@ def plot_delta(summaries: dict[str, dict], n_ep: int, out_dir: Path) -> None:
 
     fig.suptitle(
         f"Where each method excels (green = FlowPolicy ahead, red = DP ahead)\n"
-        f"n={n_ep} episodes per model",
+        f"p4 clip; leftover tasks excluded",
         fontsize=12,
     )
     fig.tight_layout()
@@ -251,7 +306,7 @@ def plot_delta(summaries: dict[str, dict], n_ep: int, out_dir: Path) -> None:
 
 
 def plot_multistage(summaries: dict[str, dict], n_ep: int, out_dir: Path) -> None:
-    ks = [f"p{k}" for k in range(1, 8)]
+    ks = [f"p{k}" for k in range(1, K_MAX + 1)]
     fig, ax = plt.subplots(figsize=(10, 5.5))
     x = np.arange(len(ks))
     width = 0.25
@@ -279,11 +334,11 @@ def plot_multistage(summaries: dict[str, dict], n_ep: int, out_dir: Path) -> Non
         )
 
     ax.set_xticks(x)
-    ax.set_xticklabels([f"≥{k} tasks" for k in range(1, 8)])
+    ax.set_xticklabels([f"≥{k} tasks" for k in range(1, K_MAX + 1)])
     ax.set_ylabel("Fraction of episodes (%)")
     ax.set_ylim(0, 110)
     ax.set_title(
-        f"Multi-stage p_k: fraction of episodes completing ≥ k of 7 tasks\n"
+        f"Multi-stage p_k: fraction completing ≥ k of 7 (scored up to p4)\n"
         f"n={n_ep} episodes per model"
     )
     ax.legend()
@@ -413,7 +468,7 @@ def main() -> None:
         out_dir = ROOT / out_dir
 
     summaries = load_summaries()
-    completions = load_completion_counts()
+    completions = load_completion_counts(summaries)
     n_ep = episode_n(summaries)
 
     # Sanity: all models same episode budget

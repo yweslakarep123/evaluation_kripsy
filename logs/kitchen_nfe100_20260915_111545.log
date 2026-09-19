@@ -1,0 +1,304 @@
+[2026-09-15 11:15:45] Kitchen NFE100 full eval start. log=/home/daffa/Documents/experiment/logs/kitchen_nfe100_20260915_111545.log
+[2026-09-15 11:15:45] episodes=100 device=cuda:0 sampling_seed=0 warmup=10 dry_run=1 model=flowpolicy
+[2026-09-15 11:15:45] nfe_list=1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 100
+[2026-09-15 11:15:45] FlowPolicy baseline_42: /home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed42/runs/baseline_seed42_standard/checkpoints/best_val.ckpt
+[2026-09-15 11:15:45] FlowPolicy baseline_43: /home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed43/runs/baseline_seed43_standard/checkpoints/best_val.ckpt
+[2026-09-15 11:15:45] FlowPolicy baseline_44: /home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed44/runs/checkpoints/best_val.ckpt
+[2026-09-15 11:15:45] RUN flowpolicy seed=baseline_42 nfe=1 eps=100 warmup=10
+[2026-09-15 11:15:45]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed42/runs/baseline_seed42_standard/checkpoints/best_val.ckpt
+[2026-09-15 11:15:45]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_42_nfe1_sseed0
+[2026-09-15 11:15:45] RUN flowpolicy seed=baseline_42 nfe=2 eps=100 warmup=10
+[2026-09-15 11:15:45]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed42/runs/baseline_seed42_standard/checkpoints/best_val.ckpt
+[2026-09-15 11:15:45]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_42_nfe2_sseed0
+[2026-09-15 11:15:45] RUN flowpolicy seed=baseline_42 nfe=3 eps=100 warmup=10
+[2026-09-15 11:15:45]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed42/runs/baseline_seed42_standard/checkpoints/best_val.ckpt
+[2026-09-15 11:15:45]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_42_nfe3_sseed0
+[2026-09-15 11:15:45] RUN flowpolicy seed=baseline_42 nfe=4 eps=100 warmup=10
+[2026-09-15 11:15:45]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed42/runs/baseline_seed42_standard/checkpoints/best_val.ckpt
+[2026-09-15 11:15:45]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_42_nfe4_sseed0
+[2026-09-15 11:15:45] RUN flowpolicy seed=baseline_42 nfe=5 eps=100 warmup=10
+[2026-09-15 11:15:45]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed42/runs/baseline_seed42_standard/checkpoints/best_val.ckpt
+[2026-09-15 11:15:45]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_42_nfe5_sseed0
+[2026-09-15 11:15:45] RUN flowpolicy seed=baseline_42 nfe=6 eps=100 warmup=10
+[2026-09-15 11:15:45]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed42/runs/baseline_seed42_standard/checkpoints/best_val.ckpt
+[2026-09-15 11:15:45]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_42_nfe6_sseed0
+[2026-09-15 11:15:45] RUN flowpolicy seed=baseline_42 nfe=7 eps=100 warmup=10
+[2026-09-15 11:15:45]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed42/runs/baseline_seed42_standard/checkpoints/best_val.ckpt
+[2026-09-15 11:15:45]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_42_nfe7_sseed0
+[2026-09-15 11:15:45] RUN flowpolicy seed=baseline_42 nfe=8 eps=100 warmup=10
+[2026-09-15 11:15:45]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed42/runs/baseline_seed42_standard/checkpoints/best_val.ckpt
+[2026-09-15 11:15:45]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_42_nfe8_sseed0
+[2026-09-15 11:15:45] RUN flowpolicy seed=baseline_42 nfe=9 eps=100 warmup=10
+[2026-09-15 11:15:45]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed42/runs/baseline_seed42_standard/checkpoints/best_val.ckpt
+[2026-09-15 11:15:45]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_42_nfe9_sseed0
+[2026-09-15 11:15:45] RUN flowpolicy seed=baseline_42 nfe=10 eps=100 warmup=10
+[2026-09-15 11:15:45]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed42/runs/baseline_seed42_standard/checkpoints/best_val.ckpt
+[2026-09-15 11:15:45]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_42_nfe10_sseed0
+[2026-09-15 11:15:45] RUN flowpolicy seed=baseline_42 nfe=11 eps=100 warmup=10
+[2026-09-15 11:15:45]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed42/runs/baseline_seed42_standard/checkpoints/best_val.ckpt
+[2026-09-15 11:15:45]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_42_nfe11_sseed0
+[2026-09-15 11:15:45] RUN flowpolicy seed=baseline_42 nfe=12 eps=100 warmup=10
+[2026-09-15 11:15:45]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed42/runs/baseline_seed42_standard/checkpoints/best_val.ckpt
+[2026-09-15 11:15:45]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_42_nfe12_sseed0
+[2026-09-15 11:15:45] RUN flowpolicy seed=baseline_42 nfe=13 eps=100 warmup=10
+[2026-09-15 11:15:45]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed42/runs/baseline_seed42_standard/checkpoints/best_val.ckpt
+[2026-09-15 11:15:45]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_42_nfe13_sseed0
+[2026-09-15 11:15:45] RUN flowpolicy seed=baseline_42 nfe=14 eps=100 warmup=10
+[2026-09-15 11:15:45]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed42/runs/baseline_seed42_standard/checkpoints/best_val.ckpt
+[2026-09-15 11:15:45]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_42_nfe14_sseed0
+[2026-09-15 11:15:45] RUN flowpolicy seed=baseline_42 nfe=15 eps=100 warmup=10
+[2026-09-15 11:15:45]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed42/runs/baseline_seed42_standard/checkpoints/best_val.ckpt
+[2026-09-15 11:15:45]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_42_nfe15_sseed0
+[2026-09-15 11:15:45] RUN flowpolicy seed=baseline_42 nfe=16 eps=100 warmup=10
+[2026-09-15 11:15:45]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed42/runs/baseline_seed42_standard/checkpoints/best_val.ckpt
+[2026-09-15 11:15:45]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_42_nfe16_sseed0
+[2026-09-15 11:15:45] RUN flowpolicy seed=baseline_42 nfe=17 eps=100 warmup=10
+[2026-09-15 11:15:45]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed42/runs/baseline_seed42_standard/checkpoints/best_val.ckpt
+[2026-09-15 11:15:45]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_42_nfe17_sseed0
+[2026-09-15 11:15:45] RUN flowpolicy seed=baseline_42 nfe=18 eps=100 warmup=10
+[2026-09-15 11:15:45]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed42/runs/baseline_seed42_standard/checkpoints/best_val.ckpt
+[2026-09-15 11:15:45]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_42_nfe18_sseed0
+[2026-09-15 11:15:45] RUN flowpolicy seed=baseline_42 nfe=19 eps=100 warmup=10
+[2026-09-15 11:15:45]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed42/runs/baseline_seed42_standard/checkpoints/best_val.ckpt
+[2026-09-15 11:15:45]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_42_nfe19_sseed0
+[2026-09-15 11:15:45] RUN flowpolicy seed=baseline_42 nfe=20 eps=100 warmup=10
+[2026-09-15 11:15:45]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed42/runs/baseline_seed42_standard/checkpoints/best_val.ckpt
+[2026-09-15 11:15:45]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_42_nfe20_sseed0
+[2026-09-15 11:15:45] RUN flowpolicy seed=baseline_42 nfe=21 eps=100 warmup=10
+[2026-09-15 11:15:45]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed42/runs/baseline_seed42_standard/checkpoints/best_val.ckpt
+[2026-09-15 11:15:45]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_42_nfe21_sseed0
+[2026-09-15 11:15:45] RUN flowpolicy seed=baseline_42 nfe=22 eps=100 warmup=10
+[2026-09-15 11:15:45]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed42/runs/baseline_seed42_standard/checkpoints/best_val.ckpt
+[2026-09-15 11:15:45]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_42_nfe22_sseed0
+[2026-09-15 11:15:45] RUN flowpolicy seed=baseline_42 nfe=23 eps=100 warmup=10
+[2026-09-15 11:15:45]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed42/runs/baseline_seed42_standard/checkpoints/best_val.ckpt
+[2026-09-15 11:15:45]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_42_nfe23_sseed0
+[2026-09-15 11:15:45] RUN flowpolicy seed=baseline_42 nfe=24 eps=100 warmup=10
+[2026-09-15 11:15:45]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed42/runs/baseline_seed42_standard/checkpoints/best_val.ckpt
+[2026-09-15 11:15:45]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_42_nfe24_sseed0
+[2026-09-15 11:15:45] RUN flowpolicy seed=baseline_42 nfe=25 eps=100 warmup=10
+[2026-09-15 11:15:45]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed42/runs/baseline_seed42_standard/checkpoints/best_val.ckpt
+[2026-09-15 11:15:45]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_42_nfe25_sseed0
+[2026-09-15 11:15:45] RUN flowpolicy seed=baseline_42 nfe=26 eps=100 warmup=10
+[2026-09-15 11:15:45]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed42/runs/baseline_seed42_standard/checkpoints/best_val.ckpt
+[2026-09-15 11:15:45]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_42_nfe26_sseed0
+[2026-09-15 11:15:45] RUN flowpolicy seed=baseline_42 nfe=27 eps=100 warmup=10
+[2026-09-15 11:15:45]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed42/runs/baseline_seed42_standard/checkpoints/best_val.ckpt
+[2026-09-15 11:15:45]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_42_nfe27_sseed0
+[2026-09-15 11:15:45] RUN flowpolicy seed=baseline_42 nfe=28 eps=100 warmup=10
+[2026-09-15 11:15:45]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed42/runs/baseline_seed42_standard/checkpoints/best_val.ckpt
+[2026-09-15 11:15:45]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_42_nfe28_sseed0
+[2026-09-15 11:15:45] RUN flowpolicy seed=baseline_42 nfe=29 eps=100 warmup=10
+[2026-09-15 11:15:45]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed42/runs/baseline_seed42_standard/checkpoints/best_val.ckpt
+[2026-09-15 11:15:45]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_42_nfe29_sseed0
+[2026-09-15 11:15:45] RUN flowpolicy seed=baseline_42 nfe=30 eps=100 warmup=10
+[2026-09-15 11:15:45]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed42/runs/baseline_seed42_standard/checkpoints/best_val.ckpt
+[2026-09-15 11:15:45]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_42_nfe30_sseed0
+[2026-09-15 11:15:45] RUN flowpolicy seed=baseline_42 nfe=31 eps=100 warmup=10
+[2026-09-15 11:15:45]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed42/runs/baseline_seed42_standard/checkpoints/best_val.ckpt
+[2026-09-15 11:15:45]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_42_nfe31_sseed0
+[2026-09-15 11:15:45] RUN flowpolicy seed=baseline_42 nfe=32 eps=100 warmup=10
+[2026-09-15 11:15:45]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed42/runs/baseline_seed42_standard/checkpoints/best_val.ckpt
+[2026-09-15 11:15:45]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_42_nfe32_sseed0
+[2026-09-15 11:15:45] RUN flowpolicy seed=baseline_42 nfe=100 eps=100 warmup=10
+[2026-09-15 11:15:45]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed42/runs/baseline_seed42_standard/checkpoints/best_val.ckpt
+[2026-09-15 11:15:45]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_42_nfe100_sseed0
+[2026-09-15 11:15:45] RUN flowpolicy seed=baseline_43 nfe=1 eps=100 warmup=10
+[2026-09-15 11:15:45]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed43/runs/baseline_seed43_standard/checkpoints/best_val.ckpt
+[2026-09-15 11:15:45]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_43_nfe1_sseed0
+[2026-09-15 11:15:45] RUN flowpolicy seed=baseline_43 nfe=2 eps=100 warmup=10
+[2026-09-15 11:15:45]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed43/runs/baseline_seed43_standard/checkpoints/best_val.ckpt
+[2026-09-15 11:15:45]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_43_nfe2_sseed0
+[2026-09-15 11:15:45] RUN flowpolicy seed=baseline_43 nfe=3 eps=100 warmup=10
+[2026-09-15 11:15:45]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed43/runs/baseline_seed43_standard/checkpoints/best_val.ckpt
+[2026-09-15 11:15:45]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_43_nfe3_sseed0
+[2026-09-15 11:15:45] RUN flowpolicy seed=baseline_43 nfe=4 eps=100 warmup=10
+[2026-09-15 11:15:45]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed43/runs/baseline_seed43_standard/checkpoints/best_val.ckpt
+[2026-09-15 11:15:45]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_43_nfe4_sseed0
+[2026-09-15 11:15:45] RUN flowpolicy seed=baseline_43 nfe=5 eps=100 warmup=10
+[2026-09-15 11:15:45]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed43/runs/baseline_seed43_standard/checkpoints/best_val.ckpt
+[2026-09-15 11:15:45]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_43_nfe5_sseed0
+[2026-09-15 11:15:45] RUN flowpolicy seed=baseline_43 nfe=6 eps=100 warmup=10
+[2026-09-15 11:15:45]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed43/runs/baseline_seed43_standard/checkpoints/best_val.ckpt
+[2026-09-15 11:15:45]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_43_nfe6_sseed0
+[2026-09-15 11:15:45] RUN flowpolicy seed=baseline_43 nfe=7 eps=100 warmup=10
+[2026-09-15 11:15:45]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed43/runs/baseline_seed43_standard/checkpoints/best_val.ckpt
+[2026-09-15 11:15:45]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_43_nfe7_sseed0
+[2026-09-15 11:15:45] RUN flowpolicy seed=baseline_43 nfe=8 eps=100 warmup=10
+[2026-09-15 11:15:45]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed43/runs/baseline_seed43_standard/checkpoints/best_val.ckpt
+[2026-09-15 11:15:45]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_43_nfe8_sseed0
+[2026-09-15 11:15:45] RUN flowpolicy seed=baseline_43 nfe=9 eps=100 warmup=10
+[2026-09-15 11:15:45]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed43/runs/baseline_seed43_standard/checkpoints/best_val.ckpt
+[2026-09-15 11:15:45]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_43_nfe9_sseed0
+[2026-09-15 11:15:45] RUN flowpolicy seed=baseline_43 nfe=10 eps=100 warmup=10
+[2026-09-15 11:15:45]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed43/runs/baseline_seed43_standard/checkpoints/best_val.ckpt
+[2026-09-15 11:15:45]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_43_nfe10_sseed0
+[2026-09-15 11:15:45] RUN flowpolicy seed=baseline_43 nfe=11 eps=100 warmup=10
+[2026-09-15 11:15:45]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed43/runs/baseline_seed43_standard/checkpoints/best_val.ckpt
+[2026-09-15 11:15:45]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_43_nfe11_sseed0
+[2026-09-15 11:15:45] RUN flowpolicy seed=baseline_43 nfe=12 eps=100 warmup=10
+[2026-09-15 11:15:45]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed43/runs/baseline_seed43_standard/checkpoints/best_val.ckpt
+[2026-09-15 11:15:45]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_43_nfe12_sseed0
+[2026-09-15 11:15:45] RUN flowpolicy seed=baseline_43 nfe=13 eps=100 warmup=10
+[2026-09-15 11:15:45]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed43/runs/baseline_seed43_standard/checkpoints/best_val.ckpt
+[2026-09-15 11:15:45]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_43_nfe13_sseed0
+[2026-09-15 11:15:45] RUN flowpolicy seed=baseline_43 nfe=14 eps=100 warmup=10
+[2026-09-15 11:15:45]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed43/runs/baseline_seed43_standard/checkpoints/best_val.ckpt
+[2026-09-15 11:15:45]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_43_nfe14_sseed0
+[2026-09-15 11:15:45] RUN flowpolicy seed=baseline_43 nfe=15 eps=100 warmup=10
+[2026-09-15 11:15:45]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed43/runs/baseline_seed43_standard/checkpoints/best_val.ckpt
+[2026-09-15 11:15:45]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_43_nfe15_sseed0
+[2026-09-15 11:15:45] RUN flowpolicy seed=baseline_43 nfe=16 eps=100 warmup=10
+[2026-09-15 11:15:45]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed43/runs/baseline_seed43_standard/checkpoints/best_val.ckpt
+[2026-09-15 11:15:45]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_43_nfe16_sseed0
+[2026-09-15 11:15:45] RUN flowpolicy seed=baseline_43 nfe=17 eps=100 warmup=10
+[2026-09-15 11:15:45]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed43/runs/baseline_seed43_standard/checkpoints/best_val.ckpt
+[2026-09-15 11:15:45]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_43_nfe17_sseed0
+[2026-09-15 11:15:45] RUN flowpolicy seed=baseline_43 nfe=18 eps=100 warmup=10
+[2026-09-15 11:15:45]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed43/runs/baseline_seed43_standard/checkpoints/best_val.ckpt
+[2026-09-15 11:15:45]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_43_nfe18_sseed0
+[2026-09-15 11:15:45] RUN flowpolicy seed=baseline_43 nfe=19 eps=100 warmup=10
+[2026-09-15 11:15:45]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed43/runs/baseline_seed43_standard/checkpoints/best_val.ckpt
+[2026-09-15 11:15:45]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_43_nfe19_sseed0
+[2026-09-15 11:15:45] RUN flowpolicy seed=baseline_43 nfe=20 eps=100 warmup=10
+[2026-09-15 11:15:45]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed43/runs/baseline_seed43_standard/checkpoints/best_val.ckpt
+[2026-09-15 11:15:45]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_43_nfe20_sseed0
+[2026-09-15 11:15:45] RUN flowpolicy seed=baseline_43 nfe=21 eps=100 warmup=10
+[2026-09-15 11:15:45]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed43/runs/baseline_seed43_standard/checkpoints/best_val.ckpt
+[2026-09-15 11:15:45]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_43_nfe21_sseed0
+[2026-09-15 11:15:45] RUN flowpolicy seed=baseline_43 nfe=22 eps=100 warmup=10
+[2026-09-15 11:15:45]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed43/runs/baseline_seed43_standard/checkpoints/best_val.ckpt
+[2026-09-15 11:15:45]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_43_nfe22_sseed0
+[2026-09-15 11:15:45] RUN flowpolicy seed=baseline_43 nfe=23 eps=100 warmup=10
+[2026-09-15 11:15:45]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed43/runs/baseline_seed43_standard/checkpoints/best_val.ckpt
+[2026-09-15 11:15:45]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_43_nfe23_sseed0
+[2026-09-15 11:15:45] RUN flowpolicy seed=baseline_43 nfe=24 eps=100 warmup=10
+[2026-09-15 11:15:45]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed43/runs/baseline_seed43_standard/checkpoints/best_val.ckpt
+[2026-09-15 11:15:45]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_43_nfe24_sseed0
+[2026-09-15 11:15:45] RUN flowpolicy seed=baseline_43 nfe=25 eps=100 warmup=10
+[2026-09-15 11:15:45]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed43/runs/baseline_seed43_standard/checkpoints/best_val.ckpt
+[2026-09-15 11:15:45]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_43_nfe25_sseed0
+[2026-09-15 11:15:45] RUN flowpolicy seed=baseline_43 nfe=26 eps=100 warmup=10
+[2026-09-15 11:15:45]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed43/runs/baseline_seed43_standard/checkpoints/best_val.ckpt
+[2026-09-15 11:15:45]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_43_nfe26_sseed0
+[2026-09-15 11:15:45] RUN flowpolicy seed=baseline_43 nfe=27 eps=100 warmup=10
+[2026-09-15 11:15:45]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed43/runs/baseline_seed43_standard/checkpoints/best_val.ckpt
+[2026-09-15 11:15:45]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_43_nfe27_sseed0
+[2026-09-15 11:15:45] RUN flowpolicy seed=baseline_43 nfe=28 eps=100 warmup=10
+[2026-09-15 11:15:45]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed43/runs/baseline_seed43_standard/checkpoints/best_val.ckpt
+[2026-09-15 11:15:45]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_43_nfe28_sseed0
+[2026-09-15 11:15:45] RUN flowpolicy seed=baseline_43 nfe=29 eps=100 warmup=10
+[2026-09-15 11:15:45]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed43/runs/baseline_seed43_standard/checkpoints/best_val.ckpt
+[2026-09-15 11:15:45]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_43_nfe29_sseed0
+[2026-09-15 11:15:45] RUN flowpolicy seed=baseline_43 nfe=30 eps=100 warmup=10
+[2026-09-15 11:15:45]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed43/runs/baseline_seed43_standard/checkpoints/best_val.ckpt
+[2026-09-15 11:15:45]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_43_nfe30_sseed0
+[2026-09-15 11:15:45] RUN flowpolicy seed=baseline_43 nfe=31 eps=100 warmup=10
+[2026-09-15 11:15:45]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed43/runs/baseline_seed43_standard/checkpoints/best_val.ckpt
+[2026-09-15 11:15:45]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_43_nfe31_sseed0
+[2026-09-15 11:15:45] RUN flowpolicy seed=baseline_43 nfe=32 eps=100 warmup=10
+[2026-09-15 11:15:45]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed43/runs/baseline_seed43_standard/checkpoints/best_val.ckpt
+[2026-09-15 11:15:45]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_43_nfe32_sseed0
+[2026-09-15 11:15:45] RUN flowpolicy seed=baseline_43 nfe=100 eps=100 warmup=10
+[2026-09-15 11:15:45]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed43/runs/baseline_seed43_standard/checkpoints/best_val.ckpt
+[2026-09-15 11:15:45]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_43_nfe100_sseed0
+[2026-09-15 11:15:45] RUN flowpolicy seed=baseline_44 nfe=1 eps=100 warmup=10
+[2026-09-15 11:15:45]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed44/runs/checkpoints/best_val.ckpt
+[2026-09-15 11:15:45]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_44_nfe1_sseed0
+[2026-09-15 11:15:45] RUN flowpolicy seed=baseline_44 nfe=2 eps=100 warmup=10
+[2026-09-15 11:15:45]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed44/runs/checkpoints/best_val.ckpt
+[2026-09-15 11:15:45]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_44_nfe2_sseed0
+[2026-09-15 11:15:45] RUN flowpolicy seed=baseline_44 nfe=3 eps=100 warmup=10
+[2026-09-15 11:15:45]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed44/runs/checkpoints/best_val.ckpt
+[2026-09-15 11:15:45]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_44_nfe3_sseed0
+[2026-09-15 11:15:45] RUN flowpolicy seed=baseline_44 nfe=4 eps=100 warmup=10
+[2026-09-15 11:15:45]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed44/runs/checkpoints/best_val.ckpt
+[2026-09-15 11:15:45]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_44_nfe4_sseed0
+[2026-09-15 11:15:45] RUN flowpolicy seed=baseline_44 nfe=5 eps=100 warmup=10
+[2026-09-15 11:15:45]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed44/runs/checkpoints/best_val.ckpt
+[2026-09-15 11:15:45]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_44_nfe5_sseed0
+[2026-09-15 11:15:45] RUN flowpolicy seed=baseline_44 nfe=6 eps=100 warmup=10
+[2026-09-15 11:15:45]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed44/runs/checkpoints/best_val.ckpt
+[2026-09-15 11:15:45]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_44_nfe6_sseed0
+[2026-09-15 11:15:45] RUN flowpolicy seed=baseline_44 nfe=7 eps=100 warmup=10
+[2026-09-15 11:15:45]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed44/runs/checkpoints/best_val.ckpt
+[2026-09-15 11:15:45]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_44_nfe7_sseed0
+[2026-09-15 11:15:45] RUN flowpolicy seed=baseline_44 nfe=8 eps=100 warmup=10
+[2026-09-15 11:15:45]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed44/runs/checkpoints/best_val.ckpt
+[2026-09-15 11:15:45]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_44_nfe8_sseed0
+[2026-09-15 11:15:45] RUN flowpolicy seed=baseline_44 nfe=9 eps=100 warmup=10
+[2026-09-15 11:15:45]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed44/runs/checkpoints/best_val.ckpt
+[2026-09-15 11:15:45]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_44_nfe9_sseed0
+[2026-09-15 11:15:45] RUN flowpolicy seed=baseline_44 nfe=10 eps=100 warmup=10
+[2026-09-15 11:15:45]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed44/runs/checkpoints/best_val.ckpt
+[2026-09-15 11:15:45]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_44_nfe10_sseed0
+[2026-09-15 11:15:45] RUN flowpolicy seed=baseline_44 nfe=11 eps=100 warmup=10
+[2026-09-15 11:15:45]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed44/runs/checkpoints/best_val.ckpt
+[2026-09-15 11:15:45]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_44_nfe11_sseed0
+[2026-09-15 11:15:45] RUN flowpolicy seed=baseline_44 nfe=12 eps=100 warmup=10
+[2026-09-15 11:15:45]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed44/runs/checkpoints/best_val.ckpt
+[2026-09-15 11:15:45]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_44_nfe12_sseed0
+[2026-09-15 11:15:45] RUN flowpolicy seed=baseline_44 nfe=13 eps=100 warmup=10
+[2026-09-15 11:15:45]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed44/runs/checkpoints/best_val.ckpt
+[2026-09-15 11:15:45]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_44_nfe13_sseed0
+[2026-09-15 11:15:45] RUN flowpolicy seed=baseline_44 nfe=14 eps=100 warmup=10
+[2026-09-15 11:15:45]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed44/runs/checkpoints/best_val.ckpt
+[2026-09-15 11:15:45]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_44_nfe14_sseed0
+[2026-09-15 11:15:45] RUN flowpolicy seed=baseline_44 nfe=15 eps=100 warmup=10
+[2026-09-15 11:15:45]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed44/runs/checkpoints/best_val.ckpt
+[2026-09-15 11:15:45]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_44_nfe15_sseed0
+[2026-09-15 11:15:45] RUN flowpolicy seed=baseline_44 nfe=16 eps=100 warmup=10
+[2026-09-15 11:15:45]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed44/runs/checkpoints/best_val.ckpt
+[2026-09-15 11:15:45]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_44_nfe16_sseed0
+[2026-09-15 11:15:45] RUN flowpolicy seed=baseline_44 nfe=17 eps=100 warmup=10
+[2026-09-15 11:15:45]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed44/runs/checkpoints/best_val.ckpt
+[2026-09-15 11:15:45]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_44_nfe17_sseed0
+[2026-09-15 11:15:45] RUN flowpolicy seed=baseline_44 nfe=18 eps=100 warmup=10
+[2026-09-15 11:15:45]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed44/runs/checkpoints/best_val.ckpt
+[2026-09-15 11:15:45]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_44_nfe18_sseed0
+[2026-09-15 11:15:45] RUN flowpolicy seed=baseline_44 nfe=19 eps=100 warmup=10
+[2026-09-15 11:15:45]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed44/runs/checkpoints/best_val.ckpt
+[2026-09-15 11:15:45]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_44_nfe19_sseed0
+[2026-09-15 11:15:45] RUN flowpolicy seed=baseline_44 nfe=20 eps=100 warmup=10
+[2026-09-15 11:15:45]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed44/runs/checkpoints/best_val.ckpt
+[2026-09-15 11:15:45]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_44_nfe20_sseed0
+[2026-09-15 11:15:45] RUN flowpolicy seed=baseline_44 nfe=21 eps=100 warmup=10
+[2026-09-15 11:15:45]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed44/runs/checkpoints/best_val.ckpt
+[2026-09-15 11:15:46]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_44_nfe21_sseed0
+[2026-09-15 11:15:46] RUN flowpolicy seed=baseline_44 nfe=22 eps=100 warmup=10
+[2026-09-15 11:15:46]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed44/runs/checkpoints/best_val.ckpt
+[2026-09-15 11:15:46]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_44_nfe22_sseed0
+[2026-09-15 11:15:46] RUN flowpolicy seed=baseline_44 nfe=23 eps=100 warmup=10
+[2026-09-15 11:15:46]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed44/runs/checkpoints/best_val.ckpt
+[2026-09-15 11:15:46]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_44_nfe23_sseed0
+[2026-09-15 11:15:46] RUN flowpolicy seed=baseline_44 nfe=24 eps=100 warmup=10
+[2026-09-15 11:15:46]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed44/runs/checkpoints/best_val.ckpt
+[2026-09-15 11:15:46]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_44_nfe24_sseed0
+[2026-09-15 11:15:46] RUN flowpolicy seed=baseline_44 nfe=25 eps=100 warmup=10
+[2026-09-15 11:15:46]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed44/runs/checkpoints/best_val.ckpt
+[2026-09-15 11:15:46]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_44_nfe25_sseed0
+[2026-09-15 11:15:46] RUN flowpolicy seed=baseline_44 nfe=26 eps=100 warmup=10
+[2026-09-15 11:15:46]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed44/runs/checkpoints/best_val.ckpt
+[2026-09-15 11:15:46]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_44_nfe26_sseed0
+[2026-09-15 11:15:46] RUN flowpolicy seed=baseline_44 nfe=27 eps=100 warmup=10
+[2026-09-15 11:15:46]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed44/runs/checkpoints/best_val.ckpt
+[2026-09-15 11:15:46]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_44_nfe27_sseed0
+[2026-09-15 11:15:46] RUN flowpolicy seed=baseline_44 nfe=28 eps=100 warmup=10
+[2026-09-15 11:15:46]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed44/runs/checkpoints/best_val.ckpt
+[2026-09-15 11:15:46]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_44_nfe28_sseed0
+[2026-09-15 11:15:46] RUN flowpolicy seed=baseline_44 nfe=29 eps=100 warmup=10
+[2026-09-15 11:15:46]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed44/runs/checkpoints/best_val.ckpt
+[2026-09-15 11:15:46]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_44_nfe29_sseed0
+[2026-09-15 11:15:46] RUN flowpolicy seed=baseline_44 nfe=30 eps=100 warmup=10
+[2026-09-15 11:15:46]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed44/runs/checkpoints/best_val.ckpt
+[2026-09-15 11:15:46]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_44_nfe30_sseed0
+[2026-09-15 11:15:46] RUN flowpolicy seed=baseline_44 nfe=31 eps=100 warmup=10
+[2026-09-15 11:15:46]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed44/runs/checkpoints/best_val.ckpt
+[2026-09-15 11:15:46]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_44_nfe31_sseed0
+[2026-09-15 11:15:46] RUN flowpolicy seed=baseline_44 nfe=32 eps=100 warmup=10
+[2026-09-15 11:15:46]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed44/runs/checkpoints/best_val.ckpt
+[2026-09-15 11:15:46]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_44_nfe32_sseed0
+[2026-09-15 11:15:46] RUN flowpolicy seed=baseline_44 nfe=100 eps=100 warmup=10
+[2026-09-15 11:15:46]   DRY-RUN ckpt=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/outputs/seed44/runs/checkpoints/best_val.ckpt
+[2026-09-15 11:15:46]   DRY-RUN out=/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen_eval_nfe100/flowpolicy/seed_baseline_44_nfe100_sseed0
+[2026-09-15 11:15:46] DRY-RUN complete (no eval / no analyze).

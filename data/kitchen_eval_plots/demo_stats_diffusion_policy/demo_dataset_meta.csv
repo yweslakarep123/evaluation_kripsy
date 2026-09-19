@@ -1,0 +1,7 @@
+key,value
+label,Diffusion Policy
+demo_dir,diffusion_policy/data/kitchen/kitchen_demos_multitask
+demo_dir_resolved,/home/daffa/Documents/experiment/kripsy12/FlowPolicy/data/kitchen/kitchen_demos_multitask
+n_demos,605
+n_sequence_folders,25
+same_as_flowpolicy_demos,True
